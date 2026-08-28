@@ -1,0 +1,25 @@
+{
+    "name": "MU Construction Contracts and BOQ",
+    "summary": "Versioned construction contracts, BOQs, approvals, and audit trail",
+    "version": "19.0.1.0.0",
+    "category": "Services/Project",
+    "author": "MU Constructions General",
+    "license": "LGPL-3",
+    "depends": [
+        "mu_construction_core",
+        "sale_management",
+        "purchase_stock",
+        "account",
+        "mail",
+    ],
+    "data": [
+        "security/contract_boq_security.xml",
+        "security/ir.model.access.csv",
+        "data/contract_boq_sequence.xml",
+        "views/contract_views.xml",
+        "views/boq_views.xml",
+        "views/project_views.xml",
+    ],
+    "installable": True,
+    "application": True,
+}
