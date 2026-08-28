@@ -1,7 +1,7 @@
 {
     "name": "MU Construction Contract and Project Bootstrap",
     "summary": "Controlled handover from awarded tender to standard project, contract, and BOQs",
-    "version": "19.0.1.0.0",
+    "version": "19.0.1.0.1",
     "category": "Services/Project",
     "author": "MU Constructions General",
     "license": "LGPL-3",
