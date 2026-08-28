@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_construction_contract_list" model="ir.ui.view">
+        <field name="name">mu.construction.contract.list</field>
+        <field name="model">mu.construction.contract</field>
+        <field name="arch" type="xml">
+            <list decoration-success="state == 'active'" decoration-muted="state in ('closed', 'cancelled')">
+                <field name="name"/><field name="title"/><field name="project_id"/><field name="partner_id"/>
+                <field name="contract_type_id"/><field name="original_value" sum="Total"/><field name="currency_id" column_invisible="True"/>
+                <field name="reviewer_id" optional="hide"/><field name="approver_id" optional="hide"/>
+                <field name="state" widget="badge"/><field name="company_id" groups="base.group_multi_company"/>
+            </list>
+        </field>
+    </record>
+    <record id="view_construction_contract_form" model="ir.ui.view">
+        <field name="name">mu.construction.contract.form</field>
+        <field name="model">mu.construction.contract</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_submit_review" string="Submit for Review" type="object" class="btn-primary" invisible="state != 'draft'"/>
+                    <button name="action_mark_reviewed" string="Mark Reviewed" type="object" class="btn-primary" invisible="state != 'review'"/>
+                    <button name="action_approve" string="Approve" type="object" class="btn-primary" invisible="state != 'reviewed'"/>
+                    <button name="action_activate" string="Activate" type="object" invisible="state not in ('approved', 'suspended')"/>
+                    <button name="action_suspend" string="Suspend" type="object" invisible="state != 'active'"/>
+                    <button name="action_close" string="Close" type="object" invisible="state not in ('active', 'suspended')"/>
+                    <button name="action_cancel" string="Cancel" type="object" invisible="state not in ('draft', 'review', 'reviewed')"/>
+                    <button name="action_create_revision" string="Create Revision Snapshot" type="object" invisible="state not in ('approved', 'active', 'suspended', 'closed')"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,review,reviewed,approved,active,closed"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_boqs" type="object" class="oe_stat_button" icon="fa-list-ol"><field name="boq_count" widget="statinfo" string="BOQs"/></button>
+                        <button name="action_view_revisions" type="object" class="oe_stat_button" icon="fa-history"><field name="revision_count" widget="statinfo" string="Revisions"/></button>
+                    </div>
+                    <div class="oe_title"><label for="name"/><h1><field name="name"/></h1><h2><field name="title" placeholder="Contract title"/></h2></div>
+                    <group>
+                        <group><field name="project_id"/><field name="partner_id"/><field name="contract_type_id"/><field name="term_id"/></group>
+                        <group><field name="original_value"/><field name="currency_id"/><field name="start_date"/><field name="end_date"/></group>
+                    </group>
+                    <group string="Responsibility">
+                        <field name="creator_id"/><field name="reviewer_id"/><field name="approver_id"/><field name="next_responsible_id"/>
+                    </group>
+                    <group><field name="analytic_account_id"/><field name="company_id" groups="base.group_multi_company"/></group>
+                    <notebook><page string="Notes"><field name="notes"/></page></notebook>
+                </sheet><chatter/>
+            </form>
+        </field>
+    </record>
+    <record id="view_contract_revision_list" model="ir.ui.view">
+        <field name="name">mu.construction.contract.revision.list</field><field name="model">mu.construction.contract.revision</field>
+        <field name="arch" type="xml"><list><field name="contract_id"/><field name="revision_date"/><field name="created_by_id"/><field name="original_value"/><field name="currency_id" column_invisible="True"/><field name="state" widget="badge"/></list></field>
+    </record>
+    <record id="view_contract_revision_form" model="ir.ui.view">
+        <field name="name">mu.construction.contract.revision.form</field><field name="model">mu.construction.contract.revision</field>
+        <field name="arch" type="xml"><form><header><button name="action_approve" string="Approve" type="object" class="btn-primary" invisible="state != 'draft'"/><button name="action_reject" string="Reject" type="object" invisible="state != 'draft'"/><field name="state" widget="statusbar"/></header><sheet><group><group><field name="contract_id"/><field name="revision_date"/><field name="created_by_id"/><field name="source_state"/></group><group><field name="title"/><field name="partner_id"/><field name="contract_type_id"/><field name="term_id"/></group></group><group><field name="original_value"/><field name="currency_id"/><field name="start_date"/><field name="end_date"/></group><group><field name="reason"/></group></sheet><chatter/></form></field>
+    </record>
+    <record id="view_contract_type_list" model="ir.ui.view"><field name="name">mu.construction.contract.type.list</field><field name="model">mu.construction.contract.type</field><field name="arch" type="xml"><list editable="bottom"><field name="sequence" widget="handle"/><field name="code"/><field name="name"/><field name="company_id" groups="base.group_multi_company"/><field name="active" optional="hide"/></list></field></record>
+    <record id="view_contract_term_list" model="ir.ui.view"><field name="name">mu.construction.contract.term.list</field><field name="model">mu.construction.contract.term</field><field name="arch" type="xml"><list><field name="name"/><field name="contract_type_id"/><field name="project_id"/><field name="effective_from"/><field name="effective_to"/><field name="retention_percent"/><field name="advance_percent"/><field name="advance_recovery_percent"/><field name="company_id" groups="base.group_multi_company"/></list></field></record>
+    <record id="view_contract_term_form" model="ir.ui.view"><field name="name">mu.construction.contract.term.form</field><field name="model">mu.construction.contract.term</field><field name="arch" type="xml"><form><sheet><group><group><field name="name"/><field name="contract_type_id"/><field name="project_id"/><field name="company_id"/></group><group><field name="effective_from"/><field name="effective_to"/><field name="active"/></group></group><group string="Configurable Percentages"><field name="retention_percent"/><field name="advance_percent"/><field name="advance_recovery_percent"/></group></sheet></form></field></record>
+    <record id="action_construction_contracts" model="ir.actions.act_window"><field name="name">Construction Contracts</field><field name="res_model">mu.construction.contract</field><field name="view_mode">list,form</field></record>
+    <record id="action_contract_types" model="ir.actions.act_window"><field name="name">Contract Types</field><field name="res_model">mu.construction.contract.type</field><field name="view_mode">list</field></record>
+    <record id="action_contract_terms" model="ir.actions.act_window"><field name="name">Contract Terms</field><field name="res_model">mu.construction.contract.term</field><field name="view_mode">list,form</field></record>
+    <menuitem id="menu_construction_operations" name="Construction" parent="project.menu_main_pm" sequence="25" groups="mu_construction_core.group_construction_user"/>
+    <menuitem id="menu_construction_contracts" name="Contracts" parent="menu_construction_operations" action="action_construction_contracts" sequence="10"/>
+    <menuitem id="menu_contract_types" name="Contract Types" parent="mu_construction_core.menu_construction_configuration" action="action_contract_types" sequence="40"/>
+    <menuitem id="menu_contract_terms" name="Contract Terms" parent="mu_construction_core.menu_construction_configuration" action="action_contract_terms" sequence="50"/>
+</odoo>
