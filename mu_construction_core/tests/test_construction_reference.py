@@ -12,7 +12,7 @@ class TestConstructionReference(TransactionCase):
     def test_duplicate_cost_code_is_rejected_per_project(self):
         values = {"name": "Concrete", "code": "MAT.CON", "project_id": self.project.id}
         self.env["mu.construction.cost.code"].create(values)
-        with self.assertRaises(Exception):
+        with self.assertRaises(ValidationError):
             self.env["mu.construction.cost.code"].create(values)
 
     def test_cross_project_wbs_reference_is_rejected(self):

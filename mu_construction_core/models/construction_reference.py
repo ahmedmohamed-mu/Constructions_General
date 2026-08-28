@@ -56,7 +56,11 @@ class ConstructionLocation(models.Model):
     )
     parent_path = fields.Char(index=True)
     child_ids = fields.One2many("mu.construction.location", "parent_id")
-    complete_name = fields.Char(compute="_compute_complete_name", store=True)
+    complete_name = fields.Char(
+        compute="_compute_complete_name",
+        store=True,
+        recursive=True,
+    )
 
     _code_project_unique = models.Constraint(
         "UNIQUE(project_id, code)",
@@ -78,6 +82,20 @@ class ConstructionLocation(models.Model):
         for record in self:
             if record.parent_id and record.parent_id.project_id != record.project_id:
                 raise ValidationError("Parent and child locations must belong to the same project.")
+
+    @api.constrains("project_id", "code")
+    def _check_unique_code(self):
+        for record in self:
+            duplicate = self.search_count(
+                [
+                    ("project_id", "=", record.project_id.id),
+                    ("code", "=", record.code),
+                    ("id", "!=", record.id),
+                ],
+                limit=1,
+            )
+            if duplicate:
+                raise ValidationError("The location code must be unique within the project.")
 
 
 class ConstructionCostCode(models.Model):
@@ -118,6 +136,20 @@ class ConstructionCostCode(models.Model):
             if record.parent_id and record.parent_id.project_id != record.project_id:
                 raise ValidationError("Parent and child cost codes must belong to the same project.")
 
+    @api.constrains("project_id", "code")
+    def _check_unique_code(self):
+        for record in self:
+            duplicate = self.search_count(
+                [
+                    ("project_id", "=", record.project_id.id),
+                    ("code", "=", record.code),
+                    ("id", "!=", record.id),
+                ],
+                limit=1,
+            )
+            if duplicate:
+                raise ValidationError("The cost code must be unique within the project.")
+
 
 class ConstructionWBS(models.Model):
     _name = "mu.construction.wbs"
@@ -139,7 +171,11 @@ class ConstructionWBS(models.Model):
     )
     parent_path = fields.Char(index=True)
     child_ids = fields.One2many("mu.construction.wbs", "parent_id")
-    complete_name = fields.Char(compute="_compute_complete_name", store=True)
+    complete_name = fields.Char(
+        compute="_compute_complete_name",
+        store=True,
+        recursive=True,
+    )
     location_id = fields.Many2one(
         "mu.construction.location",
         index=True,
@@ -193,3 +229,17 @@ class ConstructionWBS(models.Model):
                 and record.planned_finish < record.planned_start
             ):
                 raise ValidationError("Planned finish cannot be earlier than planned start.")
+
+    @api.constrains("project_id", "code")
+    def _check_unique_code(self):
+        for record in self:
+            duplicate = self.search_count(
+                [
+                    ("project_id", "=", record.project_id.id),
+                    ("code", "=", record.code),
+                    ("id", "!=", record.id),
+                ],
+                limit=1,
+            )
+            if duplicate:
+                raise ValidationError("The WBS code must be unique within the project.")
