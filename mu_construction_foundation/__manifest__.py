@@ -1,7 +1,7 @@
 {
     "name": "MU Construction Standard Foundation",
     "summary": "Approved Odoo 19 applications and Egyptian localization bundle",
-    "version": "19.0.1.0.0",
+    "version": "19.0.1.0.1",
     "category": "Services/Project",
     "author": "MU Constructions General",
     "license": "LGPL-3",
@@ -24,7 +24,6 @@
         "approvals",
         "web_studio",
         "l10n_eg",
-        "l10n_eg_edi_eta",
         "mu_construction_core",
     ],
     "data": [],
