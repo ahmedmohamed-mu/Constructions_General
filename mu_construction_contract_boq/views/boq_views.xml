@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_construction_boq_list" model="ir.ui.view">
+        <field name="name">mu.construction.boq.list</field><field name="model">mu.construction.boq</field>
+        <field name="arch" type="xml"><list decoration-success="state == 'approved'" decoration-muted="state in ('superseded', 'cancelled')"><field name="project_id"/><field name="code"/><field name="revision"/><field name="name"/><field name="contract_id"/><field name="boq_type"/><field name="untaxed_total" sum="Total"/><field name="currency_id" column_invisible="True"/><field name="state" widget="badge"/><field name="company_id" groups="base.group_multi_company"/></list></field>
+    </record>
+    <record id="view_construction_boq_form" model="ir.ui.view">
+        <field name="name">mu.construction.boq.form</field><field name="model">mu.construction.boq</field>
+        <field name="arch" type="xml"><form>
+            <header><button name="action_submit_review" string="Submit for Review" type="object" class="btn-primary" invisible="state != 'draft'"/><button name="action_mark_reviewed" string="Mark Reviewed" type="object" class="btn-primary" invisible="state != 'review'"/><button name="action_approve" string="Approve" type="object" class="btn-primary" invisible="state != 'reviewed'"/><button name="action_new_revision" string="New Revision" type="object" invisible="state != 'approved'"/><button name="action_cancel" string="Cancel" type="object" invisible="state not in ('draft', 'review', 'reviewed')"/><field name="state" widget="statusbar" statusbar_visible="draft,review,reviewed,approved"/></header>
+            <sheet><div class="oe_title"><h1><field name="name" placeholder="BOQ title"/></h1></div>
+                <group><group><field name="project_id"/><field name="contract_id"/><field name="code"/><field name="revision"/></group><group><field name="boq_type"/><field name="currency_id"/><field name="untaxed_total"/><field name="company_id" groups="base.group_multi_company"/></group></group>
+                <group string="Responsibility"><field name="creator_id"/><field name="reviewer_id"/><field name="approver_id"/><field name="analytic_account_id"/></group>
+                <notebook><page string="BOQ Lines"><field name="line_ids"><list editable="bottom"><field name="sequence" widget="handle"/><field name="code"/><field name="section_id"/><field name="name"/><field name="product_id" optional="hide"/><field name="product_uom_id"/><field name="quantity"/><field name="rate"/><field name="amount" sum="Total"/><field name="currency_id" column_invisible="True"/><field name="wbs_id" optional="show"/><field name="cost_code_id" optional="show"/><field name="location_id" optional="show"/><field name="project_id" column_invisible="True"/><field name="boq_id" column_invisible="True"/></list></field></page><page string="Notes"><field name="notes"/></page></notebook>
+            </sheet><chatter/>
+        </form></field>
+    </record>
+    <record id="action_construction_boqs" model="ir.actions.act_window"><field name="name">Bills of Quantities</field><field name="res_model">mu.construction.boq</field><field name="view_mode">list,form</field></record>
+    <menuitem id="menu_construction_boqs" name="BOQs" parent="menu_construction_operations" action="action_construction_boqs" sequence="20"/>
+</odoo>
