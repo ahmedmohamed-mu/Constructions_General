@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="contract_company_rule" model="ir.rule">
+        <field name="name">Construction contracts: allowed companies</field>
+        <field name="model_id" ref="model_mu_construction_contract"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+        <field name="groups" eval="[(4, ref('mu_construction_core.group_construction_user'))]"/>
+    </record>
+    <record id="contract_term_company_rule" model="ir.rule">
+        <field name="name">Construction contract terms: allowed companies</field>
+        <field name="model_id" ref="model_mu_construction_contract_term"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+        <field name="groups" eval="[(4, ref('mu_construction_core.group_construction_user'))]"/>
+    </record>
+    <record id="contract_type_company_rule" model="ir.rule">
+        <field name="name">Construction contract types: allowed companies</field>
+        <field name="model_id" ref="model_mu_construction_contract_type"/>
+        <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
+        <field name="groups" eval="[(4, ref('mu_construction_core.group_construction_user'))]"/>
+    </record>
+    <record id="boq_company_rule" model="ir.rule">
+        <field name="name">Construction BOQs: allowed companies</field>
+        <field name="model_id" ref="model_mu_construction_boq"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+        <field name="groups" eval="[(4, ref('mu_construction_core.group_construction_user'))]"/>
+    </record>
+    <record id="boq_line_company_rule" model="ir.rule">
+        <field name="name">Construction BOQ lines: allowed companies</field>
+        <field name="model_id" ref="model_mu_construction_boq_line"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+        <field name="groups" eval="[(4, ref('mu_construction_core.group_construction_user'))]"/>
+    </record>
+</odoo>
