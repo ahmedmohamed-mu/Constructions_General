@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_construction_location_list" model="ir.ui.view">
+        <field name="name">mu.construction.location.list</field>
+        <field name="model">mu.construction.location</field>
+        <field name="arch" type="xml">
+            <list default_order="project_id, complete_name">
+                <field name="project_id"/>
+                <field name="code"/>
+                <field name="name"/>
+                <field name="parent_id"/>
+                <field name="analytic_account_id" optional="hide"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+                <field name="active" optional="hide"/>
+            </list>
+        </field>
+    </record>
+    <record id="view_construction_location_form" model="ir.ui.view">
+        <field name="name">mu.construction.location.form</field>
+        <field name="model">mu.construction.location</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="project_id"/>
+                            <field name="code"/>
+                            <field name="name"/>
+                            <field name="parent_id"/>
+                        </group>
+                        <group>
+                            <field name="analytic_account_id"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                            <field name="currency_id" invisible="1"/>
+                            <field name="active"/>
+                        </group>
+                    </group>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_construction_cost_code_list" model="ir.ui.view">
+        <field name="name">mu.construction.cost.code.list</field>
+        <field name="model">mu.construction.cost.code</field>
+        <field name="arch" type="xml">
+            <list default_order="project_id, code">
+                <field name="project_id"/>
+                <field name="code"/>
+                <field name="name"/>
+                <field name="parent_id"/>
+                <field name="analytic_account_id" optional="hide"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+                <field name="active" optional="hide"/>
+            </list>
+        </field>
+    </record>
+    <record id="view_construction_cost_code_form" model="ir.ui.view">
+        <field name="name">mu.construction.cost.code.form</field>
+        <field name="model">mu.construction.cost.code</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="project_id"/>
+                            <field name="code"/>
+                            <field name="name"/>
+                            <field name="parent_id"/>
+                        </group>
+                        <group>
+                            <field name="analytic_account_id"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                            <field name="currency_id" invisible="1"/>
+                            <field name="active"/>
+                        </group>
+                    </group>
+                    <group><field name="description"/></group>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_construction_wbs_list" model="ir.ui.view">
+        <field name="name">mu.construction.wbs.list</field>
+        <field name="model">mu.construction.wbs</field>
+        <field name="arch" type="xml">
+            <list default_order="project_id, complete_name">
+                <field name="sequence" widget="handle"/>
+                <field name="project_id"/>
+                <field name="code"/>
+                <field name="name"/>
+                <field name="parent_id"/>
+                <field name="location_id" optional="show"/>
+                <field name="cost_code_id" optional="show"/>
+                <field name="planned_start" optional="hide"/>
+                <field name="planned_finish" optional="hide"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+            </list>
+        </field>
+    </record>
+    <record id="view_construction_wbs_form" model="ir.ui.view">
+        <field name="name">mu.construction.wbs.form</field>
+        <field name="model">mu.construction.wbs</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="project_id"/>
+                            <field name="code"/>
+                            <field name="name"/>
+                            <field name="parent_id"/>
+                        </group>
+                        <group>
+                            <field name="location_id"/>
+                            <field name="cost_code_id"/>
+                            <field name="analytic_account_id"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                            <field name="currency_id" invisible="1"/>
+                            <field name="active"/>
+                        </group>
+                    </group>
+                    <group string="Planning">
+                        <field name="planned_start"/>
+                        <field name="planned_finish"/>
+                    </group>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_construction_locations" model="ir.actions.act_window">
+        <field name="name">Construction Locations</field>
+        <field name="res_model">mu.construction.location</field>
+        <field name="view_mode">list,form</field>
+    </record>
+    <record id="action_construction_cost_codes" model="ir.actions.act_window">
+        <field name="name">Cost Codes</field>
+        <field name="res_model">mu.construction.cost.code</field>
+        <field name="view_mode">list,form</field>
+    </record>
+    <record id="action_construction_wbs" model="ir.actions.act_window">
+        <field name="name">WBS</field>
+        <field name="res_model">mu.construction.wbs</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem id="menu_construction_configuration" name="Construction"
+              parent="project.menu_project_config" sequence="90"
+              groups="mu_construction_core.group_construction_manager"/>
+    <menuitem id="menu_construction_locations" name="Locations"
+              parent="menu_construction_configuration" action="action_construction_locations" sequence="10"/>
+    <menuitem id="menu_construction_cost_codes" name="Cost Codes"
+              parent="menu_construction_configuration" action="action_construction_cost_codes" sequence="20"/>
+    <menuitem id="menu_construction_wbs" name="WBS"
+              parent="menu_construction_configuration" action="action_construction_wbs" sequence="30"/>
+</odoo>

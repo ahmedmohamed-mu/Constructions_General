@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="module_category_mu_construction" model="ir.module.category">
+        <field name="name">Construction</field>
+        <field name="sequence">35</field>
+    </record>
+
+    <record id="privilege_mu_construction" model="res.groups.privilege">
+        <field name="name">Construction</field>
+        <field name="sequence">35</field>
+        <field name="category_id" ref="module_category_mu_construction"/>
+    </record>
+
+    <record id="group_construction_user" model="res.groups">
+        <field name="name">Construction User</field>
+        <field name="sequence">10</field>
+        <field name="privilege_id" ref="privilege_mu_construction"/>
+    </record>
+
+    <record id="group_construction_manager" model="res.groups">
+        <field name="name">Construction Manager</field>
+        <field name="sequence">20</field>
+        <field name="privilege_id" ref="privilege_mu_construction"/>
+        <field name="implied_ids" eval="[(4, ref('group_construction_user'))]"/>
+    </record>
+
+    <record id="location_company_rule" model="ir.rule">
+        <field name="name">Construction locations: allowed companies</field>
+        <field name="model_id" ref="model_mu_construction_location"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+        <field name="groups" eval="[(4, ref('group_construction_user'))]"/>
+    </record>
+
+    <record id="cost_code_company_rule" model="ir.rule">
+        <field name="name">Construction cost codes: allowed companies</field>
+        <field name="model_id" ref="model_mu_construction_cost_code"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+        <field name="groups" eval="[(4, ref('group_construction_user'))]"/>
+    </record>
+
+    <record id="wbs_company_rule" model="ir.rule">
+        <field name="name">Construction WBS: allowed companies</field>
+        <field name="model_id" ref="model_mu_construction_wbs"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+        <field name="groups" eval="[(4, ref('group_construction_user'))]"/>
+    </record>
+</odoo>

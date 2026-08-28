@@ -1,0 +1,7 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_location_user,construction.location.user,model_mu_construction_location,mu_construction_core.group_construction_user,1,1,1,0
+access_location_manager,construction.location.manager,model_mu_construction_location,mu_construction_core.group_construction_manager,1,1,1,1
+access_cost_code_user,construction.cost.code.user,model_mu_construction_cost_code,mu_construction_core.group_construction_user,1,1,1,0
+access_cost_code_manager,construction.cost.code.manager,model_mu_construction_cost_code,mu_construction_core.group_construction_manager,1,1,1,1
+access_wbs_user,construction.wbs.user,model_mu_construction_wbs,mu_construction_core.group_construction_user,1,1,1,0
+access_wbs_manager,construction.wbs.manager,model_mu_construction_wbs,mu_construction_core.group_construction_manager,1,1,1,1
