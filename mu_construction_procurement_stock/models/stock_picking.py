@@ -37,7 +37,7 @@ class StockPicking(models.Model):
     construction_project_id = fields.Many2one("project.project", compute="_compute_construction_context", store=True, index=True)
     construction_contract_id = fields.Many2one("mu.construction.contract", compute="_compute_construction_context", store=True, index=True)
     construction_boq_id = fields.Many2one("mu.construction.boq", compute="_compute_construction_context", store=True, index=True)
-    construction_context_complete = fields.Boolean(compute="_compute_construction_context")
+    construction_context_complete = fields.Boolean(compute="_compute_construction_context", store=True)
 
     @api.depends(
         "move_ids.construction_project_id", "move_ids.construction_contract_id", "move_ids.construction_boq_id",
