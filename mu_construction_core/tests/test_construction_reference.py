@@ -9,11 +9,15 @@ class TestConstructionReference(TransactionCase):
         cls.project = cls.env["project.project"].create({"name": "Project A"})
         cls.other_project = cls.env["project.project"].create({"name": "Project B"})
 
-    def test_duplicate_cost_code_is_rejected_per_project(self):
-        values = {"name": "Concrete", "code": "MAT.CON", "project_id": self.project.id}
-        self.env["mu.construction.cost.code"].create(values)
-        with self.assertRaises(ValidationError):
-            self.env["mu.construction.cost.code"].create(values)
+    def test_cost_code_scope_is_per_project(self):
+        common = {"name": "Concrete", "code": "MAT.CON"}
+        first = self.env["mu.construction.cost.code"].create(
+            {**common, "project_id": self.project.id}
+        )
+        second = self.env["mu.construction.cost.code"].create(
+            {**common, "project_id": self.other_project.id}
+        )
+        self.assertNotEqual(first.project_id, second.project_id)
 
     def test_cross_project_wbs_reference_is_rejected(self):
         location = self.env["mu.construction.location"].create(

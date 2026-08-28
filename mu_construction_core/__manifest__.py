@@ -1,7 +1,7 @@
 {
     "name": "MU Construction Core",
     "summary": "Shared project, WBS, cost-code, and location context",
-    "version": "19.0.1.0.1",
+    "version": "19.0.1.0.2",
     "category": "Services/Project",
     "author": "MU Constructions General",
     "license": "LGPL-3",
