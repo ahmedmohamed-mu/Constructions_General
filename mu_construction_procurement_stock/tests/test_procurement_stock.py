@@ -6,8 +6,12 @@ class TestConstructionProcurementStock(TransactionCase):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
-        cls.project = cls.env["project.project"].create({"name": "Procurement Project"})
-        cls.other_project = cls.env["project.project"].create({"name": "Other Project"})
+        cls.project = cls.env["project.project"].create(
+            {"name": "Procurement Project", "company_id": cls.env.company.id}
+        )
+        cls.other_project = cls.env["project.project"].create(
+            {"name": "Other Project", "company_id": cls.env.company.id}
+        )
         cls.vendor = cls.env["res.partner"].create({"name": "Construction Vendor", "supplier_rank": 1})
         cls.product = cls.env["product.product"].create({"name": "Construction Material", "purchase_ok": True})
         cls.contract_type = cls.env["mu.construction.contract.type"].create({"name": "Main", "code": "PROC-MAIN"})
