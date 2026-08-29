@@ -150,7 +150,7 @@ class ConstructionSubcontractMeasurementLine(models.Model):
     wbs_id = fields.Many2one("mu.construction.wbs", related="purchase_line_id.construction_wbs_id", store=True)
     cost_code_id = fields.Many2one("mu.construction.cost.code", related="purchase_line_id.construction_cost_code_id", store=True)
     location_id = fields.Many2one("mu.construction.location", related="purchase_line_id.construction_location_id", store=True)
-    description = fields.Char(related="purchase_line_id.name", store=True)
+    description = fields.Text(related="purchase_line_id.name", store=True)
     contract_quantity = fields.Float(related="purchase_line_id.product_qty", store=True)
     previous_quantity = fields.Float(compute="_compute_cumulative", store=False)
     current_quantity = fields.Float(required=True)
