@@ -28,7 +28,7 @@
         <field name="model">mu.construction.contract.term</field>
         <field name="inherit_id" ref="mu_construction_contract_boq.view_contract_term_form"/>
         <field name="arch" type="xml">
-            <xpath expr="" position="after">
+            <xpath expr="//field[@name='advance_recovery_percent']/parent::group" position="after">
                 <field name="currency_id" invisible="1"/>
                 <group string="Retention and Advance">
                     <field name="retention_cap_percent"/>
