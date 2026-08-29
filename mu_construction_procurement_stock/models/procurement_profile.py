@@ -39,12 +39,16 @@ class ConstructionProcurementProfile(models.Model):
     def profile_for_order(self, order):
         order.ensure_one()
         order_date = order.date_order.date() if order.date_order else fields.Date.context_today(order)
-        domain = [
+        candidates = self.search([
             ("company_id", "=", order.company_id.id),
+            ("active", "=", True),
             ("effective_from", "<=", order_date),
             "|", ("effective_to", "=", False), ("effective_to", ">=", order_date),
-            ("minimum_amount", "<=", order.amount_total),
-            "|", ("maximum_amount", "=", 0), ("maximum_amount", ">=", order.amount_total),
-            "|", ("project_id", "=", order.project_id.id), ("project_id", "=", False),
-        ]
-        return self.search(domain, order="project_id desc, minimum_amount desc, effective_from desc", limit=1)
+        ], order="project_id desc, minimum_amount desc, effective_from desc")
+        return candidates.filtered(
+            lambda profile: (
+                not profile.project_id or profile.project_id == order.project_id
+            ) and order.amount_total >= profile.minimum_amount and (
+                not profile.maximum_amount or order.amount_total <= profile.maximum_amount
+            )
+        )[:1]
