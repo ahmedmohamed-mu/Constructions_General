@@ -1,3 +1,6 @@
+from dateutil.relativedelta import relativedelta
+
+from odoo import fields
 from odoo.exceptions import UserError, ValidationError
 from odoo.tests.common import TransactionCase
 
