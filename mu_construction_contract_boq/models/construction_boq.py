@@ -25,6 +25,7 @@ class ConstructionBOQ(models.Model):
     analytic_account_id = fields.Many2one(
         "account.analytic.account", related="project_id.account_id", store=True, readonly=True
     )
+    section_ids = fields.One2many("mu.construction.boq.section", "boq_id", copy=True)
     line_ids = fields.One2many("mu.construction.boq.line", "boq_id", copy=True)
     untaxed_total = fields.Monetary(compute="_compute_total", store=True, currency_field="currency_id")
     creator_id = fields.Many2one("res.users", default=lambda self: self.env.user, required=True, readonly=True)
@@ -48,10 +49,40 @@ class ConstructionBOQ(models.Model):
             record.untaxed_total = sum(record.line_ids.mapped("amount"))
 
     def write(self, vals):
-        protected = {"project_id", "contract_id", "currency_id", "line_ids", "code", "revision", "boq_type"}
+        protected = {"project_id", "contract_id", "currency_id", "line_ids", "section_ids", "code", "revision", "boq_type"}
         if protected.intersection(vals) and self.filtered(lambda rec: rec.state in {"approved", "superseded"}):
             raise UserError(_("Approved BOQs are locked. Create a new revision instead."))
         return super().write(vals)
+
+    def copy_data(self, default=None):
+        """Drop the section reference so copied lines never point at the source BOQ sections.
+
+        The correct section of the new BOQ is restored by code in copy() once the copied
+        sections exist and have ids.
+        """
+        vals_list = super().copy_data(default=default)
+        for vals in vals_list:
+            for command in vals.get("line_ids") or []:
+                if (
+                    isinstance(command, (list, tuple))
+                    and len(command) == 3
+                    and command[0] == 0
+                    and isinstance(command[2], dict)
+                ):
+                    command[2].pop("section_id", None)
+        return vals_list
+
+    def copy(self, default=None):
+        sources = self
+        copies = super().copy(default=default)
+        for source, target in zip(sources, copies):
+            sections_by_code = {section.code: section for section in target.section_ids}
+            target_lines_by_code = {line.code: line for line in target.line_ids}
+            for source_line in source.line_ids.filtered("section_id"):
+                target_line = target_lines_by_code.get(source_line.code)
+                if target_line:
+                    target_line.section_id = sections_by_code.get(source_line.section_id.code)
+        return copies
 
     @api.constrains("project_id", "contract_id", "currency_id")
     def _check_context(self):
