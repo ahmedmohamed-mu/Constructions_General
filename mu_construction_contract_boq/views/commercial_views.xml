@@ -149,7 +149,7 @@
                 <field name="project_id"/>
                 <field name="beneficiary_id"/>
                 <filter name="filter_live" string="Live" domain="[('state', 'in', ('active', 'extended'))]"/>
-                <filter name="filter_due_renewal" string="Due for Renewal" domain="[('state', 'in', ('active', 'extended')), ('renewal_deadline', '&lt;=', context_today().strftime('%Y-%m-%d'))]"/>
+                <filter name="filter_due_renewal" string="Due for Renewal" domain="[('state', 'in', ('active', 'extended')), ('renewal_deadline', '&lt;=', context_today())]"/>
                 <filter name="filter_expired" string="Expired" domain="[('state', '=', 'expired')]"/>
                 <group expand="0" string="Group By">
                     <filter name="group_project" string="Project" context="{'group_by': 'project_id'}"/>
