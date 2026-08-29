@@ -227,7 +227,7 @@ class ConstructionGuarantee(models.Model):
     _description = "Construction Guarantee and Bond"
     _inherit = ["mail.thread", "mail.activity.mixin"]
     _order = "expiry_date, id desc"
-    _rec_name = "display_name"
+    _rec_name = "reference"
 
     guarantee_type = fields.Selection(GUARANTEE_TYPES, required=True, default="performance", tracking=True)
     reference = fields.Char(required=True, index=True, tracking=True)
@@ -287,6 +287,7 @@ class ConstructionGuarantee(models.Model):
                 else False
             )
 
+    @api.depends("expiry_date")
     def _compute_days_to_expiry(self):
         today = fields.Date.context_today(self)
         for record in self:
