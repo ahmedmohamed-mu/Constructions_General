@@ -59,3 +59,23 @@ class TestConstructionContractBOQ(TransactionCase):
                 "name": "Bad Terms", "contract_type_id": self.contract_type.id,
                 "effective_from": "2026-01-01", "retention_percent": 101,
             })
+
+    def test_boq_revision_keeps_sections_consistent(self):
+        boq = self.env["mu.construction.boq"].create({
+            "name": "Sectioned BOQ", "code": "BOQ-02", "project_id": self.project.id,
+            "contract_id": self.contract.id, "reviewer_id": self.env.user.id,
+            "approver_id": self.env.user.id,
+            "section_ids": [(0, 0, {"code": "A", "name": "Civil Works"})],
+        })
+        boq.write({"line_ids": [(0, 0, {
+            "code": "1.1", "name": "Excavation", "section_id": boq.section_ids.id,
+            "product_uom_id": self.env.ref("uom.product_uom_unit").id,
+            "quantity": 4, "rate": 50,
+        })]})
+        boq.action_submit_review(); boq.action_mark_reviewed(); boq.action_approve()
+        action = boq.action_new_revision()
+        revised = self.env["mu.construction.boq"].browse(action["res_id"])
+        self.assertEqual(len(revised.section_ids), 1)
+        self.assertNotEqual(revised.section_ids, boq.section_ids)
+        self.assertEqual(revised.line_ids.section_id, revised.section_ids)
+        self.assertEqual(revised.untaxed_total, 200)
