@@ -104,12 +104,21 @@ class ConstructionEstimate(models.Model):
         return {"type": "ir.actions.act_window", "name": _("Estimate Revision"), "res_model": self._name,
                 "res_id": revised.id, "view_mode": "form"}
 
-    def action_generate_boqs(self):
+    def action_generate_boqs(self, contract=None):
         self.ensure_one()
         if self.state != "approved": raise UserError(_("Only approved estimates can generate BOQs."))
         if self.generated_cost_boq_id or self.generated_sell_boq_id: raise UserError(_("BOQs were already generated for this estimate."))
-        contract = self.tender_id.project_id.construction_contract_ids[:1]
+        if contract is None:
+            contracts = self.tender_id.project_id.construction_contract_ids
+            if len(contracts) > 1:
+                raise UserError(_(
+                    "This project has more than one construction contract. Generate the BOQs "
+                    "from the project bootstrap so the intended contract is used explicitly."
+                ))
+            contract = contracts[:1]
         if not contract: raise UserError(_("Create a construction contract for the project before generating BOQs."))
+        if contract.project_id != self.project_id:
+            raise UserError(_("The selected contract belongs to another project."))
         common = {"project_id": self.project_id.id, "contract_id": contract.id,
                   "reviewer_id": self.reviewer_id.id, "approver_id": self.approver_id.id,
                   "currency_id": self.currency_id.id}
@@ -177,4 +186,18 @@ class ConstructionEstimateLine(models.Model):
         return {"code": self.code, "name": self.name, "product_id": self.product_id.id,
                 "product_uom_id": self.product_uom_id.id, "quantity": self.effective_quantity,
                 "rate": self.unit_cost, "wbs_id": self.wbs_id.id, "cost_code_id": self.cost_code_id.id,
-                "location_id": self.location_id.id}
+                "location_id": self.location_id.id,
+                "source_estimate_line_id": self.id}
+
+
+class ConstructionBOQLine(models.Model):
+    _inherit = "mu.construction.boq.line"
+
+    source_estimate_line_id = fields.Many2one(
+        "mu.construction.estimate.line",
+        string="Source Estimate Line",
+        ondelete="set null",
+        index=True,
+        readonly=True,
+        help="Estimate resource line this BOQ line was generated from.",
+    )
