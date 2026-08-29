@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_subcontract_measurement_list" model="ir.ui.view">
+        <field name="name">mu.construction.subcontract.measurement.list</field>
+        <field name="model">mu.construction.subcontract.measurement</field>
+        <field name="arch" type="xml">
+            <list decoration-success="state == 'approved'" decoration-muted="state == 'cancelled'"><field name="name"/><field name="measurement_date"/><field name="purchase_order_id"/><field name="partner_id"/><field name="project_id"/><field name="period_start"/><field name="period_end"/><field name="gross_amount" sum="Gross"/><field name="retention_amount" sum="Retention"/><field name="advance_recovery_amount" sum="Recovery"/><field name="net_amount" sum="Net"/><field name="currency_id" column_invisible="True"/><field name="next_responsible_id" optional="hide"/><field name="state" widget="badge"/><field name="company_id" groups="base.group_multi_company"/></list>
+        </field>
+    </record>
+    <record id="view_subcontract_measurement_form" model="ir.ui.view">
+        <field name="name">mu.construction.subcontract.measurement.form</field>
+        <field name="model">mu.construction.subcontract.measurement</field>
+        <field name="arch" type="xml">
+            <form>
+                <header><button name="action_submit_review" string="Submit for Review" type="object" class="btn-primary" invisible="state not in ('draft', 'rejected')"/><button name="action_mark_reviewed" string="Mark Reviewed" type="object" class="btn-primary" invisible="state != 'review'"/><button name="action_approve" string="Approve" type="object" class="btn-primary" invisible="state != 'reviewed'"/><button name="action_reject" string="Reject" type="object" invisible="state not in ('review', 'reviewed')"/><button name="action_cancel" string="Cancel" type="object" invisible="state not in ('draft', 'rejected')"/><field name="state" widget="statusbar" statusbar_visible="draft,review,reviewed,approved"/></header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box"><button name="action_view_vendor_bills" type="object" class="oe_stat_button" icon="fa-file-text-o"><field name="vendor_bill_count" widget="statinfo" string="Vendor Bills"/></button></div>
+                    <div class="oe_title"><label for="name"/><h1><field name="name"/></h1></div>
+                    <group><group><field name="purchase_order_id" readonly="state not in ('draft', 'rejected')"/><field name="partner_id"/><field name="project_id"/><field name="contract_id"/><field name="boq_id"/></group><group><field name="measurement_date" readonly="state not in ('draft', 'rejected')"/><field name="period_start" readonly="state not in ('draft', 'rejected')"/><field name="period_end" readonly="state not in ('draft', 'rejected')"/><field name="company_id" groups="base.group_multi_company"/><field name="currency_id" invisible="1"/></group></group>
+                    <group string="Responsibility"><field name="create_uid" string="Creator"/><field name="profile_id"/><field name="reviewer_id"/><field name="approver_id"/><field name="next_responsible_id"/></group>
+                    <notebook><page string="Measured Work"><field name="line_ids" readonly="state == 'approved'"><list editable="bottom"><field name="sequence" widget="handle"/><field name="purchase_line_id"/><field name="description" optional="show"/><field name="boq_line_id" optional="show"/><field name="wbs_id" optional="hide"/><field name="cost_code_id" optional="hide"/><field name="location_id" optional="hide"/><field name="contract_quantity"/><field name="previous_quantity"/><field name="current_quantity"/><field name="cumulative_quantity"/><field name="rate"/><field name="current_amount"/><field name="currency_id" column_invisible="True"/><field name="purchase_order_id" column_invisible="True"/></list></field><group class="oe_subtotal_footer oe_right"><field name="gross_amount"/><field name="retention_amount"/><field name="advance_recovery_amount"/><field name="net_amount"/></group></page><page string="Notes"><field name="notes" readonly="state == 'approved'"/></page></notebook>
+                </sheet><chatter/>
+            </form>
+        </field>
+    </record>
+    <record id="action_subcontract_measurements" model="ir.actions.act_window"><field name="name">Subcontract Measurements</field><field name="res_model">mu.construction.subcontract.measurement</field><field name="view_mode">list,form</field></record>
+    <menuitem id="menu_subcontract_measurements" name="Subcontract Measurements" parent="mu_construction_contract_boq.menu_construction_operations" action="action_subcontract_measurements" sequence="40" groups="mu_construction_core.group_construction_user"/>
+</odoo>
