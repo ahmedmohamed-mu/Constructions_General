@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="ir_cron_guarantee_renewal" model="ir.cron">
+        <field name="name">Construction: guarantee renewal notices</field>
+        <field name="model_id" ref="model_mu_construction_guarantee"/>
+        <field name="state">code</field>
+        <field name="code">model._cron_notify_expiring_guarantees()</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="active" eval="True"/>
+    </record>
+
+    <record id="ir_cron_insurance_renewal" model="ir.cron">
+        <field name="name">Construction: insurance renewal notices</field>
+        <field name="model_id" ref="model_mu_construction_insurance"/>
+        <field name="state">code</field>
+        <field name="code">model._cron_notify_expiring_policies()</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="active" eval="True"/>
+    </record>
+
+</odoo>
