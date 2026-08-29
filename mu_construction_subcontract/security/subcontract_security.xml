@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="subcontract_profile_company_rule" model="ir.rule">
+        <field name="name">Subcontract profiles: allowed companies</field>
+        <field name="model_id" ref="model_mu_construction_subcontract_profile"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+        <field name="groups" eval="[(4, ref('mu_construction_core.group_construction_user'))]"/>
+    </record>
+    <record id="subcontract_measurement_company_rule" model="ir.rule">
+        <field name="name">Subcontract measurements: allowed companies</field>
+        <field name="model_id" ref="model_mu_construction_subcontract_measurement"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+        <field name="groups" eval="[(4, ref('mu_construction_core.group_construction_user'))]"/>
+    </record>
+    <record id="subcontract_measurement_line_company_rule" model="ir.rule">
+        <field name="name">Subcontract measurement lines: allowed companies</field>
+        <field name="model_id" ref="model_mu_construction_subcontract_measurement_line"/>
+        <field name="domain_force">[('measurement_id.company_id', 'in', company_ids)]</field>
+        <field name="groups" eval="[(4, ref('mu_construction_core.group_construction_user'))]"/>
+    </record>
+</odoo>
