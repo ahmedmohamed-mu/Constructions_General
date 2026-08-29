@@ -98,7 +98,7 @@ class ConstructionProjectBootstrap(models.Model):
             "start_date": self.contract_start_date, "end_date": self.contract_end_date,
             "reviewer_id": self.reviewer_id.id, "approver_id": self.approver_id.id,
         })
-        self.accepted_estimate_id.action_generate_boqs()
+        self.accepted_estimate_id.action_generate_boqs(contract=contract)
         self.write({"contract_id": contract.id, "cost_boq_id": self.accepted_estimate_id.generated_cost_boq_id.id,
                     "sell_boq_id": self.accepted_estimate_id.generated_sell_boq_id.id, "state": "done"})
         self.message_post(body=_("Project bootstrap completed using standard project, analytic account, contract, and BOQ records."))
