@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_move_form_subcontract" model="ir.ui.view">
+        <field name="name">account.move.form.construction.subcontract</field><field name="model">account.move</field><field name="inherit_id" ref="account.view_move_form"/><field name="arch" type="xml">
+            <xpath expr="//sheet/notebook" position="inside"><page string="Subcontract Measurement" invisible="move_type not in ('in_invoice', 'in_refund')"><group><group><field name="subcontract_measurement_id" readonly="state != 'draft'"/><field name="construction_project_id"/><field name="construction_contract_id"/></group><group><field name="subcontract_gross_amount"/><field name="subcontract_retention_amount"/><field name="subcontract_advance_recovery_amount"/></group></group></page></xpath>
+        </field>
+    </record>
+</odoo>
