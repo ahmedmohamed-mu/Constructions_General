@@ -2,7 +2,7 @@
 
 ## النتيجة
 
-تم تنفيذ واختبار مرحلة DEV-120 على فرع `main` المصنف Development في Odoo.sh. البناء النهائي رقم `37194733` نجح على commit `4ef912341e1df5d9f4ad4fd3b2bee6449a85d42f` بتاريخ 2026-08-30.
+تم تنفيذ واختبار مرحلة DEV-120 على فرع `main` المصنف Development في Odoo.sh. البناء النهائي رقم `37194962` نجح على commit `efde21163e40cd6e52182b0739fc77932c481d68` بتاريخ 2026-08-30.
 
 ## النطاق المنفذ
 
@@ -29,15 +29,15 @@
 
 ## الاختبارات
 
-- 6 اختبارات خاصة بالموديول تغطي EAC/variance، EVM، WIP cost-to-cost، contract asset، استبعاد PO draft، إدراج PO confirmed داخل الفترة، قفل الإقفال، عدم إنشاء قيود، وضوابط accrual/cash-flow.
-- نتيجة البناء الكلية: `0 failed, 0 error(s) of 52 tests`.
-- زمن تحميل الموديول: `1.22s` متضمنًا `0.75s` اختبارات، بعدد `483 queries (+523 test)`.
+- 7 اختبارات خاصة بالموديول تغطي EAC/variance، EVM، WIP cost-to-cost، contract asset، استبعاد PO draft، إدراج PO confirmed داخل الفترة، قفل الإقفال، عدم إنشاء قيود، ضوابط accrual/cash-flow، واستقلال Profile الإقفال عن Profile موافقات QA/QC.
+- نتيجة البناء الكلية: `0 failed, 0 error(s) of 53 tests`.
+- زمن تحميل الموديول: `1.28s` متضمنًا `0.76s` اختبارات، بعدد `494 queries (+549 test)`.
 
 ## أدلة القبول
 
-- `outputs/DEV-120_evidence/01-build-success.jpg` — Odoo.sh Build `37194733` بحالة Success.
+- `outputs/DEV-120_evidence/01-build-success.jpg` — Odoo.sh Build `37194962` بحالة Success.
 - `outputs/DEV-120_evidence/02-test-log.jpg` — سطر تحميل الموديول ونتائج الاختبارات.
-- الكود النهائي: commit `4ef912341e1df5d9f4ad4fd3b2bee6449a85d42f`.
+- الكود النهائي: commit `efde21163e40cd6e52182b0739fc77932c481d68`.
 
 ## قرار البوابة
 
