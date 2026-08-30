@@ -82,3 +82,62 @@ class TestConstructionContractBOQ(TransactionCase):
         self.assertNotEqual(revised.section_ids, boq.section_ids)
         self.assertEqual(revised.line_ids.section_id, revised.section_ids)
         self.assertEqual(revised.untaxed_total, 200)
+
+    def _commercial_term(self, **overrides):
+        values = {
+            "name": "Standard Terms",
+            "contract_type_id": self.contract_type.id,
+            "effective_from": "2026-01-01",
+            "retention_percent": 5,
+            "retention_cap_percent": 10,
+        }
+        values.update(overrides)
+        return self.env["mu.construction.contract.term"].create(values)
+
+    def test_retention_cap_cannot_be_below_retention(self):
+        with self.assertRaises(ValidationError):
+            self._commercial_term(retention_percent=10, retention_cap_percent=5)
+
+    def test_deduction_rule_respects_its_cap(self):
+        rule = self.env["mu.construction.deduction.rule"].create({
+            "name": "Retention", "term_id": self._commercial_term().id,
+            "rule_type": "retention", "calculation_basis": "gross_certified",
+            "percent": 5, "cap_amount": 1000, "end_condition": "cap_reached",
+        })
+        self.assertEqual(rule.compute_amount(10000, 10000, 9000), 500)
+        self.assertEqual(rule.compute_amount(10000, 10000, 9000, deducted_to_date=800), 200)
+        self.assertEqual(rule.compute_amount(10000, 10000, 9000, deducted_to_date=1000), 0)
+
+    def test_percentage_deduction_rule_needs_a_percentage(self):
+        with self.assertRaises(ValidationError):
+            self.env["mu.construction.deduction.rule"].create({
+                "name": "Incomplete", "term_id": self._commercial_term().id,
+                "rule_type": "penalty", "calculation_basis": "gross_certified",
+            })
+
+    def _guarantee(self, reference, expiry_offset_days):
+        today = fields.Date.today()
+        return self.env["mu.construction.guarantee"].create({
+            "guarantee_type": "performance", "reference": reference,
+            "contract_id": self.contract.id, "beneficiary_id": self.partner.id,
+            "amount": 50000, "notice_days": 30,
+            "issue_date": today - relativedelta(days=120),
+            "expiry_date": today + relativedelta(days=expiry_offset_days),
+        })
+
+    def test_guarantee_cannot_expire_before_it_is_issued(self):
+        with self.assertRaises(ValidationError):
+            self._guarantee("PG-BAD", -200)
+
+    def test_guarantee_cron_raises_renewal_and_expires_lapsed_bonds(self):
+        expiring = self._guarantee("PG-001", 10)
+        lapsed = self._guarantee("PG-002", -5)
+        (expiring | lapsed).action_activate()
+        self.assertEqual(expiring.renewal_deadline, fields.Date.today() - relativedelta(days=20))
+        self.env["mu.construction.guarantee"]._cron_notify_expiring_guarantees()
+        self.assertTrue(
+            expiring.activity_ids,
+            "A guarantee inside its notice window must raise a renewal activity.",
+        )
+        self.assertEqual(lapsed.state, "expired")
+        self.assertEqual(self.contract.expiring_guarantee_count, 1)
