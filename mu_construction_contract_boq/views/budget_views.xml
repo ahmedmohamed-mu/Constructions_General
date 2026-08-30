@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_budget_baseline_line_list" model="ir.ui.view">
+        <field name="name">mu.construction.budget.baseline.line.list</field>
+        <field name="model">mu.construction.budget.baseline.line</field>
+        <field name="arch" type="xml">
+            <list editable="bottom">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="boq_line_id" optional="hide"/>
+                <field name="cost_code_id"/>
+                <field name="wbs_id"/>
+                <field name="location_id" optional="hide"/>
+                <field name="product_uom_id"/>
+                <field name="quantity"/>
+                <field name="unit_cost"/>
+                <field name="amount" sum="Budget"/>
+                <field name="currency_id" column_invisible="True"/>
+                <field name="project_id" column_invisible="True"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_budget_baseline_list" model="ir.ui.view">
+        <field name="name">mu.construction.budget.baseline.list</field>
+        <field name="model">mu.construction.budget.baseline</field>
+        <field name="arch" type="xml">
+            <list decoration-success="state == 'approved'" decoration-muted="state in ('superseded', 'cancelled')">
+                <field name="name"/>
+                <field name="contract_id"/>
+                <field name="project_id"/>
+                <field name="baseline_type"/>
+                <field name="revision"/>
+                <field name="line_count" string="Lines"/>
+                <field name="total_amount" sum="Total"/>
+                <field name="currency_id" column_invisible="True"/>
+                <field name="approved_by_id" optional="hide"/>
+                <field name="approval_date" optional="hide"/>
+                <field name="state" widget="badge"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_budget_baseline_form" model="ir.ui.view">
+        <field name="name">mu.construction.budget.baseline.form</field>
+        <field name="model">mu.construction.budget.baseline</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_generate_from_boq" string="Build from Cost BOQ" type="object"
+                            invisible="state != 'draft'"/>
+                    <button name="action_submit_review" string="Submit for Review" type="object"
+                            class="btn-primary" invisible="state != 'draft'"/>
+                    <button name="action_approve" string="Approve" type="object"
+                            class="btn-primary" invisible="state != 'review'"/>
+                    <button name="action_new_revision" string="Create Revision" type="object"
+                            invisible="state != 'approved'"/>
+                    <button name="action_cancel" string="Cancel" type="object"
+                            invisible="state not in ('draft', 'review')"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,review,approved"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1><field name="name" readonly="1"/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="contract_id"/>
+                            <field name="project_id"/>
+                            <field name="baseline_type"/>
+                            <field name="revision"/>
+                            <field name="change_reference" invisible="baseline_type != 'revised'"
+                                   required="baseline_type == 'revised' and state == 'review'"/>
+                        </group>
+                        <group>
+                            <field name="source_boq_id"/>
+                            <field name="total_amount"/>
+                            <field name="currency_id"/>
+                            <field name="analytic_account_id"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                        </group>
+                    </group>
+                    <group string="Responsibility">
+                        <group>
+                            <field name="reviewer_id"/>
+                            <field name="approver_id"/>
+                        </group>
+                        <group>
+                            <field name="approved_by_id"/>
+                            <field name="approval_date"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Budget Lines">
+                            <field name="line_ids" readonly="state in ('approved', 'superseded', 'cancelled')"/>
+                        </page>
+                        <page string="Notes">
+                            <field name="notes"/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_budget_baseline_search" model="ir.ui.view">
+        <field name="name">mu.construction.budget.baseline.search</field>
+        <field name="model">mu.construction.budget.baseline</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="contract_id"/>
+                <field name="project_id"/>
+                <filter name="filter_approved" string="Approved" domain="[('state', '=', 'approved')]"/>
+                <filter name="filter_original" string="Original" domain="[('baseline_type', '=', 'original')]"/>
+                <filter name="filter_revised" string="Revised" domain="[('baseline_type', '=', 'revised')]"/>
+                <group expand="0" string="Group By">
+                    <filter name="group_project" string="Project" context="{'group_by': 'project_id'}"/>
+                    <filter name="group_contract" string="Contract" context="{'group_by': 'contract_id'}"/>
+                    <filter name="group_state" string="Status" context="{'group_by': 'state'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="view_construction_contract_form_budget" model="ir.ui.view">
+        <field name="name">mu.construction.contract.form.budget</field>
+        <field name="model">mu.construction.contract</field>
+        <field name="inherit_id" ref="mu_construction_contract_boq.view_construction_contract_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button name="action_view_budget_baselines" type="object" class="oe_stat_button" icon="fa-balance-scale">
+                    <field name="budget_baseline_count" widget="statinfo" string="Baselines"/>
+                </button>
+            </xpath>
+            <xpath expr="//field[@name='analytic_account_id']" position="after">
+                <field name="original_budget_amount"/>
+                <field name="revised_budget_amount"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="action_construction_budget_baselines" model="ir.actions.act_window">
+        <field name="name">Budget Baselines</field>
+        <field name="res_model">mu.construction.budget.baseline</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem id="menu_construction_budget_baselines" name="Budget Baselines"
+              parent="mu_construction_contract_boq.menu_construction_operations"
+              action="action_construction_budget_baselines" sequence="20"/>
+
+</odoo>
