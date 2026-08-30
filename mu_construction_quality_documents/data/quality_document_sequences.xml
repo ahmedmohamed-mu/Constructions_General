@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <record id="seq_rfi" model="ir.sequence"><field name="name">Construction RFI</field><field name="code">mu.construction.rfi</field><field name="prefix">RFI/%(year)s/</field><field name="padding">5</field><field name="company_id" eval="False"/></record>
+    <record id="seq_submittal" model="ir.sequence"><field name="name">Construction Submittal</field><field name="code">mu.construction.submittal</field><field name="prefix">SUB/%(year)s/</field><field name="padding">5</field><field name="company_id" eval="False"/></record>
+    <record id="seq_transmittal" model="ir.sequence"><field name="name">Construction Transmittal</field><field name="code">mu.construction.transmittal</field><field name="prefix">TRN/%(year)s/</field><field name="padding">5</field><field name="company_id" eval="False"/></record>
+    <record id="seq_mir" model="ir.sequence"><field name="name">Material Inspection Request</field><field name="code">mu.construction.mir</field><field name="prefix">MIR/%(year)s/</field><field name="padding">5</field><field name="company_id" eval="False"/></record>
+    <record id="seq_wir" model="ir.sequence"><field name="name">Work Inspection Request</field><field name="code">mu.construction.wir</field><field name="prefix">WIR/%(year)s/</field><field name="padding">5</field><field name="company_id" eval="False"/></record>
+</odoo>
+
