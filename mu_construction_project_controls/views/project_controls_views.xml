@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_control_profile_list" model="ir.ui.view">
+        <field name="name">mu.construction.control.profile.list</field>
+        <field name="model">mu.construction.control.profile</field>
+        <field name="arch" type="xml">
+            <list><field name="name"/><field name="company_id"/><field name="project_id"/><field name="effective_from"/><field name="effective_to"/><field name="revenue_method"/><field name="active"/></list>
+        </field>
+    </record>
+    <record id="view_control_profile_form" model="ir.ui.view">
+        <field name="name">mu.construction.control.profile.form</field>
+        <field name="model">mu.construction.control.profile</field>
+        <field name="arch" type="xml">
+            <form string="Project Controls Profile"><sheet><group><group><field name="name"/><field name="company_id"/><field name="project_id"/><field name="revenue_method"/></group><group><field name="effective_from"/><field name="effective_to"/><field name="active"/></group></group><group string="Workflow Owners" col="4"><field name="project_manager_id"/><field name="commercial_reviewer_id"/><field name="finance_reviewer_id"/><field name="approver_id"/></group></sheet></form>
+        </field>
+    </record>
+    <record id="action_control_profiles" model="ir.actions.act_window">
+        <field name="name">Project Controls Profiles</field><field name="res_model">mu.construction.control.profile</field><field name="view_mode">list,form</field>
+    </record>
+
+    <record id="view_monthly_close_list" model="ir.ui.view">
+        <field name="name">mu.construction.monthly.close.list</field>
+        <field name="model">mu.construction.monthly.close</field>
+        <field name="arch" type="xml">
+            <list decoration-success="state == 'locked'" decoration-muted="state == 'cancelled'">
+                <field name="name"/><field name="project_id"/><field name="contract_id"/><field name="closing_date"/><field name="total_revised_budget"/><field name="total_actual"/><field name="total_eac"/><field name="forecast_variance"/><field name="state" widget="badge"/>
+            </list>
+        </field>
+    </record>
+    <record id="view_monthly_close_search" model="ir.ui.view">
+        <field name="name">mu.construction.monthly.close.search</field><field name="model">mu.construction.monthly.close</field>
+        <field name="arch" type="xml"><search><field name="name"/><field name="project_id"/><field name="contract_id"/><field name="closing_date"/><filter name="open" string="In Progress" domain="[('state', 'not in', ('locked','cancelled'))]"/><filter name="locked" string="Locked" domain="[('state','=','locked')]"/><group expand="0" string="Group By"><filter name="group_project" string="Project" context="{'group_by':'project_id'}"/><filter name="group_state" string="Status" context="{'group_by':'state'}"/></group></search></field>
+    </record>
+    <record id="view_monthly_close_form" model="ir.ui.view">
+        <field name="name">mu.construction.monthly.close.form</field>
+        <field name="model">mu.construction.monthly.close</field>
+        <field name="arch" type="xml">
+            <form string="Monthly Project Controls Close">
+                <header>
+                    <button name="action_start_collection" type="object" string="Start Collection" class="btn-primary" invisible="state != 'draft'"/>
+                    <button name="action_refresh_snapshot" type="object" string="Refresh Snapshot" invisible="state not in ('draft','collection')"/>
+                    <button name="action_submit_pm" type="object" string="Submit to PM" class="btn-primary" invisible="state != 'collection'"/>
+                    <button name="action_pm_review" type="object" string="PM Review" class="btn-primary" invisible="state != 'pm_review'"/>
+                    <button name="action_commercial_review" type="object" string="Commercial Review" class="btn-primary" invisible="state != 'commercial_review'"/>
+                    <button name="action_finance_review" type="object" string="Finance Review" class="btn-primary" invisible="state != 'finance_review'"/>
+                    <button name="action_lock" type="object" string="Approve &amp; Lock" class="btn-primary" invisible="state != 'approved'"/>
+                    <button name="action_cancel" type="object" string="Cancel" invisible="state not in ('draft','collection')"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,collection,pm_review,commercial_review,finance_review,approved,locked"/>
+                </header>
+                <sheet>
+                    <div class="oe_title"><label for="name"/><h1><field name="name"/></h1></div>
+                    <group><group><field name="project_id" readonly="state != 'draft'"/><field name="contract_id" readonly="state != 'draft'"/><field name="analytic_account_id"/><field name="company_id"/></group><group><field name="period_start" readonly="state != 'draft'"/><field name="closing_date" readonly="state != 'draft'"/><field name="profile_id"/><field name="revenue_method"/></group></group>
+                    <group string="Workflow"><field name="project_manager_id"/><field name="commercial_reviewer_id"/><field name="finance_reviewer_id"/><field name="approver_id"/><field name="next_responsible_id"/><field name="approved_by_id"/><field name="approval_date"/></group>
+                    <notebook>
+                        <page string="Cost Report">
+                            <field name="line_ids" readonly="state in ('approved','locked')">
+                                <list editable="bottom"><field name="cost_code_id"/><field name="original_budget"/><field name="revised_budget"/><field name="commitments"/><field name="actual"/><field name="accrual"/><field name="cost_to_date"/><field name="etc"/><field name="eac"/><field name="forecast_variance"/><field name="physical_progress"/><field name="planned_value"/><field name="earned_value"/><field name="cpi"/><field name="spi"/></list>
+                            </field>
+                            <group string="Totals" col="4"><field name="total_original_budget"/><field name="total_revised_budget"/><field name="total_commitments"/><field name="total_actual"/><field name="total_accrual"/><field name="total_etc"/><field name="total_eac"/><field name="forecast_variance"/></group>
+                        </page>
+                        <page string="Revenue &amp; WIP">
+                            <group><group><field name="transaction_price"/><field name="approved_variations"/><field name="manual_earned_amount" invisible="revenue_method != 'milestone'"/><field name="revenue_recognized_to_date"/><field name="certified_to_date"/></group><group><field name="billed_to_date"/><field name="collected_to_date"/><field name="contract_asset"/><field name="contract_liability"/><field name="expected_margin"/></group></group>
+                        </page>
+                        <page string="Earned Value"><group col="4"><field name="physical_progress"/><field name="planned_value"/><field name="earned_value"/><field name="total_actual"/><field name="cost_variance"/><field name="schedule_variance"/><field name="cpi"/><field name="spi"/></group></page>
+                        <page string="Accruals"><field name="accrual_ids" readonly="state in ('approved','locked')"><list editable="bottom"><field name="name"/><field name="cost_code_id"/><field name="purchase_order_id"/><field name="subcontract_measurement_id"/><field name="accrual_date"/><field name="amount"/><field name="reversal_date"/><field name="reviewer_id"/><field name="approver_id"/><field name="state"/></list></field></page>
+                        <page string="Cash Flow"><field name="cash_flow_ids" readonly="state in ('approved','locked')"><list editable="bottom"><field name="flow_type"/><field name="expected_date"/><field name="partner_id"/><field name="description"/><field name="amount"/><field name="probability"/><field name="weighted_amount"/><field name="ipc_id"/><field name="purchase_order_id"/></list></field></page>
+                        <page string="Notes"><field name="notes"/></page>
+                    </notebook>
+                </sheet><chatter/>
+            </form>
+        </field>
+    </record>
+    <record id="action_monthly_closes" model="ir.actions.act_window">
+        <field name="name">Monthly Project Controls</field><field name="res_model">mu.construction.monthly.close</field><field name="view_mode">list,form</field>
+    </record>
+
+    <record id="view_accrual_form" model="ir.ui.view">
+        <field name="name">mu.construction.accrual.form</field><field name="model">mu.construction.accrual</field>
+        <field name="arch" type="xml"><form><header><button name="action_submit" type="object" string="Submit" class="btn-primary" invisible="state != 'draft'"/><button name="action_approve" type="object" string="Approve" class="btn-primary" invisible="state != 'review'"/><field name="state" widget="statusbar"/></header><sheet><group><group><field name="name"/><field name="close_id"/><field name="project_id"/><field name="cost_code_id"/></group><group><field name="accrual_date"/><field name="amount"/><field name="currency_id"/><field name="reversal_date"/></group></group><group><field name="purchase_order_id"/><field name="subcontract_measurement_id"/><field name="reviewer_id"/><field name="approver_id"/><field name="journal_entry_id"/></group><field name="basis"/></sheet><chatter/></form></field>
+    </record>
+
+    <menuitem id="menu_project_controls" name="Project Controls" parent="mu_construction_contract_boq.menu_construction_operations" sequence="120"/>
+    <menuitem id="menu_monthly_closes" name="Monthly Close &amp; WIP" parent="menu_project_controls" action="action_monthly_closes" sequence="10"/>
+    <menuitem id="menu_control_profiles" name="Controls Profiles" parent="mu_construction_core.menu_construction_configuration" action="action_control_profiles" sequence="140"/>
+</odoo>
+
