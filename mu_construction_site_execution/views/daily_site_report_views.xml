@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_daily_site_report_list" model="ir.ui.view">
+        <field name="name">mu.construction.daily.site.report.list</field>
+        <field name="model">mu.construction.daily.site.report</field>
+        <field name="arch" type="xml">
+            <list decoration-success="state == 'approved'" decoration-muted="state == 'cancelled'">
+                <field name="name"/><field name="report_date"/><field name="shift"/><field name="project_id"/>
+                <field name="contract_id" optional="hide"/><field name="weather"/>
+                <field name="total_direct_manpower"/><field name="total_subcontract_manpower"/>
+                <field name="total_equipment_hours"/><field name="next_responsible_id" optional="hide"/>
+                <field name="state" widget="badge"/><field name="company_id" groups="base.group_multi_company"/>
+            </list>
+        </field>
+    </record>
+    <record id="view_daily_site_report_form" model="ir.ui.view">
+        <field name="name">mu.construction.daily.site.report.form</field>
+        <field name="model">mu.construction.daily.site.report</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_submit_review" string="Submit for Review" type="object" class="btn-primary" invisible="state not in ('draft', 'rejected')"/>
+                    <button name="action_mark_reviewed" string="Mark Reviewed" type="object" class="btn-primary" invisible="state != 'review'"/>
+                    <button name="action_approve" string="Approve" type="object" class="btn-primary" invisible="state != 'reviewed'"/>
+                    <button name="action_reject" string="Reject" type="object" invisible="state not in ('review', 'reviewed')"/>
+                    <button name="action_cancel" string="Cancel" type="object" invisible="state not in ('draft', 'rejected')"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,review,reviewed,approved"/>
+                </header>
+                <sheet>
+                    <div class="oe_title"><label for="name"/><h1><field name="name"/></h1></div>
+                    <group>
+                        <group><field name="project_id" readonly="state not in ('draft', 'rejected')"/><field name="contract_id" readonly="state not in ('draft', 'rejected')"/><field name="analytic_account_id"/><field name="company_id" groups="base.group_multi_company"/></group>
+                        <group><field name="report_date" readonly="state not in ('draft', 'rejected')"/><field name="shift" readonly="state not in ('draft', 'rejected')"/><field name="weather" readonly="state == 'approved'"/><field name="weather_notes" readonly="state == 'approved'"/></group>
+                    </group>
+                    <group string="Responsibility"><field name="create_uid" string="Creator"/><field name="profile_id"/><field name="reviewer_id"/><field name="approver_id"/><field name="next_responsible_id"/></group>
+                    <group string="Resource Summary"><field name="total_direct_manpower"/><field name="total_subcontract_manpower"/><field name="total_equipment_hours"/></group>
+                    <notebook>
+                        <page string="Progress">
+                            <field name="progress_line_ids" readonly="state == 'approved'">
+                                <list editable="bottom">
+                                    <field name="sequence" widget="handle"/><field name="work_package_id"/>
+                                    <field name="boq_line_id" optional="hide"/><field name="wbs_id" optional="show"/>
+                                    <field name="cost_code_id" optional="hide"/><field name="location_id" optional="show"/>
+                                    <field name="previous_approved_quantity"/><field name="executed_quantity"/>
+                                    <field name="cumulative_quantity"/><field name="uom_id"/><field name="remarks" optional="show"/>
+                                    <field name="project_id" column_invisible="True"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Manpower">
+                            <field name="manpower_line_ids" readonly="state == 'approved'">
+                                <list editable="bottom"><field name="manpower_type"/><field name="trade"/><field name="subcontractor_id" optional="show"/><field name="headcount"/><field name="working_hours"/><field name="location_id"/><field name="remarks" optional="show"/><field name="project_id" column_invisible="True"/></list>
+                            </field>
+                        </page>
+                        <page string="Equipment">
+                            <field name="equipment_line_ids" readonly="state == 'approved'">
+                                <list editable="bottom"><field name="equipment_id"/><field name="vehicle_id"/><field name="operator_name"/><field name="start_meter"/><field name="end_meter"/><field name="productive_hours"/><field name="idle_hours"/><field name="breakdown_hours"/><field name="total_hours"/><field name="fuel_quantity"/><field name="wbs_id" optional="hide"/><field name="location_id" optional="show"/><field name="remarks" optional="hide"/><field name="project_id" column_invisible="True"/></list>
+                            </field>
+                        </page>
+                        <page string="Materials">
+                            <field name="material_line_ids" readonly="state == 'approved'">
+                                <list editable="bottom"><field name="product_id"/><field name="delivered_quantity"/><field name="consumed_quantity"/><field name="uom_id"/><field name="stock_picking_id" optional="show"/><field name="location_id" optional="show"/><field name="remarks" optional="hide"/><field name="project_id" column_invisible="True"/></list>
+                            </field>
+                        </page>
+                        <page string="Constraints">
+                            <field name="constraint_line_ids" readonly="state == 'approved'">
+                                <list editable="bottom" decoration-danger="severity == 'critical' and status not in ('resolved', 'accepted')">
+                                    <field name="category"/><field name="description"/><field name="work_package_id" optional="show"/>
+                                    <field name="severity"/><field name="responsible_id"/><field name="target_date"/><field name="status"/><field name="resolution" optional="hide"/><field name="project_id" column_invisible="True"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Narrative">
+                            <group><field name="work_areas" readonly="state == 'approved'"/><field name="activities_performed" readonly="state == 'approved'"/></group>
+                            <group><field name="inspections_requested" readonly="state == 'approved'"/><field name="safety_observations" readonly="state == 'approved'"/><field name="incidents_near_misses" readonly="state == 'approved'"/></group>
+                            <group><field name="visitors" readonly="state == 'approved'"/><field name="instructions_received" readonly="state == 'approved'"/><field name="next_day_plan" readonly="state == 'approved'"/></group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+    <record id="view_daily_site_report_search" model="ir.ui.view">
+        <field name="name">mu.construction.daily.site.report.search</field>
+        <field name="model">mu.construction.daily.site.report</field>
+        <field name="arch" type="xml">
+            <search><field name="name"/><field name="project_id"/><field name="contract_id"/><field name="report_date"/><field name="state"/><filter name="open_review" string="Pending Review/Approval" domain="[('state', 'in', ('review', 'reviewed'))]"/><group><filter name="group_project" string="Project" context="{'group_by': 'project_id'}"/><filter name="group_date" string="Report Date" context="{'group_by': 'report_date'}"/><filter name="group_state" string="Status" context="{'group_by': 'state'}"/></group></search>
+        </field>
+    </record>
+    <record id="action_daily_site_reports" model="ir.actions.act_window">
+        <field name="name">Daily Site Reports</field><field name="res_model">mu.construction.daily.site.report</field><field name="view_mode">list,form</field>
+    </record>
+    <menuitem id="menu_daily_site_reports" name="Daily Site Reports" parent="mu_construction_contract_boq.menu_construction_operations" action="action_daily_site_reports" sequence="50" groups="mu_construction_core.group_construction_user"/>
+</odoo>
+
