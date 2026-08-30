@@ -6,6 +6,7 @@
 
 ## الأعمال المكتملة بأدلة
 
+- حزمة التحكم على commit `1005a688caaed806f1083143bad8185508a3cb8c`، ونجح لها Odoo.sh Development build رقم `37196335` على Odoo 19 خلال `0:03:36`.
 - Workbook موحد للـMigration Register وReconciliation وGolden UAT وCutover وIssue Log.
 - 28 كائن ترحيل مرتبة حسب الاعتماد، مع Source/Imported/Rejected counts وCount variance وصيغة قبول.
 - 10 مصالحات بقواعد Tolerance وPASS/FAIL وصفر افتراضي.
@@ -16,6 +17,7 @@
 - Formula scan النهائي: صفر تطابق مع `#REF!`, `#DIV/0!`, `#VALUE!`, `#NAME?`, `#N/A`.
 - مراجعة بصرية لكل أوراق الـWorkbook بعد التصدير.
 - Runbook للـDry Runs والمصالحة وPilot/Parallel وGo/No-Go وHypercare وRollback.
+- `outputs/CW-150_evidence/01-build-success.jpg` — دليل نجاح build `37196335` وربطه بالـcommit أعلاه.
 
 ## ما لم ينفذ عمدًا
 
