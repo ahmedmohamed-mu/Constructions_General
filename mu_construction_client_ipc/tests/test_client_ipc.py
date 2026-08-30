@@ -58,6 +58,7 @@ class TestConstructionClientIPC(AccountTestInvoicingCommon):
             "qs_user_id": cls.env.user.id, "pm_user_id": cls.env.user.id,
             "commercial_user_id": cls.env.user.id, "finance_user_id": cls.env.user.id,
             "sale_journal_id": cls.sale_journal.id, "certificate_product_id": cls.product.id,
+            "revenue_account_id": cls.company_data["default_account_revenue"].id,
         })
 
     def _ipc(self, number=1, submitted=10, certified=8, deferred=2, rejected=0):
