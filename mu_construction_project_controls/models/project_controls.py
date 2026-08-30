@@ -173,8 +173,10 @@ class ConstructionMonthlyClose(models.Model):
                 ("state", "in", certified_states),
             ]) if record.contract_id else self.env["mu.construction.client.ipc"]
             invoices = ipcs.mapped("invoice_id").filtered(lambda move: move.state == "posted")
-            billed = sum(invoices.mapped("amount_untaxed_signed"))
-            collected = sum(move.amount_total_signed - move.amount_residual_signed for move in invoices)
+            # IPC invoices use the contract currency. Keep WIP values in that currency;
+            # signed fields are company-currency values and would mix currencies here.
+            billed = sum(invoices.mapped("amount_untaxed"))
+            collected = sum(move.amount_total - move.amount_residual for move in invoices)
             record.revenue_recognized_to_date = recognized
             record.certified_to_date = sum(ipcs.mapped("gross_certified_value"))
             record.billed_to_date = billed

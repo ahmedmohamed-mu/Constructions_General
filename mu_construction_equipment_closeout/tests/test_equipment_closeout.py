@@ -78,6 +78,13 @@ class TestConstructionEquipmentCloseout(TransactionCase):
         self.assertEqual(usage.internal_charge, 600)
         self.assertEqual(usage.fuel_cost, 200)
         self.assertEqual(usage.analytic_equipment_cost, 800)
+        close = self.env["mu.construction.monthly.close"].create({
+            "project_id": self.project.id, "contract_id": self.contract.id,
+            "period_start": "2026-06-01", "closing_date": "2026-06-30",
+        })
+        close.action_refresh_snapshot()
+        self.assertEqual(close.total_equipment_analytic_cost, 800)
+        self.assertEqual(close.total_actual, 0)
         self.assertEqual(self.env["account.move"].search_count([]), before_moves)
 
     def test_rate_profile_prevents_owned_rental_double_counting(self):
@@ -130,7 +137,7 @@ class TestConstructionEquipmentCloseout(TransactionCase):
         })
         dlp = self.env["mu.construction.dlp"].create({
             "project_id": self.project.id, "contract_id": self.contract.id, "handover_id": handover.id,
-            "practical_completion_date": "2025-01-01",
+            "practical_completion_date": "2025-01-01", "document_ids": [(6, 0, self.document.ids)],
         })
         defect = self.env["mu.construction.dlp.defect"].create({
             "name": "Door closer adjustment", "dlp_id": dlp.id, "responsible_id": self.env.user.id,

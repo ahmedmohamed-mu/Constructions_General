@@ -519,8 +519,9 @@ class ConstructionDLP(models.Model):
     def action_close(self):
         for record in self:
             record._ensure_user(record.approver_id, _("approver"))
-            if record.state != "expiry_review" or record.open_defect_count or not record.closure_reference:
-                raise UserError(_("Close every DLP defect and record the closure certificate reference."))
+            if (record.state != "expiry_review" or record.open_defect_count
+                    or not record.closure_reference or not record.document_ids):
+                raise UserError(_("Close every DLP defect and attach the closure certificate evidence."))
             record.write({"state": "closed", "closure_date": fields.Date.context_today(record),
                           "next_responsible_id": False})
 
@@ -602,8 +603,8 @@ class ConstructionFinalAccount(models.Model):
             ]) if record.contract_id else self.env["mu.construction.client.ipc"]
             invoices = ipcs.mapped("invoice_id").filtered(lambda move: move.state == "posted")
             record.certified_to_date = sum(ipcs.mapped("gross_certified_value"))
-            record.billed_to_date = sum(invoices.mapped("amount_untaxed_signed"))
-            record.collected_to_date = sum(move.amount_total_signed - move.amount_residual_signed for move in invoices)
+            record.billed_to_date = sum(invoices.mapped("amount_untaxed"))
+            record.collected_to_date = sum(move.amount_total - move.amount_residual for move in invoices)
             record.retention_held = sum(ipcs.mapped("deduction_line_ids").filtered(
                 lambda line: line.rule_type == "retention"
             ).mapped("current_amount"))
@@ -759,3 +760,52 @@ class ConstructionContract(models.Model):
             contract.closeout_state = state
             contract.practical_completion_date = approved_handover.actual_handover_date if approved_handover else False
             contract.dlp_end_date = active_dlp.dlp_end_date if active_dlp else False
+
+
+class ConstructionMonthlyCloseLine(models.Model):
+    _inherit = "mu.construction.monthly.close.line"
+
+    equipment_analytic_cost = fields.Monetary(
+        currency_field="currency_id", readonly=True,
+        help="Approved equipment internal/rental/fuel operational value. Informational only and excluded from ledger Actual and EAC to prevent double counting.",
+    )
+
+
+class ConstructionMonthlyClose(models.Model):
+    _inherit = "mu.construction.monthly.close"
+
+    total_equipment_analytic_cost = fields.Monetary(
+        compute="_compute_equipment_analytic_cost", currency_field="currency_id"
+    )
+
+    @api.depends("line_ids.equipment_analytic_cost")
+    def _compute_equipment_analytic_cost(self):
+        for close in self:
+            close.total_equipment_analytic_cost = sum(close.line_ids.mapped("equipment_analytic_cost"))
+
+    def _refresh_snapshot(self):
+        result = super()._refresh_snapshot()
+        for close in self:
+            usages = self.env["mu.construction.daily.equipment"].search([
+                ("project_id", "=", close.project_id.id),
+                ("contract_id", "=", close.contract_id.id),
+                ("report_id.state", "=", "approved"),
+                ("report_id.report_date", "<=", close.closing_date),
+            ])
+            grouped = {}
+            for usage in usages:
+                amount = usage.currency_id._convert(
+                    usage.analytic_equipment_cost,
+                    close.currency_id,
+                    close.company_id,
+                    usage.report_id.report_date,
+                )
+                grouped[usage.cost_code_id.id] = grouped.get(usage.cost_code_id.id, 0.0) + amount
+            for line in close.line_ids:
+                line.equipment_analytic_cost = grouped.pop(line.cost_code_id.id, 0.0)
+            for cost_code_id, amount in grouped.items():
+                self.env["mu.construction.monthly.close.line"].create({
+                    "close_id": close.id, "cost_code_id": cost_code_id or False,
+                    "equipment_analytic_cost": amount,
+                })
+        return result
