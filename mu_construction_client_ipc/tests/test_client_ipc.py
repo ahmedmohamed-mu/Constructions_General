@@ -1,8 +1,8 @@
 from odoo.exceptions import UserError, ValidationError
-from odoo.tests.common import TransactionCase
+from odoo.addons.account.tests.common import AccountTestInvoicingCommon
 
 
-class TestConstructionClientIPC(TransactionCase):
+class TestConstructionClientIPC(AccountTestInvoicingCommon):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
@@ -31,6 +31,7 @@ class TestConstructionClientIPC(TransactionCase):
         })
         cls.product = cls.env["product.product"].create({
             "name": "Certified Construction Work", "type": "service",
+            "property_account_income_id": cls.company_data["default_account_revenue"].id,
         })
         cls.boq = cls.env["mu.construction.boq"].create({
             "name": "Client BOQ", "code": "CLIENT-BOQ", "boq_type": "sell",
@@ -44,9 +45,7 @@ class TestConstructionClientIPC(TransactionCase):
             })],
         })
         cls.boq_line = cls.boq.line_ids
-        cls.sale_journal = cls.env["account.journal"].search([
-            ("type", "=", "sale"), ("company_id", "=", cls.env.company.id),
-        ], limit=1)
+        cls.sale_journal = cls.company_data["default_journal_sale"]
         cls.profile = cls.env["mu.construction.ipc.profile"].create({
             "name": "Project IPC Profile", "company_id": cls.env.company.id,
             "project_id": cls.project.id, "effective_from": "2026-01-01",
