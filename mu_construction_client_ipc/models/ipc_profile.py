@@ -20,6 +20,11 @@ class ConstructionIPCProfile(models.Model):
         "account.journal", ondelete="restrict", check_company=True,
         domain="[('type', '=', 'sale'), ('company_id', '=', company_id)]",
     )
+    revenue_account_id = fields.Many2one(
+        "account.account", ondelete="restrict", check_company=True,
+        domain="[('account_type', 'in', ('income', 'income_other'))]",
+        help="Default revenue account for draft IPC invoice lines. Product-specific income accounts take precedence.",
+    )
     payment_term_id = fields.Many2one("account.payment.term", ondelete="restrict", check_company=True)
     certificate_product_id = fields.Many2one(
         "product.product", ondelete="restrict",
