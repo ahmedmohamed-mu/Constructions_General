@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_ipc_profile_list" model="ir.ui.view">
+        <field name="name">mu.construction.ipc.profile.list</field><field name="model">mu.construction.ipc.profile</field>
+        <field name="arch" type="xml"><list><field name="name"/><field name="project_id"/><field name="effective_from"/><field name="effective_to"/><field name="qs_user_id"/><field name="pm_user_id"/><field name="commercial_user_id"/><field name="finance_user_id"/><field name="active" widget="boolean_toggle"/></list></field>
+    </record>
+    <record id="view_ipc_profile_form" model="ir.ui.view">
+        <field name="name">mu.construction.ipc.profile.form</field><field name="model">mu.construction.ipc.profile</field>
+        <field name="arch" type="xml"><form><sheet><div class="oe_title"><label for="name"/><h1><field name="name"/></h1></div><group><group><field name="company_id" groups="base.group_multi_company"/><field name="project_id"/><field name="effective_from"/><field name="effective_to"/><field name="active"/></group><group><field name="qs_user_id"/><field name="pm_user_id"/><field name="commercial_user_id"/><field name="finance_user_id"/></group></group><group string="Draft Customer Invoice"><field name="sale_journal_id"/><field name="payment_term_id"/><field name="certificate_product_id"/><field name="tax_ids" widget="many2many_tags"/></group></sheet></form></field>
+    </record>
+    <record id="action_ipc_profiles" model="ir.actions.act_window"><field name="name">IPC Profiles</field><field name="res_model">mu.construction.ipc.profile</field><field name="view_mode">list,form</field></record>
+
+    <record id="view_client_ipc_list" model="ir.ui.view">
+        <field name="name">mu.construction.client.ipc.list</field><field name="model">mu.construction.client.ipc</field>
+        <field name="arch" type="xml"><list decoration-success="state in ('certified','collected','closed')" decoration-muted="state == 'superseded'"><field name="name"/><field name="certificate_number"/><field name="revision"/><field name="project_id"/><field name="contract_id"/><field name="period_to"/><field name="gross_certified_value"/><field name="total_deductions"/><field name="net_amount_due"/><field name="state" widget="badge"/><field name="next_responsible_id" optional="show"/></list></field>
+    </record>
+    <record id="view_client_ipc_form" model="ir.ui.view">
+        <field name="name">mu.construction.client.ipc.form</field><field name="model">mu.construction.client.ipc</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_submit_qs" string="Submit to QS" type="object" class="btn-primary" invisible="state not in ('draft','returned')"/>
+                    <button name="action_qs_review" string="QS Reviewed" type="object" class="btn-primary" invisible="state != 'qs_review'"/>
+                    <button name="action_pm_approve" string="PM Approve" type="object" class="btn-primary" invisible="state != 'pm_approval'"/>
+                    <button name="action_commercial_approve" string="Submit to Consultant" type="object" class="btn-primary" invisible="state != 'commercial_approval'"/>
+                    <button name="action_return_for_revision" string="Returned for Revision" type="object" invisible="state != 'submitted'"/>
+                    <button name="action_new_revision" string="Create Revision" type="object" class="btn-primary" invisible="state != 'returned'"/>
+                    <button name="action_certify" string="Certify" type="object" class="btn-primary" invisible="state != 'submitted'"/>
+                    <button name="action_finance_review" string="Finance Reviewed" type="object" class="btn-primary" invisible="state != 'certified'"/>
+                    <button name="action_create_draft_invoice" string="Create Draft Invoice" type="object" class="btn-primary" invisible="state != 'finance_review'"/>
+                    <button name="action_sync_collection" string="Refresh Collection" type="object" invisible="state not in ('invoice_draft','partially_collected')"/>
+                    <button name="action_close" string="Close" type="object" invisible="state != 'collected'"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,qs_review,pm_approval,commercial_approval,submitted,certified,finance_review,invoice_draft,collected,closed"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box"><button name="action_sync_collection" type="object" class="oe_stat_button" icon="fa-refresh" invisible="not invoice_id"><field name="invoice_payment_state" widget="statinfo" string="Invoice Payment"/></button></div>
+                    <div class="oe_title"><label for="name"/><h1><field name="name"/></h1></div>
+                    <group><group><field name="project_id"/><field name="contract_id"/><field name="boq_id"/><field name="partner_id" readonly="1"/><field name="currency_id" invisible="1"/></group><group><field name="certificate_number"/><field name="revision"/><field name="previous_revision_id"/><field name="superseded_by_id"/><field name="period_from"/><field name="period_to"/><field name="submission_date"/><field name="certification_date"/></group></group>
+                    <notebook>
+                        <page string="Measurement Sheet">
+                            <field name="measurement_line_ids" readonly="state in ('certified','finance_review','invoice_draft','partially_collected','collected','closed','superseded')">
+                                <list editable="bottom"><field name="sequence" widget="handle"/><field name="boq_line_id"/><field name="code"/><field name="description"/><field name="uom_id"/><field name="original_quantity"/><field name="approved_variation_quantity"/><field name="revised_quantity"/><field name="previous_certified_quantity"/><field name="submitted_current_quantity"/><field name="consultant_certified_quantity"/><field name="deferred_quantity"/><field name="rejected_quantity"/><field name="cumulative_certified_quantity"/><field name="contract_rate"/><field name="current_amount"/><field name="measurement_reference" optional="show"/><field name="wir_id" optional="show"/><field name="drawing_id" optional="hide"/><field name="location_id" optional="show"/></list>
+                            </field>
+                        </page>
+                        <page string="IPC Summary"><group><group><field name="original_contract_sum"/><field name="approved_variations_amount"/><field name="revised_contract_sum"/><field name="work_executed_amount"/><field name="materials_on_site_amount"/><field name="price_adjustment_amount"/><field name="dayworks_amount"/><field name="approved_claims_amount"/></group><group><field name="gross_certified_value"/><field name="previous_certificates_value"/><field name="cumulative_certified_value"/><field name="total_deductions"/><field name="vat_amount"/><field name="net_amount_due"/><field name="invoice_id" readonly="1"/></group></group></page>
+                        <page string="Deductions"><field name="deduction_line_ids" readonly="1"><list><field name="name"/><field name="rule_type"/><field name="calculation_basis"/><field name="percent"/><field name="previous_amount"/><field name="current_amount"/><field name="cumulative_amount"/><field name="account_id"/></list></field></page>
+                        <page string="Consultant"><field name="consultant_reference"/><field name="consultant_comments"/></page>
+                        <page string="Responsibility"><group><field name="profile_id"/><field name="qs_user_id"/><field name="pm_user_id"/><field name="commercial_user_id"/><field name="finance_user_id"/><field name="next_responsible_id"/></group></page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+    <record id="action_client_ipcs" model="ir.actions.act_window"><field name="name">Client Measurements &amp; IPC</field><field name="res_model">mu.construction.client.ipc</field><field name="view_mode">list,form</field></record>
+
+    <menuitem id="menu_ipc_profiles" name="IPC Profiles" parent="mu_construction_core.menu_construction_configuration" action="action_ipc_profiles" sequence="80" groups="mu_construction_core.group_construction_manager"/>
+    <menuitem id="menu_client_ipcs" name="Client Measurement &amp; IPC" parent="mu_construction_contract_boq.menu_construction_operations" action="action_client_ipcs" sequence="70" groups="mu_construction_core.group_construction_user"/>
+</odoo>
