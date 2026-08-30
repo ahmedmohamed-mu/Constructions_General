@@ -38,7 +38,7 @@ class ConstructionBudgetBaseline(models.Model):
         help="Approved variation or budget transfer that justifies this revised baseline."
     )
     line_ids = fields.One2many("mu.construction.budget.baseline.line", "baseline_id", copy=True)
-    line_count = fields.Integer(compute="_compute_total")
+    line_count = fields.Integer(compute="_compute_line_count")
     total_amount = fields.Monetary(compute="_compute_total", store=True, currency_field="currency_id")
     reviewer_id = fields.Many2one("res.users", required=True, tracking=True)
     approver_id = fields.Many2one("res.users", required=True, tracking=True)
@@ -69,10 +69,14 @@ class ConstructionBudgetBaseline(models.Model):
             marker = "ORG" if record.baseline_type == "original" else "REV"
             record.name = "%s-%s-%02d" % (record.contract_id.name or "NEW", marker, record.revision)
 
+    @api.depends("line_ids")
+    def _compute_line_count(self):
+        for record in self:
+            record.line_count = len(record.line_ids)
+
     @api.depends("line_ids.amount")
     def _compute_total(self):
         for record in self:
-            record.line_count = len(record.line_ids)
             record.total_amount = sum(record.line_ids.mapped("amount"))
 
     def write(self, vals):
