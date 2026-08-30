@@ -271,9 +271,17 @@ class ConstructionClientIPC(models.Model):
                 product = line.boq_line_id.product_id or fallback
                 if not product:
                     raise UserError(_("Every certified BOQ line needs a product or an IPC fallback product."))
+                company_product = product.with_company(record.company_id)
+                income_account = (
+                    company_product.property_account_income_id
+                    or company_product.categ_id.property_account_income_categ_id
+                )
+                if not income_account:
+                    raise UserError(_("Configure an income account on product %s or its category.") % product.display_name)
                 commands.append((0, 0, {
                     "product_id": product.id, "name": "%s - %s" % (line.code, line.description),
                     "quantity": line.consultant_certified_quantity, "price_unit": line.contract_rate,
+                    "account_id": income_account.id,
                     "tax_ids": [(6, 0, record.profile_id.tax_ids.ids)],
                 }))
             additions = (
@@ -283,9 +291,17 @@ class ConstructionClientIPC(models.Model):
             if additions:
                 if not fallback:
                     raise UserError(_("Configure an IPC fallback product to invoice certificate additions."))
+                company_product = fallback.with_company(record.company_id)
+                income_account = (
+                    company_product.property_account_income_id
+                    or company_product.categ_id.property_account_income_categ_id
+                )
+                if not income_account:
+                    raise UserError(_("Configure an income account on the IPC fallback product or its category."))
                 commands.append((0, 0, {
                     "product_id": fallback.id, "name": _("IPC certified additions"),
                     "quantity": 1.0, "price_unit": additions,
+                    "account_id": income_account.id,
                     "tax_ids": [(6, 0, record.profile_id.tax_ids.ids)],
                 }))
             invoice = self.env["account.move"].create({
