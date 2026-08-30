@@ -32,7 +32,6 @@
                 <field name="project_id"/>
                 <field name="baseline_type"/>
                 <field name="revision"/>
-                <field name="line_count" string="Lines"/>
                 <field name="total_amount" sum="Total"/>
                 <field name="currency_id" column_invisible="True"/>
                 <field name="approved_by_id" optional="hide"/>
@@ -71,8 +70,7 @@
                             <field name="project_id"/>
                             <field name="baseline_type"/>
                             <field name="revision"/>
-                            <field name="change_reference" invisible="baseline_type != 'revised'"
-                                   required="baseline_type == 'revised' and state == 'review'"/>
+                            <field name="change_reference" invisible="baseline_type != 'revised'"/>
                         </group>
                         <group>
                             <field name="source_boq_id"/>
@@ -136,9 +134,11 @@
                     <field name="budget_baseline_count" widget="statinfo" string="Baselines"/>
                 </button>
             </xpath>
-            <xpath expr="//field[@name='analytic_account_id']" position="after">
-                <field name="original_budget_amount"/>
-                <field name="revised_budget_amount"/>
+            <xpath expr="//sheet" position="inside">
+                <group string="Cost Budget">
+                    <field name="original_budget_amount"/>
+                    <field name="revised_budget_amount"/>
+                </group>
             </xpath>
         </field>
     </record>
