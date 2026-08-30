@@ -79,7 +79,7 @@ class TestConstructionDashboards(TransactionCase):
     def test_financial_portfolio_fields_are_manager_only(self):
         user = self.env["res.users"].create({
             "name": "Dashboard Construction User", "login": "dashboard-construction-user",
-            "groups_id": [(6, 0, [
+            "group_ids": [(6, 0, [
                 self.env.ref("base.group_user").id,
                 self.env.ref("project.group_project_user").id,
                 self.env.ref("mu_construction_core.group_construction_user").id,
