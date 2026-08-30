@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_project_task_form_construction_work_package" model="ir.ui.view">
+        <field name="name">project.task.form.construction.work.package</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="project.view_task_form2"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                <button name="action_work_package_submit" string="Submit Work Package" type="object" class="btn-primary"
+                        invisible="not is_construction_work_package or work_package_state not in ('draft', 'rejected')"/>
+                <button name="action_work_package_review" string="Mark Reviewed" type="object" class="btn-primary"
+                        invisible="not is_construction_work_package or work_package_state != 'review'"/>
+                <button name="action_work_package_approve" string="Approve Work Package" type="object" class="btn-primary"
+                        invisible="not is_construction_work_package or work_package_state != 'reviewed'"/>
+                <button name="action_work_package_reject" string="Reject" type="object"
+                        invisible="not is_construction_work_package or work_package_state not in ('review', 'reviewed')"/>
+                <button name="action_work_package_cancel" string="Cancel" type="object"
+                        invisible="not is_construction_work_package or work_package_state not in ('draft', 'rejected')"/>
+                <field name="work_package_state" widget="statusbar" statusbar_visible="draft,review,reviewed,approved"
+                       invisible="not is_construction_work_package"/>
+            </xpath>
+            <xpath expr="//notebook" position="inside">
+                <page string="Construction Work Package">
+                    <group><field name="is_construction_work_package"/></group>
+                    <group invisible="not is_construction_work_package">
+                        <group string="Project Context">
+                            <field name="construction_contract_id" readonly="work_package_state == 'approved'"/>
+                            <field name="construction_boq_id" readonly="work_package_state == 'approved'"/>
+                            <field name="construction_boq_line_id" readonly="work_package_state == 'approved'"/>
+                            <field name="construction_wbs_id" readonly="work_package_state == 'approved'"/>
+                            <field name="construction_cost_code_id" readonly="work_package_state == 'approved'"/>
+                            <field name="construction_location_id" readonly="work_package_state == 'approved'"/>
+                        </group>
+                        <group string="Plan and Progress">
+                            <field name="responsible_engineer_id" readonly="work_package_state == 'approved'"/>
+                            <field name="progress_rule" readonly="work_package_state == 'approved'"/>
+                            <field name="planned_quantity" readonly="work_package_state == 'approved'"/>
+                            <field name="quantity_uom_id" readonly="work_package_state == 'approved'"/>
+                            <field name="approved_executed_quantity"/>
+                            <field name="manual_progress_percent" invisible="progress_rule != 'manual'"/>
+                            <field name="site_progress_percent" widget="progressbar"/>
+                        </group>
+                    </group>
+                    <group string="Responsibility" invisible="not is_construction_work_package">
+                        <field name="site_profile_id"/><field name="work_package_reviewer_id"/>
+                        <field name="work_package_approver_id"/><field name="work_package_next_responsible_id"/>
+                    </group>
+                    <group invisible="not is_construction_work_package">
+                        <group string="Resources and Safety"><field name="planned_resources"/><field name="safety_permit_reference"/></group>
+                        <group string="Prerequisites"><field name="required_drawings"/><field name="required_materials"/><field name="required_inspections"/></group>
+                    </group>
+                    <group string="Method Statement" invisible="not is_construction_work_package"><field name="method_statement"/></group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>
+
