@@ -4,7 +4,7 @@ from odoo.exceptions import AccessError, UserError, ValidationError
 
 def _ensure_report_lines_editable(lines):
     if lines.filtered(lambda line: line.report_id.state == "approved"):
-        raise UserError(_("Lines of approved daily site reports are locked."))
+        raise UserError(lines.env._("Lines of approved daily site reports are locked."))
 
 
 class ConstructionDailySiteReport(models.Model):
