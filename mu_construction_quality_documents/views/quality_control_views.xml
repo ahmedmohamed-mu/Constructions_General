@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_itp_list" model="ir.ui.view">
+        <field name="name">mu.construction.itp.list</field>
+        <field name="model">mu.construction.itp</field>
+        <field name="arch" type="xml">
+            <list decoration-success="state == 'approved'">
+                <field name="name"/><field name="activity"/><field name="revision"/>
+                <field name="project_id"/><field name="work_package_id" optional="show"/>
+                <field name="state" widget="badge"/><field name="next_responsible_id" optional="show"/>
+            </list>
+        </field>
+    </record>
+    <record id="view_itp_form" model="ir.ui.view">
+        <field name="name">mu.construction.itp.form</field>
+        <field name="model">mu.construction.itp</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_submit_review" string="Submit" type="object" class="btn-primary" invisible="state not in ('draft','rejected')"/>
+                    <button name="action_mark_reviewed" string="Reviewed" type="object" class="btn-primary" invisible="state != 'review'"/>
+                    <button name="action_approve" string="Approve" type="object" class="btn-primary" invisible="state != 'reviewed'"/>
+                    <button name="action_reject" string="Reject" type="object" invisible="state not in ('review','reviewed')"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,review,reviewed,approved"/>
+                </header>
+                <sheet>
+                    <div class="oe_title"><label for="name"/><h1><field name="name"/></h1><h2><field name="activity"/></h2></div>
+                    <group>
+                        <group><field name="project_id"/><field name="contract_id"/><field name="work_package_id"/><field name="location_id"/></group>
+                        <group><field name="revision"/><field name="reference_standard"/><field name="reviewer_id"/><field name="approver_id"/><field name="next_responsible_id"/></group>
+                    </group>
+                    <field name="line_ids" readonly="state == 'approved'">
+                        <list editable="bottom">
+                            <field name="sequence" widget="handle"/><field name="inspection_step"/><field name="acceptance_criteria"/>
+                            <field name="reference_standard" optional="show"/><field name="hold_point"/><field name="witness_point"/>
+                            <field name="contractor_responsibility" optional="hide"/><field name="consultant_responsibility" optional="hide"/><field name="required_record" optional="show"/>
+                        </list>
+                    </field>
+                    <field name="document_ids" widget="many2many_tags"/>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+    <record id="action_itps" model="ir.actions.act_window">
+        <field name="name">Inspection &amp; Test Plans</field><field name="res_model">mu.construction.itp</field><field name="view_mode">list,form</field>
+    </record>
+
+    <record id="view_inspection_list" model="ir.ui.view">
+        <field name="name">mu.construction.inspection.list</field><field name="model">mu.construction.inspection</field>
+        <field name="arch" type="xml">
+            <list decoration-success="eligible_for_measurement" decoration-danger="inspection_result == 'rejected'">
+                <field name="name"/><field name="inspection_type"/><field name="project_id"/><field name="work_package_id" optional="show"/>
+                <field name="request_date"/><field name="inspection_result" widget="badge"/><field name="accepted_quantity" optional="show"/>
+                <field name="eligible_for_measurement" optional="show"/><field name="state" widget="badge"/>
+            </list>
+        </field>
+    </record>
+    <record id="view_inspection_form" model="ir.ui.view">
+        <field name="name">mu.construction.inspection.form</field><field name="model">mu.construction.inspection</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_submit_review" string="Submit" type="object" class="btn-primary" invisible="state not in ('draft','rejected')"/>
+                    <button name="action_mark_reviewed" string="Reviewed" type="object" class="btn-primary" invisible="state != 'review'"/>
+                    <button name="action_approve" string="Approve" type="object" class="btn-primary" invisible="state != 'reviewed'"/>
+                    <button name="action_reject" string="Reject" type="object" invisible="state not in ('review','reviewed')"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,review,reviewed,approved"/>
+                </header>
+                <sheet>
+                    <div class="oe_title"><label for="name"/><h1><field name="name"/></h1></div>
+                    <group>
+                        <group><field name="inspection_type"/><field name="project_id"/><field name="contract_id"/><field name="work_package_id"/><field name="location_id"/></group>
+                        <group><field name="request_date"/><field name="ready_date"/><field name="inspection_result"/><field name="eligible_for_measurement"/><field name="reinspection_of_id"/></group>
+                    </group>
+                    <notebook>
+                        <page string="Inspection Basis"><group><field name="itp_id"/><field name="itp_line_id"/><field name="drawing_id"/><field name="submittal_id"/></group></page>
+                        <page string="Material" invisible="inspection_type != 'mir'"><group><field name="product_id"/><field name="supplier_id"/><field name="purchase_order_id"/><field name="picking_id"/><field name="delivery_note"/><field name="lot_reference"/></group></page>
+                        <page string="Quantities"><group><field name="inspected_quantity"/><field name="accepted_quantity"/><field name="uom_id"/></group><field name="comments"/></page>
+                        <page string="Quality Checks"><field name="quality_check_ids" readonly="1"/></page>
+                        <page string="Documents"><field name="document_ids" widget="many2many_tags"/></page>
+                    </notebook>
+                    <group string="Responsibility"><field name="reviewer_id"/><field name="approver_id"/><field name="next_responsible_id"/></group>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+    <record id="action_mirs" model="ir.actions.act_window">
+        <field name="name">Material Inspections</field><field name="res_model">mu.construction.inspection</field><field name="view_mode">list,form</field>
+        <field name="domain">[('inspection_type','=','mir')]</field><field name="context">{'default_inspection_type': 'mir'}</field>
+    </record>
+    <record id="action_wirs" model="ir.actions.act_window">
+        <field name="name">Work Inspections</field><field name="res_model">mu.construction.inspection</field><field name="view_mode">list,form</field>
+        <field name="domain">[('inspection_type','=','wir')]</field><field name="context">{'default_inspection_type': 'wir'}</field>
+    </record>
+
+    <record id="view_construction_quality_alert_list" model="ir.ui.view">
+        <field name="name">quality.alert.construction.list</field><field name="model">quality.alert</field>
+        <field name="arch" type="xml">
+            <list decoration-muted="construction_closed" decoration-danger="not construction_closed">
+                <field name="name"/><field name="construction_alert_type"/><field name="construction_project_id"/>
+                <field name="construction_work_package_id"/><field name="construction_location_id" optional="show"/>
+                <field name="responsible_party_id" optional="show"/><field name="construction_due_date"/><field name="construction_closed"/>
+            </list>
+        </field>
+    </record>
+    <record id="view_construction_quality_alert_form" model="ir.ui.view">
+        <field name="name">quality.alert.construction.form</field><field name="model">quality.alert</field>
+        <field name="arch" type="xml">
+            <form>
+                <header><button name="action_construction_close" string="Close with Evidence" type="object" class="btn-primary" invisible="construction_closed"/></header>
+                <sheet>
+                    <div class="oe_title"><label for="name"/><h1><field name="name"/></h1></div>
+                    <group>
+                        <group><field name="construction_alert_type"/><field name="construction_project_id"/><field name="construction_contract_id"/><field name="construction_work_package_id"/><field name="construction_location_id"/></group>
+                        <group><field name="construction_drawing_id"/><field name="construction_inspection_id"/><field name="reference_requirement"/><field name="responsible_party_id"/><field name="construction_due_date"/><field name="cost_responsibility"/></group>
+                    </group>
+                    <notebook>
+                        <page string="Correction"><field name="immediate_correction"/></page>
+                        <page string="Closure Evidence"><field name="closure_evidence"/><group><field name="construction_closed"/><field name="construction_closed_by_id"/><field name="construction_closure_date"/></group></page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+    <record id="action_construction_ncrs" model="ir.actions.act_window">
+        <field name="name">Nonconformity Reports</field><field name="res_model">quality.alert</field><field name="view_mode">list,form</field>
+        <field name="domain">[('construction_alert_type','=','ncr')]</field><field name="context">{'default_construction_alert_type': 'ncr'}</field>
+        <field name="view_id" ref="view_construction_quality_alert_list"/>
+    </record>
+    <record id="action_construction_snags" model="ir.actions.act_window">
+        <field name="name">Snag / Punch List</field><field name="res_model">quality.alert</field><field name="view_mode">list,form</field>
+        <field name="domain">[('construction_alert_type','=','snag')]</field><field name="context">{'default_construction_alert_type': 'snag'}</field>
+        <field name="view_id" ref="view_construction_quality_alert_list"/>
+    </record>
+
+    <menuitem id="menu_itps" name="ITP" parent="mu_construction_contract_boq.menu_construction_operations" action="action_itps" sequence="64" groups="mu_construction_core.group_construction_user"/>
+    <menuitem id="menu_mirs" name="MIR" parent="mu_construction_contract_boq.menu_construction_operations" action="action_mirs" sequence="65" groups="mu_construction_core.group_construction_user"/>
+    <menuitem id="menu_wirs" name="WIR" parent="mu_construction_contract_boq.menu_construction_operations" action="action_wirs" sequence="66" groups="mu_construction_core.group_construction_user"/>
+    <menuitem id="menu_ncrs" name="NCR" parent="mu_construction_contract_boq.menu_construction_operations" action="action_construction_ncrs" sequence="67" groups="mu_construction_core.group_construction_user"/>
+    <menuitem id="menu_snags" name="Snag List" parent="mu_construction_contract_boq.menu_construction_operations" action="action_construction_snags" sequence="68" groups="mu_construction_core.group_construction_user"/>
+</odoo>
