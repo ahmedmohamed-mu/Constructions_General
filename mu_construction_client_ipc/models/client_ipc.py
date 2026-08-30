@@ -275,9 +275,12 @@ class ConstructionClientIPC(models.Model):
                 income_account = (
                     company_product.property_account_income_id
                     or company_product.categ_id.property_account_income_categ_id
+                    or record.profile_id.revenue_account_id
                 )
                 if not income_account:
-                    raise UserError(_("Configure an income account on product %s or its category.") % product.display_name)
+                    raise UserError(_(
+                        "Configure an income account on product %s, its category, or the IPC profile."
+                    ) % product.display_name)
                 commands.append((0, 0, {
                     "product_id": product.id, "name": "%s - %s" % (line.code, line.description),
                     "quantity": line.consultant_certified_quantity, "price_unit": line.contract_rate,
@@ -295,9 +298,12 @@ class ConstructionClientIPC(models.Model):
                 income_account = (
                     company_product.property_account_income_id
                     or company_product.categ_id.property_account_income_categ_id
+                    or record.profile_id.revenue_account_id
                 )
                 if not income_account:
-                    raise UserError(_("Configure an income account on the IPC fallback product or its category."))
+                    raise UserError(_(
+                        "Configure an income account on the IPC fallback product, its category, or the IPC profile."
+                    ))
                 commands.append((0, 0, {
                     "product_id": fallback.id, "name": _("IPC certified additions"),
                     "quantity": 1.0, "price_unit": additions,
