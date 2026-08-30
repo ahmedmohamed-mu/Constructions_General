@@ -141,3 +141,71 @@ class TestConstructionContractBOQ(TransactionCase):
         )
         self.assertEqual(lapsed.state, "expired")
         self.assertEqual(self.contract.expiring_guarantee_count, 1)
+
+    def _approved_cost_boq(self, code):
+        boq = self.env["mu.construction.boq"].create({
+            "name": "Cost BOQ " + code, "code": code, "boq_type": "cost",
+            "project_id": self.project.id, "contract_id": self.contract.id,
+            "reviewer_id": self.env.user.id, "approver_id": self.env.user.id,
+            "line_ids": [(0, 0, {
+                "code": "1.1", "name": "Concrete",
+                "product_uom_id": self.env.ref("uom.product_uom_unit").id,
+                "quantity": 20, "rate": 30,
+            })],
+        })
+        boq.action_submit_review()
+        boq.action_mark_reviewed()
+        boq.action_approve()
+        return boq
+
+    def _baseline(self, boq_code="COST-01", **overrides):
+        values = {
+            "contract_id": self.contract.id,
+            "reviewer_id": self.env.user.id,
+            "approver_id": self.env.user.id,
+            "source_boq_id": self._approved_cost_boq(boq_code).id,
+        }
+        values.update(overrides)
+        return self.env["mu.construction.budget.baseline"].create(values)
+
+    def test_baseline_is_built_from_the_cost_boq_and_locks_on_approval(self):
+        baseline = self._baseline()
+        baseline.action_generate_from_boq()
+        self.assertEqual(len(baseline.line_ids), 1)
+        self.assertEqual(baseline.total_amount, 600)
+        baseline.action_submit_review()
+        baseline.action_approve()
+        self.assertEqual(baseline.state, "approved")
+        self.assertEqual(self.contract.original_budget_amount, 600)
+        with self.assertRaises(UserError):
+            baseline.write({"source_boq_id": False})
+        with self.assertRaises(UserError):
+            baseline.line_ids.write({"unit_cost": 40})
+
+    def test_a_contract_keeps_a_single_approved_original_budget(self):
+        first = self._baseline()
+        first.action_generate_from_boq()
+        first.action_submit_review()
+        first.action_approve()
+        second = self._baseline(boq_code="COST-02", revision=1)
+        second.action_generate_from_boq()
+        second.action_submit_review()
+        with self.assertRaises(UserError):
+            second.action_approve()
+
+    def test_revised_baseline_needs_the_change_that_justifies_it(self):
+        baseline = self._baseline()
+        baseline.action_generate_from_boq()
+        baseline.action_submit_review()
+        baseline.action_approve()
+        action = baseline.action_new_revision()
+        revision = self.env["mu.construction.budget.baseline"].browse(action["res_id"])
+        self.assertEqual(revision.baseline_type, "revised")
+        self.assertEqual(baseline.state, "superseded")
+        revision.action_submit_review()
+        with self.assertRaises(UserError):
+            revision.action_approve()
+        revision.write({"change_reference": "VO-001"})
+        revision.action_approve()
+        self.assertEqual(self.contract.revised_budget_amount, 600)
+        self.assertEqual(self.contract.original_budget_amount, 600)
