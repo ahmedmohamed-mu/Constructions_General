@@ -44,7 +44,7 @@ class TestConstructionProjectControls(TransactionCase):
             "effective_from": "2026-01-01", "minimum_amount": 0,
             "reviewer_id": cls.env.user.id, "approver_id": cls.env.user.id,
         })
-        cls.profile = cls.env["mu.construction.control.profile"].create({
+        cls.profile = cls.env["mu.construction.project.control.profile"].create({
             "name": "Controls Workflow", "company_id": cls.env.company.id, "project_id": cls.project.id,
             "effective_from": "2026-01-01", "revenue_method": "cost_to_cost",
             "project_manager_id": cls.env.user.id, "commercial_reviewer_id": cls.env.user.id,
@@ -144,3 +144,20 @@ class TestConstructionProjectControls(TransactionCase):
                 "close_id": close.id, "flow_type": "inflow", "expected_date": "2026-07-15",
                 "description": "Invalid probability", "amount": 100, "probability": 120,
             })
+
+    def test_project_controls_profile_does_not_override_quality_profile(self):
+        close = self._close()
+        quality_profile = self.env["mu.construction.control.profile"].create({
+            "name": "Independent Quality Workflow", "process": "quality",
+            "company_id": self.env.company.id, "project_id": self.project.id,
+            "effective_from": "2026-01-01", "reviewer_id": self.env.user.id,
+            "approver_id": self.env.user.id,
+        })
+        resolved_quality = self.env["mu.construction.control.profile"].profile_for(
+            self.project, "quality", close.closing_date
+        )
+        resolved_controls = self.env["mu.construction.project.control.profile"].profile_for(
+            self.project, close.closing_date
+        )
+        self.assertEqual(resolved_quality, quality_profile)
+        self.assertEqual(resolved_controls, self.profile)

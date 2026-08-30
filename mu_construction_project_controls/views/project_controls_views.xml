@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <record id="view_control_profile_list" model="ir.ui.view">
-        <field name="name">mu.construction.control.profile.list</field>
-        <field name="model">mu.construction.control.profile</field>
+        <field name="name">mu.construction.project.control.profile.list</field>
+        <field name="model">mu.construction.project.control.profile</field>
         <field name="arch" type="xml">
             <list><field name="name"/><field name="company_id"/><field name="project_id"/><field name="effective_from"/><field name="effective_to"/><field name="revenue_method"/><field name="active"/></list>
         </field>
     </record>
     <record id="view_control_profile_form" model="ir.ui.view">
-        <field name="name">mu.construction.control.profile.form</field>
-        <field name="model">mu.construction.control.profile</field>
+        <field name="name">mu.construction.project.control.profile.form</field>
+        <field name="model">mu.construction.project.control.profile</field>
         <field name="arch" type="xml">
             <form string="Project Controls Profile"><sheet><group><group><field name="name"/><field name="company_id"/><field name="project_id"/><field name="revenue_method"/></group><group><field name="effective_from"/><field name="effective_to"/><field name="active"/></group></group><group string="Workflow Owners" col="4"><field name="project_manager_id"/><field name="commercial_reviewer_id"/><field name="finance_reviewer_id"/><field name="approver_id"/></group></sheet></form>
         </field>
     </record>
     <record id="action_control_profiles" model="ir.actions.act_window">
-        <field name="name">Project Controls Profiles</field><field name="res_model">mu.construction.control.profile</field><field name="view_mode">list,form</field>
+        <field name="name">Project Controls Profiles</field><field name="res_model">mu.construction.project.control.profile</field><field name="view_mode">list,form</field>
     </record>
 
     <record id="view_monthly_close_list" model="ir.ui.view">

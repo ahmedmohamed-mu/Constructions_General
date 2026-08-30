@@ -8,7 +8,7 @@ LOCKED_STATES = ("approved", "locked")
 
 
 class ConstructionControlProfile(models.Model):
-    _name = "mu.construction.control.profile"
+    _name = "mu.construction.project.control.profile"
     _description = "Effective Construction Project Controls Profile"
     _order = "company_id, project_id, effective_from desc, id desc"
 
@@ -64,7 +64,7 @@ class ConstructionMonthlyClose(models.Model):
     analytic_account_id = fields.Many2one("account.analytic.account", related="project_id.account_id", store=True)
     period_start = fields.Date(required=True, tracking=True)
     closing_date = fields.Date(required=True, tracking=True)
-    profile_id = fields.Many2one("mu.construction.control.profile", readonly=True, copy=False)
+    profile_id = fields.Many2one("mu.construction.project.control.profile", readonly=True, copy=False)
     project_manager_id = fields.Many2one("res.users", readonly=True, copy=False)
     commercial_reviewer_id = fields.Many2one("res.users", readonly=True, copy=False)
     finance_reviewer_id = fields.Many2one("res.users", readonly=True, copy=False)
@@ -213,7 +213,9 @@ class ConstructionMonthlyClose(models.Model):
 
     def action_start_collection(self):
         for record in self:
-            profile = self.env["mu.construction.control.profile"].profile_for(record.project_id, record.closing_date)
+            profile = self.env["mu.construction.project.control.profile"].profile_for(
+                record.project_id, record.closing_date
+            )
             if not profile:
                 raise UserError(_("No effective project-controls profile matches this project and period."))
             record.write({

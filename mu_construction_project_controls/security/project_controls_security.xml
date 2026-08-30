@@ -2,7 +2,7 @@
 <odoo>
     <record id="rule_control_profile_company" model="ir.rule">
         <field name="name">Project Controls Profile Company</field>
-        <field name="model_id" ref="model_mu_construction_control_profile"/>
+        <field name="model_id" ref="model_mu_construction_project_control_profile"/>
         <field name="domain_force">[('company_id', 'in', company_ids)]</field>
         <field name="groups" eval="[(4, ref('mu_construction_core.group_construction_user'))]"/>
     </record>
