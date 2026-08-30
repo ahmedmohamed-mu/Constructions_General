@@ -1,0 +1,57 @@
+# Translation of Odoo Server.
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 19.0\n"
+"Language: ar\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+
+msgid "Workspaces"
+msgstr "مساحات العمل"
+
+msgid "Executive"
+msgstr "الإدارة التنفيذية"
+
+msgid "Project Manager"
+msgstr "مدير المشروع"
+
+msgid "Commercial"
+msgstr "الشؤون التجارية"
+
+msgid "Procurement"
+msgstr "المشتريات"
+
+msgid "Finance"
+msgstr "المالية"
+
+msgid "Quality"
+msgstr "الجودة"
+
+msgid "My Work"
+msgstr "مهامي"
+
+msgid "Open Changes"
+msgstr "التغييرات المفتوحة"
+
+msgid "Open NCR / Snag"
+msgstr "حالات عدم المطابقة والملاحظات المفتوحة"
+
+msgid "Pending Procurement"
+msgstr "المشتريات المعلقة"
+
+msgid "Pending IPC"
+msgstr "المستخلصات المعلقة"
+
+msgid "Pending Site Reports"
+msgstr "تقارير الموقع المعلقة"
+
+msgid "Open Closeout Items"
+msgstr "بنود الإغلاق المفتوحة"
+
+msgid "On Track"
+msgstr "على المسار"
+
+msgid "At Risk"
+msgstr "معرض للخطر"
+
+msgid "Attention Required"
+msgstr "يتطلب الانتباه"

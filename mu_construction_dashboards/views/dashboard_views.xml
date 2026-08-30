@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_project_executive_dashboard_list" model="ir.ui.view">
+        <field name="name">project.project.executive.dashboard.list</field>
+        <field name="model">project.project</field>
+        <field name="arch" type="xml">
+            <list string="Executive Construction Portfolio" create="false" delete="false"
+                  decoration-danger="dashboard_financial_health == 'at_risk'"
+                  decoration-success="dashboard_financial_health == 'on_track'">
+                <field name="name"/><field name="construction_reference"/><field name="user_id"/>
+                <field name="dashboard_contract_value" sum="Portfolio Contract Value"/>
+                <field name="dashboard_revised_budget" sum="Portfolio Budget"/>
+                <field name="dashboard_actual" sum="Portfolio Actual"/>
+                <field name="dashboard_eac" sum="Portfolio EAC"/>
+                <field name="dashboard_forecast_variance" sum="Portfolio Variance"/>
+                <field name="dashboard_billed" sum="Portfolio Billed"/>
+                <field name="dashboard_collected" sum="Portfolio Collected"/>
+                <field name="dashboard_financial_health" widget="badge"/>
+                <field name="dashboard_open_quality_count"/>
+                <field name="dashboard_open_change_count"/>
+            </list>
+        </field>
+    </record>
+    <record id="view_project_pm_workspace_list" model="ir.ui.view">
+        <field name="name">project.project.pm.workspace.list</field>
+        <field name="model">project.project</field>
+        <field name="arch" type="xml">
+            <list string="Project Manager Workspace" create="false" delete="false"
+                  decoration-warning="dashboard_operational_health == 'attention'">
+                <field name="name"/><field name="construction_reference"/><field name="user_id"/>
+                <field name="dashboard_pending_site_report_count"/>
+                <field name="dashboard_open_quality_count"/>
+                <field name="dashboard_open_change_count"/>
+                <field name="dashboard_pending_procurement_count"/>
+                <field name="dashboard_pending_ipc_count"/>
+                <field name="dashboard_open_closeout_count"/>
+                <field name="dashboard_operational_health" widget="badge"/>
+                <button name="action_dashboard_quality" type="object" string="Quality"/>
+                <button name="action_dashboard_monthly_closes" type="object" string="Controls"/>
+            </list>
+        </field>
+    </record>
+    <record id="view_project_dashboard_form" model="ir.ui.view">
+        <field name="name">project.project.construction.dashboard.form</field>
+        <field name="model">project.project</field>
+        <field name="inherit_id" ref="project.edit_project"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <page string="Construction Dashboard" groups="mu_construction_core.group_construction_user">
+                    <group string="Operations" col="4">
+                        <field name="dashboard_pending_site_report_count"/><field name="dashboard_open_quality_count"/>
+                        <field name="dashboard_open_change_count"/><field name="dashboard_pending_procurement_count"/>
+                        <field name="dashboard_pending_ipc_count"/><field name="dashboard_open_closeout_count"/>
+                        <field name="dashboard_operational_health" widget="badge"/>
+                    </group>
+                    <group string="Portfolio Financials" col="4" groups="mu_construction_core.group_construction_manager">
+                        <field name="dashboard_contract_value"/><field name="dashboard_revised_budget"/>
+                        <field name="dashboard_actual"/><field name="dashboard_eac"/>
+                        <field name="dashboard_forecast_variance"/><field name="dashboard_billed"/>
+                        <field name="dashboard_collected"/><field name="dashboard_financial_health" widget="badge"/>
+                    </group>
+                    <group string="Trace to Source" col="5">
+                        <button name="action_dashboard_monthly_closes" type="object" string="Project Controls" class="btn-secondary"/>
+                        <button name="action_dashboard_changes" type="object" string="Variations" class="btn-secondary"/>
+                        <button name="action_dashboard_procurement" type="object" string="Procurement" class="btn-secondary"/>
+                        <button name="action_dashboard_quality" type="object" string="Quality" class="btn-secondary"/>
+                        <button name="action_dashboard_ipcs" type="object" string="IPC" class="btn-secondary"/>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_contract_commercial_workspace_list" model="ir.ui.view">
+        <field name="name">mu.construction.contract.commercial.workspace.list</field>
+        <field name="model">mu.construction.contract</field>
+        <field name="arch" type="xml"><list create="false"><field name="name"/><field name="title"/><field name="project_id"/><field name="partner_id"/><field name="original_value"/><field name="approved_variation_value"/><field name="approved_claim_value"/><field name="revised_contract_value"/><field name="forecast_contract_value"/><field name="closeout_state" widget="badge"/><field name="state" widget="badge"/></list></field>
+    </record>
+    <record id="view_purchase_workspace_list" model="ir.ui.view">
+        <field name="name">purchase.order.construction.workspace.list</field><field name="model">purchase.order</field>
+        <field name="arch" type="xml"><list create="false"><field name="name"/><field name="project_id"/><field name="construction_contract_id"/><field name="partner_id"/><field name="date_order"/><field name="amount_total"/><field name="construction_context_complete"/><field name="construction_approval_state" widget="badge"/><field name="construction_next_responsible_id"/><field name="state" widget="badge"/></list></field>
+    </record>
+    <record id="view_finance_workspace_list" model="ir.ui.view">
+        <field name="name">mu.construction.monthly.close.finance.workspace.list</field><field name="model">mu.construction.monthly.close</field>
+        <field name="arch" type="xml"><list create="false" decoration-danger="forecast_variance &lt; 0"><field name="name"/><field name="project_id"/><field name="contract_id"/><field name="closing_date"/><field name="total_actual"/><field name="total_eac"/><field name="forecast_variance"/><field name="revenue_recognized_to_date"/><field name="certified_to_date"/><field name="billed_to_date"/><field name="collected_to_date"/><field name="next_responsible_id"/><field name="state" widget="badge"/></list></field>
+    </record>
+    <record id="view_quality_workspace_list" model="ir.ui.view">
+        <field name="name">quality.alert.construction.workspace.list</field><field name="model">quality.alert</field>
+        <field name="arch" type="xml"><list create="false"><field name="name"/><field name="construction_alert_type"/><field name="construction_project_id"/><field name="construction_contract_id"/><field name="construction_location_id"/><field name="construction_due_date"/><field name="responsible_party_id"/><field name="cost_responsibility"/><field name="construction_closed"/></list></field>
+    </record>
+    <record id="view_my_construction_activity_list" model="ir.ui.view">
+        <field name="name">mail.activity.my.construction.workspace.list</field><field name="model">mail.activity</field>
+        <field name="arch" type="xml"><list create="false" delete="false"><field name="date_deadline"/><field name="activity_type_id"/><field name="summary"/><field name="res_model"/><field name="res_name"/><field name="user_id"/></list></field>
+    </record>
+
+    <record id="action_executive_workspace" model="ir.actions.act_window"><field name="name">Executive Portfolio</field><field name="res_model">project.project</field><field name="view_mode">list,form</field><field name="view_id" ref="view_project_executive_dashboard_list"/><field name="domain">[('construction_reference','!=',False)]</field></record>
+    <record id="action_pm_workspace" model="ir.actions.act_window"><field name="name">Project Manager Workspace</field><field name="res_model">project.project</field><field name="view_mode">list,form</field><field name="view_id" ref="view_project_pm_workspace_list"/><field name="domain">[('construction_reference','!=',False)]</field></record>
+    <record id="action_commercial_workspace" model="ir.actions.act_window"><field name="name">Commercial Workspace</field><field name="res_model">mu.construction.contract</field><field name="view_mode">list,form</field><field name="view_id" ref="view_contract_commercial_workspace_list"/></record>
+    <record id="action_procurement_workspace" model="ir.actions.act_window"><field name="name">Procurement Workspace</field><field name="res_model">purchase.order</field><field name="view_mode">list,form,pivot,graph</field><field name="view_id" ref="view_purchase_workspace_list"/><field name="domain">[('project_id','!=',False)]</field><field name="context">{'search_default_group_project': 1}</field></record>
+    <record id="action_finance_workspace" model="ir.actions.act_window"><field name="name">Finance Workspace</field><field name="res_model">mu.construction.monthly.close</field><field name="view_mode">list,form</field><field name="view_id" ref="view_finance_workspace_list"/></record>
+    <record id="action_quality_workspace" model="ir.actions.act_window"><field name="name">Quality Workspace</field><field name="res_model">quality.alert</field><field name="view_mode">list,form</field><field name="view_id" ref="view_quality_workspace_list"/><field name="domain">[('construction_project_id','!=',False),('construction_alert_type','in',('ncr','snag'))]</field></record>
+    <record id="action_my_construction_work" model="ir.actions.act_window"><field name="name">My Construction Work</field><field name="res_model">mail.activity</field><field name="view_mode">list</field><field name="view_id" ref="view_my_construction_activity_list"/><field name="domain">[('user_id','=',uid),('res_model','in',('mu.construction.contract','mu.construction.boq','purchase.order','stock.picking','mu.construction.subcontract.measurement','mu.construction.daily.site.report','project.task','mu.construction.drawing','mu.construction.rfi','mu.construction.submittal','mu.construction.transmittal','mu.construction.inspection','quality.alert','mu.construction.client.ipc','mu.construction.potential.change','mu.construction.notice','mu.construction.variation','mu.construction.claim','mu.construction.monthly.close','mu.construction.accrual','mu.construction.commissioning','mu.construction.handover','mu.construction.dlp','mu.construction.dlp.defect','mu.construction.final.account','mu.construction.release.request'))]</field></record>
+
+    <menuitem id="menu_construction_workspaces" name="Workspaces" parent="mu_construction_contract_boq.menu_construction_operations" sequence="1" groups="mu_construction_core.group_construction_user"/>
+    <menuitem id="menu_executive_workspace" name="Executive" parent="menu_construction_workspaces" action="action_executive_workspace" sequence="10" groups="mu_construction_core.group_construction_manager"/>
+    <menuitem id="menu_pm_workspace" name="Project Manager" parent="menu_construction_workspaces" action="action_pm_workspace" sequence="20" groups="mu_construction_core.group_construction_user"/>
+    <menuitem id="menu_commercial_workspace" name="Commercial" parent="menu_construction_workspaces" action="action_commercial_workspace" sequence="30" groups="mu_construction_core.group_construction_user"/>
+    <menuitem id="menu_procurement_workspace" name="Procurement" parent="menu_construction_workspaces" action="action_procurement_workspace" sequence="40" groups="purchase.group_purchase_user"/>
+    <menuitem id="menu_finance_workspace" name="Finance" parent="menu_construction_workspaces" action="action_finance_workspace" sequence="50" groups="account.group_account_user"/>
+    <menuitem id="menu_quality_workspace" name="Quality" parent="menu_construction_workspaces" action="action_quality_workspace" sequence="60" groups="quality.group_quality_user"/>
+    <menuitem id="menu_my_construction_work" name="My Work" parent="menu_construction_workspaces" action="action_my_construction_work" sequence="70" groups="mu_construction_core.group_construction_user"/>
+</odoo>
