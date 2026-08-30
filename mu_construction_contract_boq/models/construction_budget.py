@@ -266,7 +266,11 @@ class ConstructionContract(models.Model):
     def _compute_budget_amounts(self):
         for record in self:
             approved = record.budget_baseline_ids.filtered(lambda item: item.state == "approved")
-            original = approved.filtered(lambda item: item.baseline_type == "original")
+            # The original budget stays visible after it is superseded by a revision.
+            original = record.budget_baseline_ids.filtered(
+                lambda item: item.baseline_type == "original"
+                and item.state in ("approved", "superseded")
+            )
             latest = approved.sorted(lambda item: (item.revision, item.id))
             record.budget_baseline_count = len(record.budget_baseline_ids)
             record.original_budget_amount = original[0].total_amount if original else 0.0
