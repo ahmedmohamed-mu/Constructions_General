@@ -1,7 +1,7 @@
 {
     "name": "MU Construction Variations, Claims and EOT",
     "summary": "Potential changes, notices, variations, claims, EOT and controlled budget amendments",
-    "version": "19.0.1.0.0",
+    "version": "19.0.1.0.1",
     "category": "Services/Project",
     "author": "MU Constructions General",
     "license": "LGPL-3",
@@ -15,4 +15,3 @@
     "installable": True,
     "application": False,
 }
-
