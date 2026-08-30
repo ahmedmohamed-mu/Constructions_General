@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <record id="seq_client_ipc" model="ir.sequence">
+        <field name="name">Construction Client IPC</field><field name="code">mu.construction.client.ipc</field>
+        <field name="prefix">IPC/%(year)s/</field><field name="padding">5</field><field name="company_id" eval="False"/>
+    </record>
+</odoo>
