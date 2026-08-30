@@ -29,7 +29,7 @@
     </record>
     <record id="view_monthly_close_search" model="ir.ui.view">
         <field name="name">mu.construction.monthly.close.search</field><field name="model">mu.construction.monthly.close</field>
-        <field name="arch" type="xml"><search><field name="name"/><field name="project_id"/><field name="contract_id"/><field name="closing_date"/><filter name="open" string="In Progress" domain="[('state', 'not in', ('locked','cancelled'))]"/><filter name="locked" string="Locked" domain="[('state','=','locked')]"/><group string="Group By"><filter name="group_project" string="Project" context="{'group_by':'project_id'}"/><filter name="group_state" string="Status" context="{'group_by':'state'}"/></group></search></field>
+        <field name="arch" type="xml"><search><field name="name"/><field name="project_id"/><field name="contract_id"/><field name="closing_date"/><filter name="open" string="In Progress" domain="[('state', 'not in', ('locked','cancelled'))]"/><filter name="locked" string="Locked" domain="[('state','=','locked')]"/><group><filter name="group_project" string="Project" context="{'group_by':'project_id'}"/><filter name="group_state" string="Status" context="{'group_by':'state'}"/></group></search></field>
     </record>
     <record id="view_monthly_close_form" model="ir.ui.view">
         <field name="name">mu.construction.monthly.close.form</field>
