@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="ipc_profile_company_rule" model="ir.rule"><field name="name">IPC profiles: allowed companies</field><field name="model_id" ref="model_mu_construction_ipc_profile"/><field name="domain_force">[('company_id', 'in', company_ids)]</field><field name="groups" eval="[(4, ref('mu_construction_core.group_construction_user'))]"/></record>
+    <record id="client_ipc_company_rule" model="ir.rule"><field name="name">Client IPCs: allowed companies</field><field name="model_id" ref="model_mu_construction_client_ipc"/><field name="domain_force">[('company_id', 'in', company_ids)]</field><field name="groups" eval="[(4, ref('mu_construction_core.group_construction_user'))]"/></record>
+    <record id="client_ipc_line_company_rule" model="ir.rule"><field name="name">Client IPC lines: allowed companies</field><field name="model_id" ref="model_mu_construction_client_ipc_line"/><field name="domain_force">[('ipc_id.company_id', 'in', company_ids)]</field><field name="groups" eval="[(4, ref('mu_construction_core.group_construction_user'))]"/></record>
+    <record id="client_ipc_deduction_company_rule" model="ir.rule"><field name="name">Client IPC deductions: allowed companies</field><field name="model_id" ref="model_mu_construction_client_ipc_deduction"/><field name="domain_force">[('ipc_id.company_id', 'in', company_ids)]</field><field name="groups" eval="[(4, ref('mu_construction_core.group_construction_user'))]"/></record>
+</odoo>
