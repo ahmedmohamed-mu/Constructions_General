@@ -8,6 +8,11 @@ class TestConstructionClientIPC(AccountTestInvoicingCommon):
     def setUpClass(cls):
         super().setUpClass()
         cls.env = cls.env(user=SUPERUSER_ID)
+        if not cls.company_data["default_account_revenue"]:
+            cls.env["account.chart.template"].try_loading(
+                "generic_coa", company=cls.env.company, install_demo=False,
+            )
+            cls.company_data = cls.collect_company_accounting_data(cls.env.company)
         cls.project = cls.env["project.project"].create({
             "name": "Client IPC Project", "company_id": cls.env.company.id,
         })
