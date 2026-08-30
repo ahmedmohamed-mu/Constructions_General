@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_site_execution_profile_list" model="ir.ui.view">
+        <field name="name">mu.construction.site.execution.profile.list</field>
+        <field name="model">mu.construction.site.execution.profile</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+                <field name="project_id"/>
+                <field name="effective_from"/>
+                <field name="effective_to"/>
+                <field name="reviewer_id"/>
+                <field name="approver_id"/>
+                <field name="require_safety_permit" optional="hide"/>
+                <field name="active" widget="boolean_toggle"/>
+            </list>
+        </field>
+    </record>
+    <record id="view_site_execution_profile_form" model="ir.ui.view">
+        <field name="name">mu.construction.site.execution.profile.form</field>
+        <field name="model">mu.construction.site.execution.profile</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <div class="oe_title"><label for="name"/><h1><field name="name"/></h1></div>
+                    <group>
+                        <group><field name="company_id" groups="base.group_multi_company"/><field name="project_id"/><field name="active"/></group>
+                        <group><field name="effective_from"/><field name="effective_to"/><field name="require_safety_permit"/></group>
+                    </group>
+                    <group string="Approval Responsibility"><field name="reviewer_id"/><field name="approver_id"/></group>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+    <record id="action_site_execution_profiles" model="ir.actions.act_window">
+        <field name="name">Site Execution Profiles</field>
+        <field name="res_model">mu.construction.site.execution.profile</field>
+        <field name="view_mode">list,form</field>
+    </record>
+    <menuitem id="menu_site_execution_profiles" name="Site Execution Profiles"
+              parent="mu_construction_core.menu_construction_configuration"
+              action="action_site_execution_profiles" sequence="60"
+              groups="mu_construction_core.group_construction_manager"/>
+</odoo>
