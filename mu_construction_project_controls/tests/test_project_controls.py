@@ -90,6 +90,7 @@ class TestConstructionProjectControls(TransactionCase):
             "partner_id": self.vendor.id, "project_id": self.project.id,
             "construction_contract_id": self.contract.id,
             "construction_boq_id": self.boq.id,
+            "date_order": "2026-06-15 09:00:00",
             "order_line": [(0, 0, {"product_id": self.product.id, "product_qty": 2,
                                     "price_unit": 100, "construction_boq_line_id": self.boq.line_ids.id,
                                     "construction_wbs_id": self.wbs.id,
