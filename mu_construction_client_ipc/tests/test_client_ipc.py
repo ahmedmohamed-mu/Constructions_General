@@ -47,7 +47,11 @@ class TestConstructionClientIPC(AccountTestInvoicingCommon):
             })],
         })
         cls.boq_line = cls.boq.line_ids
-        cls.sale_journal = cls.company_data["default_journal_sale"]
+        cls.sale_journal = cls.env["account.journal"].create({
+            "name": "Client IPC Test Sales", "code": "CIPC", "type": "sale",
+            "company_id": cls.env.company.id,
+            "default_account_id": cls.company_data["default_account_revenue"].id,
+        })
         cls.profile = cls.env["mu.construction.ipc.profile"].create({
             "name": "Project IPC Profile", "company_id": cls.env.company.id,
             "project_id": cls.project.id, "effective_from": "2026-01-01",
