@@ -155,7 +155,13 @@ class ConstructionSubcontractMeasurementLine(models.Model):
     previous_quantity = fields.Float(compute="_compute_cumulative", store=False)
     current_quantity = fields.Float(required=True)
     cumulative_quantity = fields.Float(compute="_compute_cumulative", store=False)
-    rate = fields.Monetary(related="purchase_line_id.price_unit", currency_field="currency_id", store=True)
+    rate = fields.Monetary(
+        compute="_compute_rate",
+        store=True,
+        readonly=False,
+        currency_field="currency_id",
+        help="Subcontract unit rate, defaulted from the purchase order line and editable before approval.",
+    )
     current_amount = fields.Monetary(compute="_compute_amount", store=True, currency_field="currency_id")
 
     _purchase_line_measurement_unique = models.Constraint(
@@ -172,6 +178,11 @@ class ConstructionSubcontractMeasurementLine(models.Model):
             ]) if line.purchase_line_id else self.browse()
             line.previous_quantity = sum(previous_lines.mapped("current_quantity"))
             line.cumulative_quantity = line.previous_quantity + line.current_quantity
+
+    @api.depends("purchase_line_id.price_unit")
+    def _compute_rate(self):
+        for line in self:
+            line.rate = line.purchase_line_id.price_unit
 
     @api.depends("current_quantity", "rate")
     def _compute_amount(self):
