@@ -104,26 +104,6 @@
         </field>
     </record>
 
-    <record id="view_budget_baseline_search" model="ir.ui.view">
-        <field name="name">mu.construction.budget.baseline.search</field>
-        <field name="model">mu.construction.budget.baseline</field>
-        <field name="arch" type="xml">
-            <search>
-                <field name="name"/>
-                <field name="contract_id"/>
-                <field name="project_id"/>
-                <filter name="filter_approved" string="Approved" domain="[('state', '=', 'approved')]"/>
-                <filter name="filter_original" string="Original" domain="[('baseline_type', '=', 'original')]"/>
-                <filter name="filter_revised" string="Revised" domain="[('baseline_type', '=', 'revised')]"/>
-                <group expand="0" string="Group By">
-                    <filter name="group_project" string="Project" context="{'group_by': 'project_id'}"/>
-                    <filter name="group_contract" string="Contract" context="{'group_by': 'contract_id'}"/>
-                    <filter name="group_state" string="Status" context="{'group_by': 'state'}"/>
-                </group>
-            </search>
-        </field>
-    </record>
-
     <record id="view_construction_contract_form_budget" model="ir.ui.view">
         <field name="name">mu.construction.contract.form.budget</field>
         <field name="model">mu.construction.contract</field>
