@@ -1,3 +1,4 @@
+from odoo import SUPERUSER_ID
 from odoo.exceptions import UserError, ValidationError
 from odoo.addons.account.tests.common import AccountTestInvoicingCommon
 
@@ -6,6 +7,7 @@ class TestConstructionClientIPC(AccountTestInvoicingCommon):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
+        cls.env = cls.env(user=SUPERUSER_ID)
         cls.project = cls.env["project.project"].create({
             "name": "Client IPC Project", "company_id": cls.env.company.id,
         })
