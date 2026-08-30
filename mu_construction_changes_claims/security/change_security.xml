@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="commercial_profile_company_rule" model="ir.rule"><field name="name">Commercial profiles: allowed companies</field><field name="model_id" ref="model_mu_construction_commercial_profile"/><field name="domain_force">[('company_id', 'in', company_ids)]</field><field name="groups" eval="[(4, ref('mu_construction_core.group_construction_user'))]"/></record>
+    <record id="potential_change_company_rule" model="ir.rule"><field name="name">Potential changes: allowed companies</field><field name="model_id" ref="model_mu_construction_potential_change"/><field name="domain_force">[('company_id', 'in', company_ids)]</field><field name="groups" eval="[(4, ref('mu_construction_core.group_construction_user'))]"/></record>
+    <record id="notice_company_rule" model="ir.rule"><field name="name">Contract notices: allowed companies</field><field name="model_id" ref="model_mu_construction_notice"/><field name="domain_force">[('company_id', 'in', company_ids)]</field><field name="groups" eval="[(4, ref('mu_construction_core.group_construction_user'))]"/></record>
+    <record id="variation_company_rule" model="ir.rule"><field name="name">Variations: allowed companies</field><field name="model_id" ref="model_mu_construction_variation"/><field name="domain_force">[('company_id', 'in', company_ids)]</field><field name="groups" eval="[(4, ref('mu_construction_core.group_construction_user'))]"/></record>
+    <record id="variation_line_company_rule" model="ir.rule"><field name="name">Variation lines: allowed companies</field><field name="model_id" ref="model_mu_construction_variation_line"/><field name="domain_force">[('variation_id.company_id', 'in', company_ids)]</field><field name="groups" eval="[(4, ref('mu_construction_core.group_construction_user'))]"/></record>
+    <record id="claim_company_rule" model="ir.rule"><field name="name">Claims: allowed companies</field><field name="model_id" ref="model_mu_construction_claim"/><field name="domain_force">[('company_id', 'in', company_ids)]</field><field name="groups" eval="[(4, ref('mu_construction_core.group_construction_user'))]"/></record>
+</odoo>
+
