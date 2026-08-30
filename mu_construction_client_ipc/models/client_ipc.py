@@ -353,16 +353,16 @@ class ConstructionClientIPCLine(models.Model):
     currency_id = fields.Many2one("res.currency", related="ipc_id.currency_id", store=True)
     original_quantity = fields.Float(related="boq_line_id.quantity", store=True)
     approved_variation_quantity = fields.Float()
-    revised_quantity = fields.Float(compute="_compute_quantities", store=True)
-    previous_certified_quantity = fields.Float(compute="_compute_quantities")
+    revised_quantity = fields.Float(compute="_compute_current_values", store=True)
+    previous_certified_quantity = fields.Float(compute="_compute_cumulative_values")
     submitted_current_quantity = fields.Float()
     consultant_certified_quantity = fields.Float()
     deferred_quantity = fields.Float()
     rejected_quantity = fields.Float()
-    cumulative_certified_quantity = fields.Float(compute="_compute_quantities")
+    cumulative_certified_quantity = fields.Float(compute="_compute_cumulative_values")
     contract_rate = fields.Monetary(related="boq_line_id.rate", currency_field="currency_id", store=True)
-    current_amount = fields.Monetary(compute="_compute_quantities", store=True, currency_field="currency_id")
-    cumulative_amount = fields.Monetary(compute="_compute_quantities", currency_field="currency_id")
+    current_amount = fields.Monetary(compute="_compute_current_values", store=True, currency_field="currency_id")
+    cumulative_amount = fields.Monetary(compute="_compute_cumulative_values", currency_field="currency_id")
     measurement_reference = fields.Char()
     drawing_id = fields.Many2one("mu.construction.drawing", ondelete="restrict")
     location_id = fields.Many2one("mu.construction.location", ondelete="restrict")
@@ -383,13 +383,18 @@ class ConstructionClientIPCLine(models.Model):
             raise UserError(_("New measurement lines cannot be added to certified IPC records."))
         return super().create(vals_list)
 
-    @api.depends(
-        "original_quantity", "approved_variation_quantity", "consultant_certified_quantity",
-        "contract_rate", "ipc_id.contract_id", "ipc_id.certificate_number", "boq_line_id",
-    )
-    def _compute_quantities(self):
+    @api.depends("original_quantity", "approved_variation_quantity", "consultant_certified_quantity", "contract_rate")
+    def _compute_current_values(self):
         for line in self:
             line.revised_quantity = line.original_quantity + line.approved_variation_quantity
+            line.current_amount = line.consultant_certified_quantity * line.contract_rate
+
+    @api.depends(
+        "consultant_certified_quantity", "contract_rate", "ipc_id.contract_id",
+        "ipc_id.certificate_number", "boq_line_id",
+    )
+    def _compute_cumulative_values(self):
+        for line in self:
             previous = self.search([
                 ("boq_line_id", "=", line.boq_line_id.id),
                 ("ipc_id.contract_id", "=", line.ipc_id.contract_id.id),
@@ -398,7 +403,6 @@ class ConstructionClientIPCLine(models.Model):
             ]) if line.boq_line_id and line.ipc_id.contract_id else self.browse()
             line.previous_certified_quantity = sum(previous.mapped("consultant_certified_quantity"))
             line.cumulative_certified_quantity = line.previous_certified_quantity + line.consultant_certified_quantity
-            line.current_amount = line.consultant_certified_quantity * line.contract_rate
             line.cumulative_amount = line.cumulative_certified_quantity * line.contract_rate
 
     @api.constrains(
