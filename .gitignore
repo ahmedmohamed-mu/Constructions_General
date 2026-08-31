@@ -3,3 +3,4 @@ cw150_spreadsheet_work/previews/
 outputs/CW-150/*.inspect.ndjson
 cw150_validator_smoke/
 __pycache__/
+outputs/CW-150/CW-150_Migration_CSV_Templates/

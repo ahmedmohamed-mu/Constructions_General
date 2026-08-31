@@ -29,6 +29,8 @@ python tools/cw150_generate_templates.py C:\migration\templates
 
 المولد يرفض الكتابة فوق أي Template موجود افتراضيًا. يستخدم `--force` فقط عند الرغبة الصريحة في إعادة توليد Pack فارغ؛ لذلك تحفظ ملفات البيانات المعبأة في مسار منفصل وتحت Version/Backup مناسب.
 
+يوجد Pack جاهز للتسليم في `outputs/CW-150/CW-150_Migration_CSV_Templates.zip`، ويحتوي 28 CSV Template و`cw150_template_manifest.json`. SHA-256 للإصدار الحالي: `3507C2B39C7FFCC0ED5A5F46A43C3EFDACA28125C5B8FC9009F1EC07EA3B2121`.
+
 فحص الملفات المعبأة:
 
 ```powershell

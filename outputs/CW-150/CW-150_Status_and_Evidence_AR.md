@@ -20,6 +20,7 @@
 - `outputs/CW-150_evidence/01-build-success.jpg` — دليل نجاح build `37196335` وربطه بالـcommit أعلاه.
 - Validator مستقل Read-only لملفات CSV يغطي Schema الكائنات الـ28، ويفحص الأعمدة والقيم المطلوبة والتكرار والمراجع والتواريخ والأرقام واتزان Opening Balances قبل أي Import.
 - مولد CSV Templates ينشئ Pack من 28 ملفًا وManifest من نفس الـSchema، ويرفض الكتابة فوق الملفات الموجودة ما لم يستخدم `--force` صراحة.
+- Pack جاهز لفريق البيانات: `outputs/CW-150/CW-150_Migration_CSV_Templates.zip`، وعدد الملفات المعلن في Manifest هو 28.
 - نتيجة الاختبارات المحلية لأدوات الترحيل: `8 tests`, كلها Passed، وتشمل valid path وnegative data rules والتقارير وعدد كائنات الـSchema وتوليد Templates وحماية overwrite.
 
 ## ما لم ينفذ عمدًا
