@@ -310,12 +310,13 @@ class ConstructionDemoGenerator(models.AbstractModel):
             itp = self.env["mu.construction.itp"].create({
                 "project_id": project.id, "contract_id": contract.id,
                 "name": "%s-ITP-CONC" % prefix, "activity": "Concrete Works",
-                "state": "approved", "line_ids": [(0, 0, {
+                "line_ids": [(0, 0, {
                     "inspection_step": "Reinforcement and formwork inspection",
                     "acceptance_criteria": "Approved IFC drawings and specifications",
                     "hold_point": True, "required_record": "WIR",
                 })],
             })
+            itp.write({"state": "approved"})
             self.env["mu.construction.inspection"].create({
                 "inspection_type": "wir", "project_id": project.id,
                 "contract_id": contract.id, "work_package_id": tasks[1].id,
