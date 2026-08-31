@@ -18,6 +18,8 @@
 - مراجعة بصرية لكل أوراق الـWorkbook بعد التصدير.
 - Runbook للـDry Runs والمصالحة وPilot/Parallel وGo/No-Go وHypercare وRollback.
 - `outputs/CW-150_evidence/01-build-success.jpg` — دليل نجاح build `37196335` وربطه بالـcommit أعلاه.
+- Validator مستقل Read-only لملفات CSV يغطي Schema الكائنات الـ28، ويفحص الأعمدة والقيم المطلوبة والتكرار والمراجع والتواريخ والأرقام واتزان Opening Balances قبل أي Import.
+- نتيجة الاختبارات المحلية للـValidator: `6 tests`, كلها Passed، وتشمل valid path وnegative data rules والتقارير وعدد كائنات الـSchema.
 
 ## ما لم ينفذ عمدًا
 

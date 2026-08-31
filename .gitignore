@@ -1,3 +1,5 @@
 cw150_spreadsheet_work/node_modules/
 cw150_spreadsheet_work/previews/
 outputs/CW-150/*.inspect.ndjson
+cw150_validator_smoke/
+__pycache__/
