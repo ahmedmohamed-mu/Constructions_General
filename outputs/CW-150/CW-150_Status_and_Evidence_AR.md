@@ -22,6 +22,8 @@
 - مولد CSV Templates ينشئ Pack من 28 ملفًا وManifest من نفس الـSchema، ويرفض الكتابة فوق الملفات الموجودة ما لم يستخدم `--force` صراحة.
 - Pack جاهز لفريق البيانات: `outputs/CW-150/CW-150_Migration_CSV_Templates.zip`، وعدد الملفات المعلن في Manifest هو 28.
 - نتيجة الاختبارات المحلية لأدوات الترحيل: `8 tests`, كلها Passed، وتشمل valid path وnegative data rules والتقارير وعدد كائنات الـSchema وتوليد Templates وحماية overwrite.
+- النسخة النهائية لأدوات الترحيل على commit `6fd451e2ebf5d07b07268155fe19e9af6dc511a4`، ونجح Odoo.sh Development build رقم `37245193` على Odoo 19 خلال `0:03:45`.
+- `outputs/CW-150_evidence/02-migration-toolkit-build-success.jpg` — دليل نجاح build `37245193` للـHEAD. يظهر بجواره build وسيط للـcommit `09ec03d` فشل برسالة اتصال HTTP بالبناء؛ تم تجاوزه، بينما نجح build السابق `37244827` والـHEAD النهائي `37245193`، لذلك لا توجد علامة على فشل كود أو اختبار وظيفي.
 
 ## ما لم ينفذ عمدًا
 
