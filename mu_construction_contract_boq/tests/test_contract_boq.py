@@ -31,7 +31,7 @@ class TestConstructionContractBOQ(TransactionCase):
 
         self.assertFalse(root_menu.parent_id, "Construction must be a Home application, not a Project submenu")
         self.assertTrue(root_menu.web_icon, "Construction Home application must have an icon")
-        self.assertIn(construction_user, root_menu.groups_id)
+        self.assertIn(construction_user, root_menu.group_ids)
         self.assertEqual(contract_section.parent_id, root_menu)
         self.assertEqual(configuration.parent_id, root_menu)
         self.assertIn(construction_manager, system_admin.implied_ids)
