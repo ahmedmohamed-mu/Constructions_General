@@ -21,6 +21,16 @@
 
 ## التشغيل
 
+إنشاء Pack فارغ من 28 CSV Template وManifest:
+
+```powershell
+python tools/cw150_generate_templates.py C:\migration\templates
+```
+
+المولد يرفض الكتابة فوق أي Template موجود افتراضيًا. يستخدم `--force` فقط عند الرغبة الصريحة في إعادة توليد Pack فارغ؛ لذلك تحفظ ملفات البيانات المعبأة في مسار منفصل وتحت Version/Backup مناسب.
+
+فحص الملفات المعبأة:
+
 ```powershell
 python tools/cw150_migration_validator.py C:\migration\extracts `
   --output-dir C:\migration\reports `

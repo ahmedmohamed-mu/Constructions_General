@@ -19,7 +19,8 @@
 - Runbook للـDry Runs والمصالحة وPilot/Parallel وGo/No-Go وHypercare وRollback.
 - `outputs/CW-150_evidence/01-build-success.jpg` — دليل نجاح build `37196335` وربطه بالـcommit أعلاه.
 - Validator مستقل Read-only لملفات CSV يغطي Schema الكائنات الـ28، ويفحص الأعمدة والقيم المطلوبة والتكرار والمراجع والتواريخ والأرقام واتزان Opening Balances قبل أي Import.
-- نتيجة الاختبارات المحلية للـValidator: `6 tests`, كلها Passed، وتشمل valid path وnegative data rules والتقارير وعدد كائنات الـSchema.
+- مولد CSV Templates ينشئ Pack من 28 ملفًا وManifest من نفس الـSchema، ويرفض الكتابة فوق الملفات الموجودة ما لم يستخدم `--force` صراحة.
+- نتيجة الاختبارات المحلية لأدوات الترحيل: `8 tests`, كلها Passed، وتشمل valid path وnegative data rules والتقارير وعدد كائنات الـSchema وتوليد Templates وحماية overwrite.
 
 ## ما لم ينفذ عمدًا
 
