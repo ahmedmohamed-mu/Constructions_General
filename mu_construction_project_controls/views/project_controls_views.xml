@@ -79,8 +79,9 @@
         <field name="arch" type="xml"><form><header><button name="action_submit" type="object" string="Submit" class="btn-primary" invisible="state != 'draft'"/><button name="action_approve" type="object" string="Approve" class="btn-primary" invisible="state != 'review'"/><field name="state" widget="statusbar"/></header><sheet><group><group><field name="name"/><field name="close_id"/><field name="project_id"/><field name="cost_code_id"/></group><group><field name="accrual_date"/><field name="amount"/><field name="currency_id"/><field name="reversal_date"/></group></group><group><field name="purchase_order_id"/><field name="subcontract_measurement_id"/><field name="reviewer_id"/><field name="approver_id"/><field name="journal_entry_id"/></group><field name="basis"/></sheet><chatter/></form></field>
     </record>
 
-    <menuitem id="menu_project_controls" name="Project Controls" parent="mu_construction_contract_boq.menu_construction_operations" sequence="120"/>
-    <menuitem id="menu_monthly_closes" name="Monthly Close &amp; WIP" parent="menu_project_controls" action="action_monthly_closes" sequence="10"/>
-    <menuitem id="menu_control_profiles" name="Controls Profiles" parent="mu_construction_core.menu_construction_configuration" action="action_control_profiles" sequence="140"/>
+    <menuitem id="menu_project_controls" name="Project Controls" sequence="120"
+              web_icon="mu_construction_core,static/description/icon.svg" groups="mu_construction_core.group_controls_user"/>
+    <menuitem id="menu_monthly_closes" name="Monthly Close &amp; WIP" parent="menu_project_controls" action="action_monthly_closes" sequence="10" groups="mu_construction_core.group_controls_user"/>
+    <menuitem id="menu_control_profiles" name="Controls Profiles" parent="menu_project_controls" action="action_control_profiles" sequence="90" groups="mu_construction_core.group_controls_manager"/>
 </odoo>
 

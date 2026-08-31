@@ -32,12 +32,13 @@
     <record id="view_release_form" model="ir.ui.view"><field name="name">mu.construction.release.request.form</field><field name="model">mu.construction.release.request</field><field name="arch" type="xml"><form><header><button name="action_submit" type="object" string="Submit" class="btn-primary" invisible="state != 'draft'"/><button name="action_review" type="object" string="Review" class="btn-primary" invisible="state != 'review'"/><button name="action_approve" type="object" string="Approve" class="btn-primary" invisible="state != 'reviewed'"/><button name="action_record_release" type="object" string="Record Release" class="btn-primary" invisible="state != 'approved'"/><field name="state" widget="statusbar"/></header><sheet><group><group><field name="project_id"/><field name="contract_id"/><field name="release_type"/><field name="request_date"/></group><group><field name="dlp_id"/><field name="final_account_id"/><field name="guarantee_id" invisible="release_type != 'guarantee'"/><field name="amount"/><field name="release_reference"/></group></group><field name="document_ids" widget="many2many_tags"/></sheet><chatter/></form></field></record>
     <record id="action_releases" model="ir.actions.act_window"><field name="name">Retention &amp; Guarantee Releases</field><field name="res_model">mu.construction.release.request</field><field name="view_mode">list,form</field></record>
 
-    <menuitem id="menu_equipment_closeout" name="Equipment &amp; Closeout" parent="mu_construction_contract_boq.menu_construction_operations" sequence="130"/>
-    <menuitem id="menu_commissioning" name="Testing &amp; Commissioning" parent="menu_equipment_closeout" action="action_commissioning" sequence="10"/>
-    <menuitem id="menu_handovers" name="Handover" parent="menu_equipment_closeout" action="action_handovers" sequence="20"/>
-    <menuitem id="menu_dlps" name="DLP" parent="menu_equipment_closeout" action="action_dlps" sequence="30"/>
-    <menuitem id="menu_final_accounts" name="Final Account" parent="menu_equipment_closeout" action="action_final_accounts" sequence="40"/>
-    <menuitem id="menu_releases" name="Retention / Guarantee Release" parent="menu_equipment_closeout" action="action_releases" sequence="50"/>
-    <menuitem id="menu_equipment_rates" name="Equipment Charge Rates" parent="mu_construction_core.menu_construction_configuration" action="action_equipment_rates" sequence="150"/>
-    <menuitem id="menu_closeout_profiles" name="Closeout Profiles" parent="mu_construction_core.menu_construction_configuration" action="action_closeout_profiles" sequence="160"/>
+    <menuitem id="menu_equipment_closeout" name="Equipment &amp; Closeout" sequence="130"
+              web_icon="mu_construction_core,static/description/icon.svg" groups="mu_construction_core.group_closeout_user"/>
+    <menuitem id="menu_commissioning" name="Testing &amp; Commissioning" parent="menu_equipment_closeout" action="action_commissioning" sequence="10" groups="mu_construction_core.group_closeout_user"/>
+    <menuitem id="menu_handovers" name="Handover" parent="menu_equipment_closeout" action="action_handovers" sequence="20" groups="mu_construction_core.group_closeout_user"/>
+    <menuitem id="menu_dlps" name="DLP" parent="menu_equipment_closeout" action="action_dlps" sequence="30" groups="mu_construction_core.group_closeout_user"/>
+    <menuitem id="menu_final_accounts" name="Final Account" parent="menu_equipment_closeout" action="action_final_accounts" sequence="40" groups="mu_construction_core.group_closeout_user"/>
+    <menuitem id="menu_releases" name="Retention / Guarantee Release" parent="menu_equipment_closeout" action="action_releases" sequence="50" groups="mu_construction_core.group_closeout_user"/>
+    <menuitem id="menu_equipment_rates" name="Equipment Charge Rates" parent="menu_equipment_closeout" action="action_equipment_rates" sequence="90" groups="mu_construction_core.group_closeout_manager"/>
+    <menuitem id="menu_closeout_profiles" name="Closeout Profiles" parent="menu_equipment_closeout" action="action_closeout_profiles" sequence="91" groups="mu_construction_core.group_closeout_manager"/>
 </odoo>

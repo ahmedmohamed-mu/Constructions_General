@@ -4,43 +4,43 @@
         <field name="name">Site execution profiles: allowed companies</field>
         <field name="model_id" ref="model_mu_construction_site_execution_profile"/>
         <field name="domain_force">[('company_id', 'in', company_ids)]</field>
-        <field name="groups" eval="[(4, ref('mu_construction_core.group_construction_user'))]"/>
+        <field name="groups" eval="[(4, ref('mu_construction_core.group_site_user'))]"/>
     </record>
     <record id="daily_site_report_company_rule" model="ir.rule">
         <field name="name">Daily site reports: allowed companies</field>
         <field name="model_id" ref="model_mu_construction_daily_site_report"/>
         <field name="domain_force">[('company_id', 'in', company_ids)]</field>
-        <field name="groups" eval="[(4, ref('mu_construction_core.group_construction_user'))]"/>
+        <field name="groups" eval="[(4, ref('mu_construction_core.group_site_user'))]"/>
     </record>
     <record id="daily_progress_company_rule" model="ir.rule">
         <field name="name">Daily progress lines: allowed companies</field>
         <field name="model_id" ref="model_mu_construction_daily_progress"/>
         <field name="domain_force">[('report_id.company_id', 'in', company_ids)]</field>
-        <field name="groups" eval="[(4, ref('mu_construction_core.group_construction_user'))]"/>
+        <field name="groups" eval="[(4, ref('mu_construction_core.group_site_user'))]"/>
     </record>
     <record id="daily_manpower_company_rule" model="ir.rule">
         <field name="name">Daily manpower lines: allowed companies</field>
         <field name="model_id" ref="model_mu_construction_daily_manpower"/>
         <field name="domain_force">[('report_id.company_id', 'in', company_ids)]</field>
-        <field name="groups" eval="[(4, ref('mu_construction_core.group_construction_user'))]"/>
+        <field name="groups" eval="[(4, ref('mu_construction_core.group_site_user'))]"/>
     </record>
     <record id="daily_equipment_company_rule" model="ir.rule">
         <field name="name">Daily equipment lines: allowed companies</field>
         <field name="model_id" ref="model_mu_construction_daily_equipment"/>
         <field name="domain_force">[('report_id.company_id', 'in', company_ids)]</field>
-        <field name="groups" eval="[(4, ref('mu_construction_core.group_construction_user'))]"/>
+        <field name="groups" eval="[(4, ref('mu_construction_core.group_site_user'))]"/>
     </record>
     <record id="daily_material_company_rule" model="ir.rule">
         <field name="name">Daily material lines: allowed companies</field>
         <field name="model_id" ref="model_mu_construction_daily_material"/>
         <field name="domain_force">[('report_id.company_id', 'in', company_ids)]</field>
-        <field name="groups" eval="[(4, ref('mu_construction_core.group_construction_user'))]"/>
+        <field name="groups" eval="[(4, ref('mu_construction_core.group_site_user'))]"/>
     </record>
     <record id="site_constraint_company_rule" model="ir.rule">
         <field name="name">Site constraints: allowed companies</field>
         <field name="model_id" ref="model_mu_construction_site_constraint"/>
         <field name="domain_force">[('report_id.company_id', 'in', company_ids)]</field>
-        <field name="groups" eval="[(4, ref('mu_construction_core.group_construction_user'))]"/>
+        <field name="groups" eval="[(4, ref('mu_construction_core.group_site_user'))]"/>
     </record>
 </odoo>
 

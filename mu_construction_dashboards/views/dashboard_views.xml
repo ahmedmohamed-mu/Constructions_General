@@ -44,14 +44,14 @@
         <field name="inherit_id" ref="project.edit_project"/>
         <field name="arch" type="xml">
             <xpath expr="//notebook" position="inside">
-                <page string="Construction Dashboard" groups="mu_construction_core.group_construction_user">
+                <page string="Construction Dashboard" groups="mu_construction_core.group_dashboard_user">
                     <group string="Operations" col="4">
                         <field name="dashboard_pending_site_report_count"/><field name="dashboard_open_quality_count"/>
                         <field name="dashboard_open_change_count"/><field name="dashboard_pending_procurement_count"/>
                         <field name="dashboard_pending_ipc_count"/><field name="dashboard_open_closeout_count"/>
                         <field name="dashboard_operational_health" widget="badge"/>
                     </group>
-                    <group string="Portfolio Financials" col="4" groups="mu_construction_core.group_construction_manager">
+                    <group string="Portfolio Financials" col="4" groups="mu_construction_core.group_dashboard_manager">
                         <field name="dashboard_contract_value"/><field name="dashboard_revised_budget"/>
                         <field name="dashboard_actual"/><field name="dashboard_eac"/>
                         <field name="dashboard_forecast_variance"/><field name="dashboard_billed"/>
@@ -99,12 +99,13 @@
     <record id="action_quality_workspace" model="ir.actions.act_window"><field name="name">Quality Workspace</field><field name="res_model">quality.alert</field><field name="view_mode">list,form</field><field name="view_id" ref="view_quality_workspace_list"/><field name="domain">[('construction_project_id','!=',False),('construction_alert_type','in',('ncr','snag'))]</field></record>
     <record id="action_my_construction_work" model="ir.actions.act_window"><field name="name">My Construction Work</field><field name="res_model">mail.activity</field><field name="view_mode">list</field><field name="view_id" ref="view_my_construction_activity_list"/><field name="domain">[('user_id','=',uid),('res_model','in',('mu.construction.contract','mu.construction.boq','purchase.order','stock.picking','mu.construction.subcontract.measurement','mu.construction.daily.site.report','project.task','mu.construction.drawing','mu.construction.rfi','mu.construction.submittal','mu.construction.transmittal','mu.construction.inspection','quality.alert','mu.construction.client.ipc','mu.construction.potential.change','mu.construction.notice','mu.construction.variation','mu.construction.claim','mu.construction.monthly.close','mu.construction.accrual','mu.construction.commissioning','mu.construction.handover','mu.construction.dlp','mu.construction.dlp.defect','mu.construction.final.account','mu.construction.release.request'))]</field></record>
 
-    <menuitem id="menu_construction_workspaces" name="Workspaces" parent="mu_construction_contract_boq.menu_construction_operations" sequence="1" groups="mu_construction_core.group_construction_user"/>
-    <menuitem id="menu_executive_workspace" name="Executive" parent="menu_construction_workspaces" action="action_executive_workspace" sequence="10" groups="mu_construction_core.group_construction_manager"/>
-    <menuitem id="menu_pm_workspace" name="Project Manager" parent="menu_construction_workspaces" action="action_pm_workspace" sequence="20" groups="mu_construction_core.group_construction_user"/>
-    <menuitem id="menu_commercial_workspace" name="Commercial" parent="menu_construction_workspaces" action="action_commercial_workspace" sequence="30" groups="mu_construction_core.group_construction_user"/>
+    <menuitem id="menu_construction_workspaces" name="Construction Dashboards" sequence="1"
+              web_icon="mu_construction_core,static/description/icon.svg" groups="mu_construction_core.group_dashboard_user"/>
+    <menuitem id="menu_executive_workspace" name="Executive" parent="menu_construction_workspaces" action="action_executive_workspace" sequence="10" groups="mu_construction_core.group_dashboard_manager"/>
+    <menuitem id="menu_pm_workspace" name="Project Manager" parent="menu_construction_workspaces" action="action_pm_workspace" sequence="20" groups="mu_construction_core.group_dashboard_user"/>
+    <menuitem id="menu_commercial_workspace" name="Commercial" parent="menu_construction_workspaces" action="action_commercial_workspace" sequence="30" groups="mu_construction_core.group_dashboard_user"/>
     <menuitem id="menu_procurement_workspace" name="Procurement" parent="menu_construction_workspaces" action="action_procurement_workspace" sequence="40" groups="purchase.group_purchase_user"/>
     <menuitem id="menu_finance_workspace" name="Finance" parent="menu_construction_workspaces" action="action_finance_workspace" sequence="50" groups="account.group_account_user"/>
     <menuitem id="menu_quality_workspace" name="Quality" parent="menu_construction_workspaces" action="action_quality_workspace" sequence="60" groups="quality.group_quality_user"/>
-    <menuitem id="menu_my_construction_work" name="My Work" parent="menu_construction_workspaces" action="action_my_construction_work" sequence="70" groups="mu_construction_core.group_construction_user"/>
+    <menuitem id="menu_my_construction_work" name="My Work" parent="menu_construction_workspaces" action="action_my_construction_work" sequence="70" groups="mu_construction_core.group_dashboard_user"/>
 </odoo>

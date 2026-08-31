@@ -139,7 +139,7 @@ class ConstructionClientIPC(models.Model):
 
     def _ensure_user(self, user, role):
         self.ensure_one()
-        if self.env.user != user and not self.env.user.has_group("mu_construction_core.group_construction_manager"):
+        if self.env.user != user and not self.env.user.has_group("mu_construction_core.group_ipc_manager"):
             raise AccessError(_("Only the assigned %s or a Construction Manager may perform this action.") % role)
 
     def _move(self, expected, target, responsible=None):

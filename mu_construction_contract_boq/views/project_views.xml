@@ -2,6 +2,6 @@
 <odoo>
     <record id="view_project_form_contract_boq" model="ir.ui.view">
         <field name="name">project.project.form.contract.boq</field><field name="model">project.project</field><field name="inherit_id" ref="project.edit_project"/>
-        <field name="arch" type="xml"><xpath expr="//div[@name='button_box']" position="inside"><button name="action_view_construction_contracts" type="object" class="oe_stat_button" icon="fa-file-text-o" groups="mu_construction_core.group_construction_user"><field name="construction_contract_count" widget="statinfo" string="Contracts"/></button><button name="action_view_construction_boqs" type="object" class="oe_stat_button" icon="fa-list-ol" groups="mu_construction_core.group_construction_user"><field name="construction_boq_count" widget="statinfo" string="BOQs"/></button></xpath></field>
+        <field name="arch" type="xml"><xpath expr="//div[@name='button_box']" position="inside"><button name="action_view_construction_contracts" type="object" class="oe_stat_button" icon="fa-file-text-o" groups="mu_construction_core.group_contract_user"><field name="construction_contract_count" widget="statinfo" string="Contracts"/></button><button name="action_view_construction_boqs" type="object" class="oe_stat_button" icon="fa-list-ol" groups="mu_construction_core.group_contract_user"><field name="construction_boq_count" widget="statinfo" string="BOQs"/></button></xpath></field>
     </record>
 </odoo>

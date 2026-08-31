@@ -82,7 +82,7 @@ class TestConstructionDashboards(TransactionCase):
             "group_ids": [(6, 0, [
                 self.env.ref("base.group_user").id,
                 self.env.ref("project.group_project_user").id,
-                self.env.ref("mu_construction_core.group_construction_user").id,
+                self.env.ref("mu_construction_core.group_dashboard_user").id,
             ])],
         })
         with self.assertRaises(AccessError):
@@ -96,3 +96,44 @@ class TestConstructionDashboards(TransactionCase):
         self.assertIn("purchase.order", my_work.domain)
         self.assertIn("quality.alert", my_work.domain)
         self.assertIn("mu.construction.monthly.close", my_work.domain)
+
+    def test_operational_apps_are_independent_and_role_scoped(self):
+        app_groups = {
+            "mu_construction_tender_estimation.menu_tender_estimation": "mu_construction_core.group_tender_user",
+            "mu_construction_contract_boq.menu_construction_operations": "mu_construction_core.group_contract_user",
+            "mu_construction_project_bootstrap.menu_project_setup": "mu_construction_core.group_bootstrap_user",
+            "mu_construction_procurement_stock.menu_construction_procurement": "mu_construction_core.group_procurement_user",
+            "mu_construction_subcontract.menu_subcontract_management": "mu_construction_core.group_subcontract_user",
+            "mu_construction_site_execution.menu_site_execution": "mu_construction_core.group_site_user",
+            "mu_construction_quality_documents.menu_document_control": "mu_construction_core.group_document_user",
+            "mu_construction_quality_documents.menu_quality_control": "mu_construction_core.group_quality_user",
+            "mu_construction_client_ipc.menu_client_measurement": "mu_construction_core.group_ipc_user",
+            "mu_construction_changes_claims.menu_changes_claims": "mu_construction_core.group_changes_user",
+            "mu_construction_project_controls.menu_project_controls": "mu_construction_core.group_controls_user",
+            "mu_construction_equipment_closeout.menu_equipment_closeout": "mu_construction_core.group_closeout_user",
+        }
+        for menu_xmlid, group_xmlid in app_groups.items():
+            menu = self.env.ref(menu_xmlid)
+            group = self.env.ref(group_xmlid)
+            self.assertFalse(menu.parent_id, "%s must be a root application" % menu_xmlid)
+            self.assertTrue(menu.web_icon, "%s must have an application icon" % menu_xmlid)
+            self.assertIn(group, menu.group_ids)
+
+        tender_user = self.env.ref("mu_construction_core.group_tender_user")
+        contract_user = self.env.ref("mu_construction_core.group_contract_user")
+        self.assertNotIn(contract_user, tender_user.implied_ids)
+
+    def test_tender_role_does_not_grant_contract_operations(self):
+        user = self.env["res.users"].create({
+            "name": "Tender Only User", "login": "tender-only-user",
+            "group_ids": [(6, 0, [
+                self.env.ref("base.group_user").id,
+                self.env.ref("mu_construction_core.group_tender_user").id,
+            ])],
+        })
+        self.assertTrue(
+            self.env["mu.construction.tender"].with_user(user).has_access("create")
+        )
+        self.assertFalse(
+            self.env["mu.construction.contract"].with_user(user).has_access("create")
+        )

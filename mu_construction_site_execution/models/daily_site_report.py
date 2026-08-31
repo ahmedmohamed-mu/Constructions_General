@@ -125,7 +125,7 @@ class ConstructionDailySiteReport(models.Model):
         for report in self:
             if report.state != "review":
                 raise UserError(_("Only reports under review can be marked reviewed."))
-            if self.env.user != report.reviewer_id and not self.env.user.has_group("mu_construction_core.group_construction_manager"):
+            if self.env.user != report.reviewer_id and not self.env.user.has_group("mu_construction_core.group_site_manager"):
                 raise AccessError(_("Only the assigned reviewer or a Construction Manager may review."))
             report.write({"state": "reviewed", "next_responsible_id": report.approver_id.id})
             report.activity_schedule(
@@ -137,7 +137,7 @@ class ConstructionDailySiteReport(models.Model):
         for report in self:
             if report.state != "reviewed":
                 raise UserError(_("Only reviewed reports can be approved."))
-            if self.env.user != report.approver_id and not self.env.user.has_group("mu_construction_core.group_construction_manager"):
+            if self.env.user != report.approver_id and not self.env.user.has_group("mu_construction_core.group_site_manager"):
                 raise AccessError(_("Only the assigned approver or a Construction Manager may approve."))
             report.progress_line_ids._check_cumulative_quantity()
             report.write({"state": "approved", "next_responsible_id": False})

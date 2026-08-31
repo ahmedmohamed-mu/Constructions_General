@@ -25,7 +25,7 @@
     </record>
     <record id="action_subcontract_measurements" model="ir.actions.act_window"><field name="name">Subcontract Measurements</field><field name="res_model">mu.construction.subcontract.measurement</field><field name="view_mode">list,form</field></record>
     <menuitem id="menu_subcontract_management" name="Subcontract Management"
-              parent="mu_construction_contract_boq.menu_construction_operations" sequence="50"
-              groups="mu_construction_core.group_construction_user"/>
-    <menuitem id="menu_subcontract_measurements" name="Measurements &amp; Certificates" parent="menu_subcontract_management" action="action_subcontract_measurements" sequence="10" groups="mu_construction_core.group_construction_user"/>
+              sequence="50" web_icon="mu_construction_core,static/description/icon.svg"
+              groups="mu_construction_core.group_subcontract_user"/>
+    <menuitem id="menu_subcontract_measurements" name="Measurements &amp; Certificates" parent="menu_subcontract_management" action="action_subcontract_measurements" sequence="10" groups="mu_construction_core.group_subcontract_user"/>
 </odoo>

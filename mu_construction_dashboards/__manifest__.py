@@ -1,7 +1,7 @@
 {
     "name": "MU Construction Dashboards and Workspaces",
     "summary": "Traceable role workspaces over construction source documents",
-    "version": "19.0.1.0.3",
+    "version": "19.0.2.0.0",
     "category": "Services/Project",
     "author": "MU Constructions General",
     "license": "LGPL-3",
@@ -19,5 +19,5 @@
     ],
     "data": ["views/dashboard_views.xml"],
     "installable": True,
-    "application": False,
+    "application": True,
 }

@@ -91,7 +91,7 @@ class PurchaseOrder(models.Model):
         for order in self:
             if order.construction_approval_state != "review":
                 raise UserError(_("Only purchase orders under review can be marked reviewed."))
-            if self.env.user != order.construction_reviewer_id and not self.env.user.has_group("mu_construction_core.group_construction_manager"):
+            if self.env.user != order.construction_reviewer_id and not self.env.user.has_group("mu_construction_core.group_procurement_manager"):
                 raise AccessError(_("Only the assigned reviewer or a Construction Manager may review this purchase order."))
             order.write({"construction_approval_state": "reviewed", "construction_next_responsible_id": order.construction_approver_id.id})
             order.activity_schedule("mail.mail_activity_data_todo", user_id=order.construction_approver_id.id, summary=_("Construction purchase order requires approval"))
@@ -100,7 +100,7 @@ class PurchaseOrder(models.Model):
         for order in self:
             if order.construction_approval_state != "reviewed":
                 raise UserError(_("Only reviewed purchase orders can be approved."))
-            if self.env.user != order.construction_approver_id and not self.env.user.has_group("mu_construction_core.group_construction_manager"):
+            if self.env.user != order.construction_approver_id and not self.env.user.has_group("mu_construction_core.group_procurement_manager"):
                 raise AccessError(_("Only the assigned approver or a Construction Manager may approve this purchase order."))
             order.write({"construction_approval_state": "approved", "construction_next_responsible_id": False})
 

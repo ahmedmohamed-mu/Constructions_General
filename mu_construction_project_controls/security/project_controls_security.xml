@@ -4,30 +4,30 @@
         <field name="name">Project Controls Profile Company</field>
         <field name="model_id" ref="model_mu_construction_project_control_profile"/>
         <field name="domain_force">[('company_id', 'in', company_ids)]</field>
-        <field name="groups" eval="[(4, ref('mu_construction_core.group_construction_user'))]"/>
+        <field name="groups" eval="[(4, ref('mu_construction_core.group_controls_user'))]"/>
     </record>
     <record id="rule_monthly_close_company" model="ir.rule">
         <field name="name">Monthly Close Company</field>
         <field name="model_id" ref="model_mu_construction_monthly_close"/>
         <field name="domain_force">[('company_id', 'in', company_ids)]</field>
-        <field name="groups" eval="[(4, ref('mu_construction_core.group_construction_user'))]"/>
+        <field name="groups" eval="[(4, ref('mu_construction_core.group_controls_user'))]"/>
     </record>
     <record id="rule_monthly_close_line_company" model="ir.rule">
         <field name="name">Monthly Close Line Company</field>
         <field name="model_id" ref="model_mu_construction_monthly_close_line"/>
         <field name="domain_force">[('close_id.company_id', 'in', company_ids)]</field>
-        <field name="groups" eval="[(4, ref('mu_construction_core.group_construction_user'))]"/>
+        <field name="groups" eval="[(4, ref('mu_construction_core.group_controls_user'))]"/>
     </record>
     <record id="rule_accrual_company" model="ir.rule">
         <field name="name">Construction Accrual Company</field>
         <field name="model_id" ref="model_mu_construction_accrual"/>
         <field name="domain_force">[('company_id', 'in', company_ids)]</field>
-        <field name="groups" eval="[(4, ref('mu_construction_core.group_construction_user'))]"/>
+        <field name="groups" eval="[(4, ref('mu_construction_core.group_controls_user'))]"/>
     </record>
     <record id="rule_cash_flow_company" model="ir.rule">
         <field name="name">Cash Flow Forecast Company</field>
         <field name="model_id" ref="model_mu_construction_cash_flow_forecast"/>
         <field name="domain_force">[('close_id.company_id', 'in', company_ids)]</field>
-        <field name="groups" eval="[(4, ref('mu_construction_core.group_construction_user'))]"/>
+        <field name="groups" eval="[(4, ref('mu_construction_core.group_controls_user'))]"/>
     </record>
 </odoo>

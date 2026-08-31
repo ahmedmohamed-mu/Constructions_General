@@ -89,7 +89,7 @@ class ConstructionCommercialMixin(models.AbstractModel):
 
     def _ensure_assignee(self, user, role):
         self.ensure_one()
-        if self.env.user != user and not self.env.user.has_group("mu_construction_core.group_construction_manager"):
+        if self.env.user != user and not self.env.user.has_group("mu_construction_core.group_changes_manager"):
             raise AccessError(_("Only the assigned %s or a Construction Manager may perform this action.") % role)
 
 

@@ -96,7 +96,11 @@ class ConstructionControlMixin(models.AbstractModel):
         for record in self:
             if record.state != "review":
                 raise UserError(_("Only records under review can be marked reviewed."))
-            if self.env.user != record.reviewer_id and not self.env.user.has_group("mu_construction_core.group_construction_manager"):
+            is_domain_manager = (
+                self.env.user.has_group("mu_construction_core.group_document_manager")
+                or self.env.user.has_group("mu_construction_core.group_quality_manager")
+            )
+            if self.env.user != record.reviewer_id and not is_domain_manager:
                 raise AccessError(_("Only the assigned reviewer or a Construction Manager may review."))
             record.write({"state": "reviewed", "next_responsible_id": record.approver_id.id})
             record.activity_schedule("mail.mail_activity_data_todo", user_id=record.approver_id.id,
@@ -106,7 +110,11 @@ class ConstructionControlMixin(models.AbstractModel):
         for record in self:
             if record.state != "reviewed":
                 raise UserError(_("Only reviewed records can be approved."))
-            if self.env.user != record.approver_id and not self.env.user.has_group("mu_construction_core.group_construction_manager"):
+            is_domain_manager = (
+                self.env.user.has_group("mu_construction_core.group_document_manager")
+                or self.env.user.has_group("mu_construction_core.group_quality_manager")
+            )
+            if self.env.user != record.approver_id and not is_domain_manager:
                 raise AccessError(_("Only the assigned approver or a Construction Manager may approve."))
             record.write({"state": "approved", "next_responsible_id": False})
 

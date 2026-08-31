@@ -1,2 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<odoo><record id="procurement_profile_company_rule" model="ir.rule"><field name="name">Construction procurement profiles: allowed companies</field><field name="model_id" ref="model_mu_construction_procurement_profile"/><field name="domain_force">[('company_id', 'in', company_ids)]</field><field name="groups" eval="[(4, ref('mu_construction_core.group_construction_user'))]"/></record></odoo>
+<odoo>
+    <record id="mu_construction_core.group_procurement_user" model="res.groups">
+        <field name="implied_ids" eval="[(4, ref('purchase.group_purchase_user')), (4, ref('stock.group_stock_user'))]"/>
+    </record>
+    <record id="mu_construction_core.group_procurement_manager" model="res.groups">
+        <field name="implied_ids" eval="[(4, ref('purchase.group_purchase_manager')), (4, ref('stock.group_stock_manager'))]"/>
+    </record>
+    <record id="procurement_profile_company_rule" model="ir.rule"><field name="name">Construction procurement profiles: allowed companies</field><field name="model_id" ref="model_mu_construction_procurement_profile"/><field name="domain_force">[('company_id', 'in', company_ids)]</field><field name="groups" eval="[(4, ref('mu_construction_core.group_procurement_user'))]"/></record>
+</odoo>

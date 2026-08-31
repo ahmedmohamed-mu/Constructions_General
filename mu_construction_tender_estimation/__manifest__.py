@@ -1,7 +1,7 @@
 {
     "name": "MU Construction Tender and Estimation",
     "summary": "Integrated tender register, versioned estimates, resource costing, and BOQ generation",
-    "version": "19.0.1.0.0",
+    "version": "19.0.2.0.0",
     "category": "Services/Project",
     "author": "MU Constructions General",
     "license": "LGPL-3",

@@ -1,7 +1,7 @@
 {
     "name": "MU Construction Equipment and Closeout",
     "summary": "Equipment cost snapshots, commissioning, handover, DLP, final account and releases",
-    "version": "19.0.1.0.1",
+    "version": "19.0.2.0.0",
     "category": "Services/Project",
     "author": "MU Constructions General",
     "license": "LGPL-3",
@@ -17,5 +17,5 @@
         "views/equipment_closeout_views.xml",
     ],
     "installable": True,
-    "application": False,
+    "application": True,
 }

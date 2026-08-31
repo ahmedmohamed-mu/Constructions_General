@@ -109,13 +109,13 @@ class ConstructionBOQ(models.Model):
 
     def action_mark_reviewed(self):
         for record in self:
-            if self.env.user != record.reviewer_id and not self.env.user.has_group("mu_construction_core.group_construction_manager"):
+            if self.env.user != record.reviewer_id and not self.env.user.has_group("mu_construction_core.group_contract_manager"):
                 raise UserError(_("Only the assigned reviewer or a Construction Manager may review this BOQ."))
             record._transition({"review"}, "reviewed", record.approver_id)
 
     def action_approve(self):
         for record in self:
-            if self.env.user != record.approver_id and not self.env.user.has_group("mu_construction_core.group_construction_manager"):
+            if self.env.user != record.approver_id and not self.env.user.has_group("mu_construction_core.group_contract_manager"):
                 raise UserError(_("Only the assigned approver or a Construction Manager may approve this BOQ."))
             record._transition({"reviewed"}, "approved")
 

@@ -146,7 +146,7 @@ class ProjectTask(models.Model):
         for task in self:
             if task.work_package_state != "review":
                 raise UserError(_("Only work packages under review can be marked reviewed."))
-            if self.env.user != task.work_package_reviewer_id and not self.env.user.has_group("mu_construction_core.group_construction_manager"):
+            if self.env.user != task.work_package_reviewer_id and not self.env.user.has_group("mu_construction_core.group_site_manager"):
                 raise AccessError(_("Only the assigned reviewer or a Construction Manager may review."))
             task.write({
                 "work_package_state": "reviewed",
@@ -161,7 +161,7 @@ class ProjectTask(models.Model):
         for task in self:
             if task.work_package_state != "reviewed":
                 raise UserError(_("Only reviewed work packages can be approved."))
-            if self.env.user != task.work_package_approver_id and not self.env.user.has_group("mu_construction_core.group_construction_manager"):
+            if self.env.user != task.work_package_approver_id and not self.env.user.has_group("mu_construction_core.group_site_manager"):
                 raise AccessError(_("Only the assigned approver or a Construction Manager may approve."))
             task.write({"work_package_state": "approved", "work_package_next_responsible_id": False})
 

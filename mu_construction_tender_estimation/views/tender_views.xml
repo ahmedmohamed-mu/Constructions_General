@@ -9,7 +9,7 @@
         </sheet><chatter/></form></field></record>
     <record id="action_construction_tenders" model="ir.actions.act_window"><field name="name">Construction Tenders</field><field name="res_model">mu.construction.tender</field><field name="view_mode">list,form</field></record>
     <menuitem id="menu_tender_estimation" name="Tender &amp; Estimation"
-              parent="mu_construction_contract_boq.menu_construction_operations" sequence="10"
-              groups="mu_construction_core.group_construction_user"/>
+              sequence="10" web_icon="mu_construction_core,static/description/icon.svg"
+              groups="mu_construction_core.group_tender_user"/>
     <menuitem id="menu_construction_tenders" name="Tenders" parent="menu_tender_estimation" action="action_construction_tenders" sequence="10"/>
 </odoo>

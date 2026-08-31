@@ -13,43 +13,43 @@ class ProjectProject(models.Model):
     )
     dashboard_contract_value = fields.Monetary(
         compute="_compute_dashboard_financials", compute_sudo=True,
-        currency_field="dashboard_currency_id", groups="mu_construction_core.group_construction_manager",
+        currency_field="dashboard_currency_id", groups="mu_construction_core.group_dashboard_manager",
         string="Revised Contract Value",
     )
     dashboard_revised_budget = fields.Monetary(
         compute="_compute_dashboard_financials", compute_sudo=True,
-        currency_field="dashboard_currency_id", groups="mu_construction_core.group_construction_manager",
+        currency_field="dashboard_currency_id", groups="mu_construction_core.group_dashboard_manager",
         string="Revised Budget",
     )
     dashboard_actual = fields.Monetary(
         compute="_compute_dashboard_financials", compute_sudo=True,
-        currency_field="dashboard_currency_id", groups="mu_construction_core.group_construction_manager",
+        currency_field="dashboard_currency_id", groups="mu_construction_core.group_dashboard_manager",
         string="Actual Cost",
     )
     dashboard_eac = fields.Monetary(
         compute="_compute_dashboard_financials", compute_sudo=True,
-        currency_field="dashboard_currency_id", groups="mu_construction_core.group_construction_manager",
+        currency_field="dashboard_currency_id", groups="mu_construction_core.group_dashboard_manager",
         string="EAC",
     )
     dashboard_forecast_variance = fields.Monetary(
         compute="_compute_dashboard_financials", compute_sudo=True,
-        currency_field="dashboard_currency_id", groups="mu_construction_core.group_construction_manager",
+        currency_field="dashboard_currency_id", groups="mu_construction_core.group_dashboard_manager",
         string="Forecast Variance",
     )
     dashboard_billed = fields.Monetary(
         compute="_compute_dashboard_financials", compute_sudo=True,
-        currency_field="dashboard_currency_id", groups="mu_construction_core.group_construction_manager",
+        currency_field="dashboard_currency_id", groups="mu_construction_core.group_dashboard_manager",
         string="Billed to Date",
     )
     dashboard_collected = fields.Monetary(
         compute="_compute_dashboard_financials", compute_sudo=True,
-        currency_field="dashboard_currency_id", groups="mu_construction_core.group_construction_manager",
+        currency_field="dashboard_currency_id", groups="mu_construction_core.group_dashboard_manager",
         string="Collected to Date",
     )
     dashboard_financial_health = fields.Selection(
         [("no_data", "No Controls Close"), ("on_track", "On Track"), ("at_risk", "At Risk")],
         compute="_compute_dashboard_financials", compute_sudo=True,
-        groups="mu_construction_core.group_construction_manager", string="Financial Health",
+        groups="mu_construction_core.group_dashboard_manager", string="Financial Health",
     )
     dashboard_open_change_count = fields.Integer(
         compute="_compute_dashboard_operations", compute_sudo=True, string="Open Changes"

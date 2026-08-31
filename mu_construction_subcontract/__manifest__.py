@@ -1,7 +1,7 @@
 {
     "name": "MU Construction Subcontract Management",
     "summary": "Standard purchase subcontracts, cumulative measurements, retention, and advance recovery",
-    "version": "19.0.1.0.0",
+    "version": "19.0.2.0.0",
     "category": "Services/Project",
     "author": "MU Constructions General",
     "license": "LGPL-3",
@@ -10,11 +10,11 @@
         "security/subcontract_security.xml",
         "security/ir.model.access.csv",
         "data/subcontract_sequence.xml",
-        "views/subcontract_profile_views.xml",
         "views/subcontract_measurement_views.xml",
+        "views/subcontract_profile_views.xml",
         "views/purchase_order_views.xml",
         "views/account_move_views.xml",
     ],
     "installable": True,
-    "application": False,
+    "application": True,
 }

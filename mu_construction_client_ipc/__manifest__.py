@@ -1,7 +1,7 @@
 {
     "name": "MU Construction Client Measurement and IPC",
     "summary": "Cumulative client measurement, IPC certification, deductions, and draft invoices",
-    "version": "19.0.1.0.0",
+    "version": "19.0.2.0.0",
     "category": "Services/Project",
     "author": "MU Constructions General",
     "license": "LGPL-3",
@@ -13,5 +13,5 @@
         "views/client_ipc_views.xml",
     ],
     "installable": True,
-    "application": False,
+    "application": True,
 }

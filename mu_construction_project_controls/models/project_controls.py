@@ -201,7 +201,7 @@ class ConstructionMonthlyClose(models.Model):
 
     def _ensure_user(self, user, role):
         self.ensure_one()
-        if self.env.user != user and not self.env.user.has_group("mu_construction_core.group_construction_manager"):
+        if self.env.user != user and not self.env.user.has_group("mu_construction_core.group_controls_manager"):
             raise AccessError(_("Only the assigned %s or a Construction Manager may perform this action.") % role)
 
     def _move(self, expected, target, responsible=None):
@@ -435,7 +435,7 @@ class ConstructionAccrual(models.Model):
             if record.state != "review":
                 raise UserError(_("Only accruals under review can be approved."))
             if self.env.user not in (record.reviewer_id, record.approver_id) and not self.env.user.has_group(
-                "mu_construction_core.group_construction_manager"
+                "mu_construction_core.group_controls_manager"
             ):
                 raise AccessError(_("Only the assigned reviewer, approver or a Construction Manager may approve."))
             record.write({"state": "approved"})

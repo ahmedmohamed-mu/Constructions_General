@@ -157,7 +157,7 @@ class ConstructionContract(models.Model):
     def _ensure_user(self, user, role):
         self.ensure_one()
         if self.env.user != user and not self.env.user.has_group(
-            "mu_construction_core.group_construction_manager"
+            "mu_construction_core.group_contract_manager"
         ):
             raise AccessError(_("Only the assigned %s or a Construction Manager may perform this action.") % role)
 
@@ -277,11 +277,11 @@ class ConstructionContractRevision(models.Model):
     )
 
     def action_approve(self):
-        if not self.env.user.has_group("mu_construction_core.group_construction_manager"):
+        if not self.env.user.has_group("mu_construction_core.group_contract_manager"):
             raise AccessError(_("Only a Construction Manager may approve a contract revision."))
         self.write({"state": "approved"})
 
     def action_reject(self):
-        if not self.env.user.has_group("mu_construction_core.group_construction_manager"):
+        if not self.env.user.has_group("mu_construction_core.group_contract_manager"):
             raise AccessError(_("Only a Construction Manager may reject a contract revision."))
         self.write({"state": "rejected"})

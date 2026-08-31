@@ -82,7 +82,7 @@ class ConstructionProjectBootstrap(models.Model):
     def action_approve(self):
         for record in self:
             if record.state != "review": raise UserError(_("Only reviewed bootstrap records can be approved."))
-            if self.env.user != record.approver_id and not self.env.user.has_group("mu_construction_core.group_construction_manager"):
+            if self.env.user != record.approver_id and not self.env.user.has_group("mu_construction_core.group_bootstrap_manager"):
                 raise UserError(_("Only the assigned approver or a Construction Manager may approve."))
             record.write({"state": "approved"})
 

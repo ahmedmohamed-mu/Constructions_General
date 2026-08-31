@@ -12,5 +12,5 @@
     <record id="action_construction_estimates" model="ir.actions.act_window"><field name="name">Construction Estimates</field><field name="res_model">mu.construction.estimate</field><field name="view_mode">list,form</field></record>
     <record id="action_estimate_profiles" model="ir.actions.act_window"><field name="name">Estimation Profiles</field><field name="res_model">mu.construction.estimate.profile</field><field name="view_mode">list,form</field></record>
     <menuitem id="menu_construction_estimates" name="Estimates" parent="menu_tender_estimation" action="action_construction_estimates" sequence="20"/>
-    <menuitem id="menu_estimate_profiles" name="Estimation Profiles" parent="mu_construction_core.menu_construction_configuration" action="action_estimate_profiles" sequence="60"/>
+    <menuitem id="menu_estimate_profiles" name="Estimation Profiles" parent="menu_tender_estimation" action="action_estimate_profiles" sequence="90" groups="mu_construction_core.group_tender_manager"/>
 </odoo>

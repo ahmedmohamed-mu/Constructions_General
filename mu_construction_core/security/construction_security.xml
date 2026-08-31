@@ -12,16 +12,84 @@
     </record>
 
     <record id="group_construction_user" model="res.groups">
-        <field name="name">Construction User</field>
+        <field name="name">Shared Project Context</field>
         <field name="sequence">10</field>
         <field name="privilege_id" ref="privilege_mu_construction"/>
+        <field name="implied_ids" eval="[(4, ref('project.group_project_user'))]"/>
     </record>
 
     <record id="group_construction_manager" model="res.groups">
-        <field name="name">Construction Manager</field>
+        <field name="name">System Manager</field>
         <field name="sequence">20</field>
         <field name="privilege_id" ref="privilege_mu_construction"/>
         <field name="implied_ids" eval="[(4, ref('group_construction_user'))]"/>
+    </record>
+
+    <!-- Independent operational privileges.  Keeping every User/Manager pair
+         in its own privilege lets administrators assign only the applications
+         needed by a job role instead of granting the whole Construction suite. -->
+    <record id="privilege_construction_contract" model="res.groups.privilege"><field name="name">Contracts &amp; BOQ</field><field name="sequence">40</field><field name="category_id" ref="module_category_mu_construction"/></record>
+    <record id="group_contract_user" model="res.groups"><field name="name">User</field><field name="sequence">10</field><field name="privilege_id" ref="privilege_construction_contract"/><field name="implied_ids" eval="[(4, ref('group_construction_user'))]"/></record>
+    <record id="group_contract_manager" model="res.groups"><field name="name">Manager</field><field name="sequence">20</field><field name="privilege_id" ref="privilege_construction_contract"/><field name="implied_ids" eval="[(4, ref('group_contract_user'))]"/></record>
+
+    <record id="privilege_construction_tender" model="res.groups.privilege"><field name="name">Tender &amp; Estimation</field><field name="sequence">50</field><field name="category_id" ref="module_category_mu_construction"/></record>
+    <record id="group_tender_user" model="res.groups"><field name="name">User</field><field name="sequence">10</field><field name="privilege_id" ref="privilege_construction_tender"/><field name="implied_ids" eval="[(4, ref('group_construction_user'))]"/></record>
+    <record id="group_tender_manager" model="res.groups"><field name="name">Manager</field><field name="sequence">20</field><field name="privilege_id" ref="privilege_construction_tender"/><field name="implied_ids" eval="[(4, ref('group_tender_user'))]"/></record>
+
+    <record id="privilege_construction_bootstrap" model="res.groups.privilege"><field name="name">Project Setup</field><field name="sequence">60</field><field name="category_id" ref="module_category_mu_construction"/></record>
+    <record id="group_bootstrap_user" model="res.groups"><field name="name">User</field><field name="sequence">10</field><field name="privilege_id" ref="privilege_construction_bootstrap"/><field name="implied_ids" eval="[(4, ref('group_construction_user'))]"/></record>
+    <record id="group_bootstrap_manager" model="res.groups"><field name="name">Manager</field><field name="sequence">20</field><field name="privilege_id" ref="privilege_construction_bootstrap"/><field name="implied_ids" eval="[(4, ref('group_bootstrap_user'))]"/></record>
+
+    <record id="privilege_construction_procurement" model="res.groups.privilege"><field name="name">Procurement &amp; Inventory</field><field name="sequence">70</field><field name="category_id" ref="module_category_mu_construction"/></record>
+    <record id="group_procurement_user" model="res.groups"><field name="name">User</field><field name="sequence">10</field><field name="privilege_id" ref="privilege_construction_procurement"/><field name="implied_ids" eval="[(4, ref('group_construction_user'))]"/></record>
+    <record id="group_procurement_manager" model="res.groups"><field name="name">Manager</field><field name="sequence">20</field><field name="privilege_id" ref="privilege_construction_procurement"/><field name="implied_ids" eval="[(4, ref('group_procurement_user'))]"/></record>
+
+    <record id="privilege_construction_subcontract" model="res.groups.privilege"><field name="name">Subcontract Management</field><field name="sequence">80</field><field name="category_id" ref="module_category_mu_construction"/></record>
+    <record id="group_subcontract_user" model="res.groups"><field name="name">User</field><field name="sequence">10</field><field name="privilege_id" ref="privilege_construction_subcontract"/><field name="implied_ids" eval="[(4, ref('group_construction_user'))]"/></record>
+    <record id="group_subcontract_manager" model="res.groups"><field name="name">Manager</field><field name="sequence">20</field><field name="privilege_id" ref="privilege_construction_subcontract"/><field name="implied_ids" eval="[(4, ref('group_subcontract_user'))]"/></record>
+
+    <record id="privilege_construction_site" model="res.groups.privilege"><field name="name">Site Execution</field><field name="sequence">90</field><field name="category_id" ref="module_category_mu_construction"/></record>
+    <record id="group_site_user" model="res.groups"><field name="name">User</field><field name="sequence">10</field><field name="privilege_id" ref="privilege_construction_site"/><field name="implied_ids" eval="[(4, ref('group_construction_user'))]"/></record>
+    <record id="group_site_manager" model="res.groups"><field name="name">Manager</field><field name="sequence">20</field><field name="privilege_id" ref="privilege_construction_site"/><field name="implied_ids" eval="[(4, ref('group_site_user'))]"/></record>
+
+    <record id="privilege_construction_documents" model="res.groups.privilege"><field name="name">Document Control</field><field name="sequence">100</field><field name="category_id" ref="module_category_mu_construction"/></record>
+    <record id="group_document_user" model="res.groups"><field name="name">User</field><field name="sequence">10</field><field name="privilege_id" ref="privilege_construction_documents"/><field name="implied_ids" eval="[(4, ref('group_construction_user'))]"/></record>
+    <record id="group_document_manager" model="res.groups"><field name="name">Manager</field><field name="sequence">20</field><field name="privilege_id" ref="privilege_construction_documents"/><field name="implied_ids" eval="[(4, ref('group_document_user'))]"/></record>
+
+    <record id="privilege_construction_quality" model="res.groups.privilege"><field name="name">QA / QC</field><field name="sequence">110</field><field name="category_id" ref="module_category_mu_construction"/></record>
+    <record id="group_quality_user" model="res.groups"><field name="name">User</field><field name="sequence">10</field><field name="privilege_id" ref="privilege_construction_quality"/><field name="implied_ids" eval="[(4, ref('group_construction_user'))]"/></record>
+    <record id="group_quality_manager" model="res.groups"><field name="name">Manager</field><field name="sequence">20</field><field name="privilege_id" ref="privilege_construction_quality"/><field name="implied_ids" eval="[(4, ref('group_quality_user'))]"/></record>
+
+    <record id="privilege_construction_ipc" model="res.groups.privilege"><field name="name">Client Measurement &amp; IPC</field><field name="sequence">120</field><field name="category_id" ref="module_category_mu_construction"/></record>
+    <record id="group_ipc_user" model="res.groups"><field name="name">User</field><field name="sequence">10</field><field name="privilege_id" ref="privilege_construction_ipc"/><field name="implied_ids" eval="[(4, ref('group_construction_user'))]"/></record>
+    <record id="group_ipc_manager" model="res.groups"><field name="name">Manager</field><field name="sequence">20</field><field name="privilege_id" ref="privilege_construction_ipc"/><field name="implied_ids" eval="[(4, ref('group_ipc_user'))]"/></record>
+
+    <record id="privilege_construction_changes" model="res.groups.privilege"><field name="name">Variations, Claims &amp; EOT</field><field name="sequence">130</field><field name="category_id" ref="module_category_mu_construction"/></record>
+    <record id="group_changes_user" model="res.groups"><field name="name">User</field><field name="sequence">10</field><field name="privilege_id" ref="privilege_construction_changes"/><field name="implied_ids" eval="[(4, ref('group_construction_user'))]"/></record>
+    <record id="group_changes_manager" model="res.groups"><field name="name">Manager</field><field name="sequence">20</field><field name="privilege_id" ref="privilege_construction_changes"/><field name="implied_ids" eval="[(4, ref('group_changes_user'))]"/></record>
+
+    <record id="privilege_construction_controls" model="res.groups.privilege"><field name="name">Project Controls</field><field name="sequence">140</field><field name="category_id" ref="module_category_mu_construction"/></record>
+    <record id="group_controls_user" model="res.groups"><field name="name">User</field><field name="sequence">10</field><field name="privilege_id" ref="privilege_construction_controls"/><field name="implied_ids" eval="[(4, ref('group_construction_user'))]"/></record>
+    <record id="group_controls_manager" model="res.groups"><field name="name">Manager</field><field name="sequence">20</field><field name="privilege_id" ref="privilege_construction_controls"/><field name="implied_ids" eval="[(4, ref('group_controls_user'))]"/></record>
+
+    <record id="privilege_construction_closeout" model="res.groups.privilege"><field name="name">Equipment &amp; Closeout</field><field name="sequence">150</field><field name="category_id" ref="module_category_mu_construction"/></record>
+    <record id="group_closeout_user" model="res.groups"><field name="name">User</field><field name="sequence">10</field><field name="privilege_id" ref="privilege_construction_closeout"/><field name="implied_ids" eval="[(4, ref('group_construction_user'))]"/></record>
+    <record id="group_closeout_manager" model="res.groups"><field name="name">Manager</field><field name="sequence">20</field><field name="privilege_id" ref="privilege_construction_closeout"/><field name="implied_ids" eval="[(4, ref('group_closeout_user'))]"/></record>
+
+    <record id="privilege_construction_dashboards" model="res.groups.privilege"><field name="name">Construction Dashboards</field><field name="sequence">160</field><field name="category_id" ref="module_category_mu_construction"/></record>
+    <record id="group_dashboard_user" model="res.groups"><field name="name">User</field><field name="sequence">10</field><field name="privilege_id" ref="privilege_construction_dashboards"/><field name="implied_ids" eval="[(4, ref('group_construction_user'))]"/></record>
+    <record id="group_dashboard_manager" model="res.groups"><field name="name">Manager</field><field name="sequence">20</field><field name="privilege_id" ref="privilege_construction_dashboards"/><field name="implied_ids" eval="[(4, ref('group_dashboard_user'))]"/></record>
+
+    <record id="group_construction_manager" model="res.groups">
+        <field name="implied_ids" eval="[
+            (4, ref('group_contract_manager')), (4, ref('group_tender_manager')),
+            (4, ref('group_bootstrap_manager')), (4, ref('group_procurement_manager')),
+            (4, ref('group_subcontract_manager')), (4, ref('group_site_manager')),
+            (4, ref('group_document_manager')), (4, ref('group_quality_manager')),
+            (4, ref('group_ipc_manager')), (4, ref('group_changes_manager')),
+            (4, ref('group_controls_manager')), (4, ref('group_closeout_manager')),
+            (4, ref('group_dashboard_manager'))
+        ]"/>
     </record>
 
     <!-- Settings administrators must be able to configure and verify the

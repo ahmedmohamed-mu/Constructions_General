@@ -138,7 +138,7 @@ class ConstructionBudgetBaseline(models.Model):
             if record.state != "review":
                 raise UserError(_("Only a baseline under review can be approved."))
             if self.env.user != record.approver_id and not self.env.user.has_group(
-                "mu_construction_core.group_construction_manager"
+                "mu_construction_core.group_contract_manager"
             ):
                 raise UserError(
                     _("Only the assigned approver or a Construction Manager may approve a baseline.")

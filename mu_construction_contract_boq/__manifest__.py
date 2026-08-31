@@ -1,7 +1,7 @@
 {
     "name": "MU Construction Contracts and BOQ",
     "summary": "Versioned construction contracts, BOQs, approvals, and audit trail",
-    "version": "19.0.1.3.0",
+    "version": "19.0.2.0.0",
     "category": "Services/Project",
     "author": "MU Constructions General",
     "license": "LGPL-3",

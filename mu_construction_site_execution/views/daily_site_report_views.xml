@@ -92,8 +92,8 @@
         <field name="name">Daily Site Reports</field><field name="res_model">mu.construction.daily.site.report</field><field name="view_mode">list,form</field>
     </record>
     <menuitem id="menu_site_execution" name="Site Execution"
-              parent="mu_construction_contract_boq.menu_construction_operations" sequence="60"
-              groups="mu_construction_core.group_construction_user"/>
-    <menuitem id="menu_daily_site_reports" name="Daily Site Reports" parent="menu_site_execution" action="action_daily_site_reports" sequence="10" groups="mu_construction_core.group_construction_user"/>
+              sequence="60" web_icon="mu_construction_core,static/description/icon.svg"
+              groups="mu_construction_core.group_site_user"/>
+    <menuitem id="menu_daily_site_reports" name="Daily Site Reports" parent="menu_site_execution" action="action_daily_site_reports" sequence="10" groups="mu_construction_core.group_site_user"/>
 </odoo>
 

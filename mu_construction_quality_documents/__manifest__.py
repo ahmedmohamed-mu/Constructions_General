@@ -1,7 +1,7 @@
 {
     "name": "MU Construction QA/QC and Document Control",
     "summary": "Drawing, RFI, submittal, transmittal, ITP, MIR, WIR, NCR, and snag controls",
-    "version": "19.0.1.0.1",
+    "version": "19.0.2.0.0",
     "category": "Services/Project",
     "author": "MU Constructions General",
     "license": "LGPL-3",
@@ -14,5 +14,5 @@
         "views/quality_control_views.xml",
     ],
     "installable": True,
-    "application": False,
+    "application": True,
 }

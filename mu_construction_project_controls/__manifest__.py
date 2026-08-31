@@ -1,7 +1,7 @@
 {
     "name": "MU Construction Project Controls and WIP",
     "summary": "Commitments, actuals, accruals, ETC/EAC, earned value, WIP and monthly close",
-    "version": "19.0.1.0.2",
+    "version": "19.0.2.0.0",
     "category": "Services/Project",
     "author": "MU Constructions General",
     "license": "LGPL-3",
@@ -21,6 +21,6 @@
         "views/project_controls_views.xml",
     ],
     "installable": True,
-    "application": False,
+    "application": True,
 }
 

@@ -7,7 +7,7 @@
         <group string="Responsibility"><field name="manager_id"/><field name="reviewer_id"/><field name="approver_id"/><field name="checklist_complete"/></group><group string="Generated Standard Records"><field name="contract_id"/><field name="cost_boq_id"/><field name="sell_boq_id"/></group><notebook><page string="Handover Notes"><field name="notes"/></page></notebook><field name="company_id" invisible="1"/><field name="currency_id" invisible="1"/></sheet><chatter/></form></field></record>
     <record id="action_project_bootstraps" model="ir.actions.act_window"><field name="name">Project Bootstraps</field><field name="res_model">mu.construction.project.bootstrap</field><field name="view_mode">list,form</field></record>
     <menuitem id="menu_project_setup" name="Project Setup"
-              parent="mu_construction_contract_boq.menu_construction_operations" sequence="30"
-              groups="mu_construction_core.group_construction_user"/>
+              sequence="30" web_icon="mu_construction_core,static/description/icon.svg"
+              groups="mu_construction_core.group_bootstrap_user"/>
     <menuitem id="menu_project_bootstraps" name="Project Bootstrap" parent="menu_project_setup" action="action_project_bootstraps" sequence="10"/>
 </odoo>

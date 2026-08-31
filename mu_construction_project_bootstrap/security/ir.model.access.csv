@@ -1,3 +1,3 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_project_bootstrap_user,project.bootstrap.user,model_mu_construction_project_bootstrap,mu_construction_core.group_construction_user,1,1,1,0
-access_project_bootstrap_manager,project.bootstrap.manager,model_mu_construction_project_bootstrap,mu_construction_core.group_construction_manager,1,1,1,1
+access_project_bootstrap_user,project.bootstrap.user,model_mu_construction_project_bootstrap,mu_construction_core.group_bootstrap_user,1,1,1,0
+access_project_bootstrap_manager,project.bootstrap.manager,model_mu_construction_project_bootstrap,mu_construction_core.group_bootstrap_manager,1,1,1,1

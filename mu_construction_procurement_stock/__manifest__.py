@@ -1,7 +1,7 @@
 {
     "name": "MU Construction Procurement and Inventory",
     "summary": "Project context, configurable approvals, and traceability on standard purchase and stock documents",
-    "version": "19.0.1.0.0",
+    "version": "19.0.2.0.0",
     "category": "Services/Project",
     "author": "MU Constructions General",
     "license": "LGPL-3",
@@ -14,5 +14,5 @@
         "views/stock_picking_views.xml",
     ],
     "installable": True,
-    "application": False,
+    "application": True,
 }

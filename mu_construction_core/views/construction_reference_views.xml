@@ -149,8 +149,8 @@
         <field name="view_mode">list,form</field>
     </record>
 
-    <menuitem id="menu_construction_configuration" name="Construction"
-              parent="project.menu_project_config" sequence="90"
+    <menuitem id="menu_construction_configuration" name="Construction Setup"
+              sequence="90" web_icon="mu_construction_core,static/description/icon.svg"
               groups="mu_construction_core.group_construction_manager"/>
     <menuitem id="menu_construction_locations" name="Locations"
               parent="menu_construction_configuration" action="action_construction_locations" sequence="10"/>

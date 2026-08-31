@@ -40,7 +40,7 @@
         <field name="view_mode">list,form</field>
     </record>
     <menuitem id="menu_site_execution_profiles" name="Site Execution Profiles"
-              parent="mu_construction_core.menu_construction_configuration"
-              action="action_site_execution_profiles" sequence="60"
-              groups="mu_construction_core.group_construction_manager"/>
+              parent="mu_construction_site_execution.menu_site_execution"
+              action="action_site_execution_profiles" sequence="90"
+              groups="mu_construction_core.group_site_manager"/>
 </odoo>
