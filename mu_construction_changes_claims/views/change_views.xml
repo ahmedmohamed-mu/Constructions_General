@@ -21,9 +21,11 @@
     <record id="action_claims" model="ir.actions.act_window"><field name="name">Claims &amp; EOT</field><field name="res_model">mu.construction.claim</field><field name="view_mode">list,form</field></record>
 
     <menuitem id="menu_commercial_profiles" name="Variation &amp; Claim Profiles" parent="mu_construction_core.menu_construction_configuration" action="action_commercial_profiles" sequence="90" groups="mu_construction_core.group_construction_manager"/>
-    <menuitem id="menu_potential_changes" name="Potential Changes" parent="mu_construction_contract_boq.menu_construction_operations" action="action_potential_changes" sequence="80" groups="mu_construction_core.group_construction_user"/>
-    <menuitem id="menu_contract_notices" name="Contractual Notices" parent="mu_construction_contract_boq.menu_construction_operations" action="action_notices" sequence="81" groups="mu_construction_core.group_construction_user"/>
-    <menuitem id="menu_variations" name="Variations" parent="mu_construction_contract_boq.menu_construction_operations" action="action_variations" sequence="82" groups="mu_construction_core.group_construction_user"/>
-    <menuitem id="menu_claims" name="Claims &amp; EOT" parent="mu_construction_contract_boq.menu_construction_operations" action="action_claims" sequence="83" groups="mu_construction_core.group_construction_user"/>
+    <menuitem id="menu_changes_claims" name="Variations, Claims &amp; EOT"
+              parent="mu_construction_contract_boq.menu_construction_operations" sequence="100"
+              groups="mu_construction_core.group_construction_user"/>
+    <menuitem id="menu_potential_changes" name="Potential Changes" parent="menu_changes_claims" action="action_potential_changes" sequence="10" groups="mu_construction_core.group_construction_user"/>
+    <menuitem id="menu_contract_notices" name="Contractual Notices" parent="menu_changes_claims" action="action_notices" sequence="20" groups="mu_construction_core.group_construction_user"/>
+    <menuitem id="menu_variations" name="Variations" parent="menu_changes_claims" action="action_variations" sequence="30" groups="mu_construction_core.group_construction_user"/>
+    <menuitem id="menu_claims" name="Claims &amp; EOT" parent="menu_changes_claims" action="action_claims" sequence="40" groups="mu_construction_core.group_construction_user"/>
 </odoo>
-

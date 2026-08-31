@@ -55,5 +55,8 @@
     <record id="action_client_ipcs" model="ir.actions.act_window"><field name="name">Client Measurements &amp; IPC</field><field name="res_model">mu.construction.client.ipc</field><field name="view_mode">list,form</field></record>
 
     <menuitem id="menu_ipc_profiles" name="IPC Profiles" parent="mu_construction_core.menu_construction_configuration" action="action_ipc_profiles" sequence="80" groups="mu_construction_core.group_construction_manager"/>
-    <menuitem id="menu_client_ipcs" name="Client Measurement &amp; IPC" parent="mu_construction_contract_boq.menu_construction_operations" action="action_client_ipcs" sequence="70" groups="mu_construction_core.group_construction_user"/>
+    <menuitem id="menu_client_measurement" name="Client Measurement &amp; IPC"
+              parent="mu_construction_contract_boq.menu_construction_operations" sequence="90"
+              groups="mu_construction_core.group_construction_user"/>
+    <menuitem id="menu_client_ipcs" name="Client IPCs" parent="menu_client_measurement" action="action_client_ipcs" sequence="10" groups="mu_construction_core.group_construction_user"/>
 </odoo>

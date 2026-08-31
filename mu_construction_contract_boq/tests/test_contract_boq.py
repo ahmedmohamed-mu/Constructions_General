@@ -21,6 +21,21 @@ class TestConstructionContractBOQ(TransactionCase):
         }
         cls.contract = cls.env["mu.construction.contract"].create(vals)
 
+    def test_construction_is_a_visible_root_application(self):
+        root_menu = self.env.ref("mu_construction_contract_boq.menu_construction_operations")
+        contract_section = self.env.ref("mu_construction_contract_boq.menu_contracts_boq")
+        configuration = self.env.ref("mu_construction_core.menu_construction_configuration")
+        construction_user = self.env.ref("mu_construction_core.group_construction_user")
+        construction_manager = self.env.ref("mu_construction_core.group_construction_manager")
+        system_admin = self.env.ref("base.group_system")
+
+        self.assertFalse(root_menu.parent_id, "Construction must be a Home application, not a Project submenu")
+        self.assertTrue(root_menu.web_icon, "Construction Home application must have an icon")
+        self.assertIn(construction_user, root_menu.groups_id)
+        self.assertEqual(contract_section.parent_id, root_menu)
+        self.assertEqual(configuration.parent_id, root_menu)
+        self.assertIn(construction_manager, system_admin.implied_ids)
+
     def test_contract_workflow_and_lock(self):
         self.contract.action_submit_review()
         self.contract.action_mark_reviewed()

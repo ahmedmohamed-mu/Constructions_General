@@ -261,10 +261,10 @@
     </record>
 
     <menuitem id="menu_construction_guarantees" name="Guarantees and Bonds"
-              parent="mu_construction_contract_boq.menu_construction_operations"
+              parent="mu_construction_contract_boq.menu_contracts_boq"
               action="action_construction_guarantees" sequence="30"/>
     <menuitem id="menu_construction_insurances" name="Insurance Policies"
-              parent="mu_construction_contract_boq.menu_construction_operations"
+              parent="mu_construction_contract_boq.menu_contracts_boq"
               action="action_construction_insurances" sequence="40"/>
 
 </odoo>

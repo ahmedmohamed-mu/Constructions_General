@@ -61,8 +61,17 @@
     <record id="action_construction_contracts" model="ir.actions.act_window"><field name="name">Construction Contracts</field><field name="res_model">mu.construction.contract</field><field name="view_mode">list,form</field></record>
     <record id="action_contract_types" model="ir.actions.act_window"><field name="name">Contract Types</field><field name="res_model">mu.construction.contract.type</field><field name="view_mode">list</field></record>
     <record id="action_contract_terms" model="ir.actions.act_window"><field name="name">Contract Terms</field><field name="res_model">mu.construction.contract.term</field><field name="view_mode">list,form</field></record>
-    <menuitem id="menu_construction_operations" name="Construction" parent="project.menu_main_pm" sequence="25" groups="mu_construction_core.group_construction_user"/>
-    <menuitem id="menu_construction_contracts" name="Contracts" parent="menu_construction_operations" action="action_construction_contracts" sequence="10"/>
+    <menuitem id="menu_construction_operations" name="Construction" sequence="25"
+              groups="mu_construction_core.group_construction_user"
+              web_icon="mu_construction_contract_boq,static/description/icon.svg"/>
+    <menuitem id="menu_contracts_boq" name="Contracts &amp; BOQ"
+              parent="menu_construction_operations" sequence="20"
+              groups="mu_construction_core.group_construction_user"/>
+    <menuitem id="menu_construction_contracts" name="Contracts" parent="menu_contracts_boq" action="action_construction_contracts" sequence="10"/>
+    <record id="mu_construction_core.menu_construction_configuration" model="ir.ui.menu">
+        <field name="parent_id" ref="menu_construction_operations"/>
+        <field name="sequence">999</field>
+    </record>
     <menuitem id="menu_contract_types" name="Contract Types" parent="mu_construction_core.menu_construction_configuration" action="action_contract_types" sequence="40"/>
     <menuitem id="menu_contract_terms" name="Contract Terms" parent="mu_construction_core.menu_construction_configuration" action="action_contract_terms" sequence="50"/>
 </odoo>

@@ -24,6 +24,12 @@
         <field name="implied_ids" eval="[(4, ref('group_construction_user'))]"/>
     </record>
 
+    <!-- Settings administrators must be able to configure and verify the
+         Construction application without a second, hidden group assignment. -->
+    <record id="base.group_system" model="res.groups">
+        <field name="implied_ids" eval="[(4, ref('group_construction_manager'))]"/>
+    </record>
+
     <record id="location_company_rule" model="ir.rule">
         <field name="name">Construction locations: allowed companies</field>
         <field name="model_id" ref="model_mu_construction_location"/>

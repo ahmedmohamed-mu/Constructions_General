@@ -130,7 +130,7 @@
     </record>
 
     <menuitem id="menu_construction_budget_baselines" name="Budget Baselines"
-              parent="mu_construction_contract_boq.menu_construction_operations"
+              parent="mu_construction_contract_boq.menu_contracts_boq"
               action="action_construction_budget_baselines" sequence="20"/>
 
 </odoo>

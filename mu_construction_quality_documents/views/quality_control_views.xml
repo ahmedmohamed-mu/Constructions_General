@@ -136,9 +136,12 @@
         <field name="view_id" ref="view_construction_quality_alert_list"/>
     </record>
 
-    <menuitem id="menu_itps" name="ITP" parent="mu_construction_contract_boq.menu_construction_operations" action="action_itps" sequence="64" groups="mu_construction_core.group_construction_user"/>
-    <menuitem id="menu_mirs" name="MIR" parent="mu_construction_contract_boq.menu_construction_operations" action="action_mirs" sequence="65" groups="mu_construction_core.group_construction_user"/>
-    <menuitem id="menu_wirs" name="WIR" parent="mu_construction_contract_boq.menu_construction_operations" action="action_wirs" sequence="66" groups="mu_construction_core.group_construction_user"/>
-    <menuitem id="menu_ncrs" name="NCR" parent="mu_construction_contract_boq.menu_construction_operations" action="action_construction_ncrs" sequence="67" groups="mu_construction_core.group_construction_user"/>
-    <menuitem id="menu_snags" name="Snag List" parent="mu_construction_contract_boq.menu_construction_operations" action="action_construction_snags" sequence="68" groups="mu_construction_core.group_construction_user"/>
+    <menuitem id="menu_quality_control" name="QA / QC"
+              parent="mu_construction_contract_boq.menu_construction_operations" sequence="80"
+              groups="mu_construction_core.group_construction_user"/>
+    <menuitem id="menu_itps" name="ITP" parent="menu_quality_control" action="action_itps" sequence="10" groups="mu_construction_core.group_construction_user"/>
+    <menuitem id="menu_mirs" name="MIR" parent="menu_quality_control" action="action_mirs" sequence="20" groups="mu_construction_core.group_construction_user"/>
+    <menuitem id="menu_wirs" name="WIR" parent="menu_quality_control" action="action_wirs" sequence="30" groups="mu_construction_core.group_construction_user"/>
+    <menuitem id="menu_ncrs" name="NCR" parent="menu_quality_control" action="action_construction_ncrs" sequence="40" groups="mu_construction_core.group_construction_user"/>
+    <menuitem id="menu_snags" name="Snag List" parent="menu_quality_control" action="action_construction_snags" sequence="50" groups="mu_construction_core.group_construction_user"/>
 </odoo>
